@@ -1,0 +1,86 @@
+[
+  {
+    "ID": 1,
+    "Description": "LoginUI",
+    "Asset": "SDKPrefab/Login/LoginUI",
+    "Mode": 0
+  },
+  {
+    "ID": 2,
+    "Description": "EntryUI",
+    "Asset": "SDKPrefab/Login/EntryUI",
+    "Mode": 0
+  },
+  {
+    "ID": 3,
+    "Description": "AgeTipUI",
+    "Asset": "SDKPrefab/Login/AgeTipUI",
+    "Mode": 1
+  },
+  {
+    "ID": 4,
+    "Description": "RealNameUI",
+    "Asset": "SDKPrefab/AntiAddiction/RealNameUI",
+    "Mode": 1
+  },
+  {
+    "ID": 5,
+    "Description": "NotGameTimeUI",
+    "Asset": "SDKPrefab/AntiAddiction/NotGameTimeUI",
+    "Mode": 1
+  },
+  {
+    "ID": 6,
+    "Description": "NoTimeLeftUI",
+    "Asset": "SDKPrefab/AntiAddiction/NoTimeLeftUI",
+    "Mode": 1
+  },
+  {
+    "ID": 7,
+    "Description": "NotRightAgeUI",
+    "Asset": "SDKPrefab/AntiAddiction/NotRightAgeUI",
+    "Mode": 1
+  },
+  {
+    "ID": 8,
+    "Description": "AntiaddictionRulesUI",
+    "Asset": "SDKPrefab/AntiAddiction/AntiaddictionRulesUI",
+    "Mode": 1
+  },
+  {
+    "ID": 9,
+    "Description": "PurchaseRulesUI",
+    "Asset": "SDKPrefab/AntiAddiction/PurchaseRulesUI",
+    "Mode": 1
+  },
+  {
+    "ID": 10,
+    "Description": "PurchaseLimitUI",
+    "Asset": "SDKPrefab/AntiAddiction/PurchaseLimitUI",
+    "Mode": 1
+  },
+  {
+    "ID": 11,
+    "Description": "CommonTipUI",
+    "Asset": "SDKPrefab/AntiAddiction/CommonTipUI",
+    "Mode": 1
+  },
+  {
+    "ID": 12,
+    "Description": "LatencyTimeUI",
+    "Asset": "SDKPrefab/Common/LatencyTimeUI",
+    "Mode": 1
+  },
+  {
+    "ID": 13,
+    "Description": "LoginSuccessUI",
+    "Asset": "SDKPrefab/Login/LoginSuccessUI",
+    "Mode": 1
+  },
+  {
+    "ID": 14,
+    "Description": "SplashAdviceUI",
+    "Asset": "SDKPrefab/Common/SplashAdviceUI",
+    "Mode": 1
+  }
+]

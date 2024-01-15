@@ -1,4 +1,12 @@
-# This .gitignore file should be placed at the root of your Unity project directory
+/HABBY_CN/.idea
+/HABBY_CN/Library
+/HABBY_CN/Logs
+/HABBY_CN/obj
+/HABBY_CN/Temp
+/HABBY_CN/androidproj
+/HABBY_CN/AndroidProject
+/HABBY_CN/UserSettings
+# This .gitignore fileSshould be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #

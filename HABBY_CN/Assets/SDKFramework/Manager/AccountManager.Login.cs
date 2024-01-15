@@ -14,7 +14,6 @@ namespace Habby.CNUser
         }
 
 
-
         void OnEnable()
         {
             AccountManager.OnUserLogin += onUserLogin;
@@ -89,7 +88,7 @@ namespace Habby.CNUser
 
             BirthdayAgeSex entity = new BirthdayAgeSex();
             entity = LocalIdentityUtil.GetBirthdayAgeSex(account.IdCard);
-            
+
             if (entity.Age >= 18)
             {
                 account.AgeRange = UserAccount.AgeLevel.Adult;
@@ -187,7 +186,6 @@ namespace Habby.CNUser
             {
                 if (account.AgeRange == UserAccount.AgeLevel.Unknown)
                 {
-//                    Login(account);//初次登录没有实名的用户也先登录 TODO:与后端确认
                     HabbyFramework.UI.OpenUI(UIViewID.RealNameUI, account);
                 }
                 else

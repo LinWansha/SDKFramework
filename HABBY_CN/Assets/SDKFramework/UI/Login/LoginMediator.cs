@@ -35,13 +35,12 @@ public class LoginMediator : UIMediator<LoginView>
         if (InputFully(view.userIdInput.text, view.passwordInput.text))
         {
             Debug.Log("点击登录");
-            //TODO:登录账号
-            //HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
             AccountManager.Instance.LoginOrIdentify(new UserAccount()
             {
                 UID = view.userIdInput.text,
                 Password = view.passwordInput.text,
-                LoginChannel = "qq"
+                LoginChannel = "qq",
+                NickName = "林万厦"
             });
             Close();
         }

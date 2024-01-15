@@ -17,10 +17,10 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        ShowAnimation(null);
+        ShowAnimation();
     }
 
-    public void ShowAnimation(UserAccount account)
+    public void ShowAnimation(UserAccount account=null)
     {
         if (account == null)
         {
@@ -33,11 +33,8 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
             }
         }
 
-        if (account != null)
-        {
-            SetChannel(account.LoginChannel);
-            view.nameText.text = account.NickName;
-        }
+        SetChannel(account.LoginChannel);
+        view.nameText.text = account.NickName;
 
         var topPixel = Screen.currentResolution.height - (Screen.safeArea.y + Screen.safeArea.height);
         Rect safe = Screen.safeArea;

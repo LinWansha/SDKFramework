@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class LoginSuccessMediator : UIMediator<LoginSuccessView>
 {
-    private Vector3 _startPos = Vector3.zero;
+    private Vector2 _startPos = Vector2.zero;
     private Coroutine _animationCoroutine;
 
     protected override void OnInit(LoginSuccessView view)
     {
         base.OnInit(view);
+        _startPos = view.root.anchoredPosition;
     }
 
     protected override void OnShow(object arg)
@@ -63,8 +64,6 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
     {
         CanvasGroup group = view.root.GetComponent<CanvasGroup>();
 
-        var startPosition = view.root.transform.position;
-
         float timer = 0f;
 
         while (timer < duration)
@@ -73,10 +72,9 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
 
             float progress = timer / duration;
 
-            view.root.transform.position = new Vector3(view.root.transform.position.x,
-                Mathf.Lerp(startPosition.y, targetPositionY, progress),
+            view.root.anchoredPosition = new Vector3(view.root.anchoredPosition.x,
+                Mathf.Lerp(_startPos.y, targetPositionY, progress),
                 0);
-
             yield return null;
         }
 
@@ -90,8 +88,8 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
 
             float progress = timer / (duration * 2f);
 
-            view.root.transform.position = new Vector3(view.root.transform.position.x,
-                Mathf.Lerp(targetPositionY, startPosition.y, progress),
+            view.root.anchoredPosition = new Vector3(view.root.anchoredPosition.x,
+                Mathf.Lerp(targetPositionY, _startPos.y, progress),
                 0);
 
             if (timer >= duration * 1.8f)
@@ -135,7 +133,6 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
             CoroutineScheduler.Instance.StopCoroutine(_animationCoroutine);
             _animationCoroutine = null;
         }
-
-        view.root.transform.position = new Vector3(_startPos.x, _startPos.y, 0);
+        view.root.anchoredPosition = new Vector2(_startPos.x, _startPos.y);
     }
 }

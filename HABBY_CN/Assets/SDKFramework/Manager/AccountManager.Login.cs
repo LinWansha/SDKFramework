@@ -41,6 +41,7 @@ namespace Habby.CNUser
         public void onUserLogin(UserAccount account)
         {
             HLog.Log("onUserLogin登录成功");
+            HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
         }
 
@@ -186,7 +187,7 @@ namespace Habby.CNUser
             {
                 if (account.AgeRange == UserAccount.AgeLevel.Unknown)
                 {
-                    Login(account);//初次登录没有实名的用户也先登录 TODO:与后端确认
+//                    Login(account);//初次登录没有实名的用户也先登录 TODO:与后端确认
                     HabbyFramework.UI.OpenUI(UIViewID.RealNameUI, account);
                 }
                 else

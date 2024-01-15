@@ -10,14 +10,21 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnInit(view);
         view.btnEnter.onClick.AddListener(() =>
         {
-            if (AccountManager.Instance.HasAccount)
+            if (view.argeeToggle.isOn==false)
             {
-                Debug.Log("登录");
-                AccountManager.Instance.LoginOrIdentify(AccountManager.Instance.CurrentAccount);
+                HabbyTextHelper.Instance.ShowTip("请勾选用户隐私协议");
             }
             else
             {
-                HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+                if (AccountManager.Instance.HasAccount)
+                {
+                    Debug.Log("登录");
+                    AccountManager.Instance.LoginOrIdentify(AccountManager.Instance.CurrentAccount);
+                }
+                else
+                {
+                    HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+                }
             }
         });
         view.age12.GetComponent<Button>().onClick.AddListener(() => { HabbyFramework.UI.OpenUI(UIViewID.AgeTipUI); });

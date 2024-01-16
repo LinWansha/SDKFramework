@@ -24,10 +24,11 @@ namespace SDKFramework.UI
             ModuleDriver.Instance.GetModule<UIModule>().CloseUI(this);
         }
 
-        public override void InitMediator(UIView view)
+        public override void InitMediator(UIView v)
         {
-            base.InitMediator(view);
-            OnInit(view as T);
+            base.InitMediator(v);
+            view = v as T;
+            OnInit(v as T);
         }
 
         protected virtual void OnInit(T view) { }

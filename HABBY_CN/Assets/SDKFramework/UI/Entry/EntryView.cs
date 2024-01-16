@@ -5,9 +5,7 @@ using UnityEngine.UI;
 [UIView(typeof(EntryMediator), UIViewID.EntryUI)]
 public class EntryView :  UIView
 {
-    public GameObject age8;
-    public GameObject age12;
-    public GameObject age16;
+    public Button ageTip;
 
     public Button btnEnter;
     public Button btnPrivacy;

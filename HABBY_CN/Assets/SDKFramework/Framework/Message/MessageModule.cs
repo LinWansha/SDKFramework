@@ -105,7 +105,7 @@ namespace SDKFramework.Message
             }
             else
             {
-                Debug.LogWarning("消息ID{t.name}没有注册，无法派发");
+                Debug.LogError($"消息ID{t}没有注册，无法派发");
             }
         }
     }

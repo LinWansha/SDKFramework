@@ -254,9 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536602885029db84db95776f3e3a284d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  age8: {fileID: 4791606316624472808}
-  age12: {fileID: 4791606317077424111}
-  age16: {fileID: 4791606317040121264}
+  ageTip: {fileID: 4791606317077424109}
   btnEnter: {fileID: 4791606315721131485}
   btnPrivacy: {fileID: 4791606316852750269}
   btnPersonalInfo: {fileID: 4791606316688349101}

@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
-
+using Object = UnityEngine.Object;
 namespace SDKFramework.Asset
 {
     public partial class AssetModule : BaseModule
     {
         private readonly GameObjectPool<GameObjectAsset> gameObjectPool = new GameObjectPool<GameObjectAsset>();
-
+        public readonly string SDKConfigPath = Application.streamingAssetsPath + "/SDKConfig/";
         public GameObject LoadGameObject(string path, Action<GameObject> createNewCallback = null)
         {
             //UnityLog.Info($"Load GameObject:{path}");
@@ -19,6 +19,17 @@ namespace SDKFramework.Asset
             return go.GetComponent<T>();
         }
 
+        public T LoadAssets<T>(string path) where T : Object
+        {
+            T obj = Resources.Load<T>(path);
+            if (obj)
+            {
+                return obj;
+            }
+            Debug.LogError($"没有加载到资源：{path}");
+            return null;
+        }
+        
         public void LoadGameObjectAsync(string path, Action<GameObjectAsset> callback, Action<GameObject> createNewCallback = null)
         {
             gameObjectPool.LoadGameObjectAsync(path, callback, createNewCallback);

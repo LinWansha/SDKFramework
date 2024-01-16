@@ -7,7 +7,6 @@ public class LoginMediator : UIMediator<LoginView>
     protected override void OnInit(LoginView view)
     {
         base.OnInit(view);
-        Debug.Log("LoginMediator.OnInit");
         view.userIdInput.onValueChanged.AddListener((field) => { });
 
         view.passwordInput.onValueChanged.AddListener((field) => { });
@@ -63,7 +62,6 @@ public class LoginMediator : UIMediator<LoginView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        Debug.Log("LoginMediator.OnShow");
         AccountManager.OnUserNotExists += onUserNotExists;
         AccountManager.OnFailedToCreateUser += faileToCreateUser;
         AccountManager.OnLoginResponseSuccess += onUserExists;

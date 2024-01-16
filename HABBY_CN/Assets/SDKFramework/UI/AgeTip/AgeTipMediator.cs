@@ -1,35 +1,23 @@
-using System.IO;
-using Newtonsoft.Json;
+using SDKFramework.Config;
 using SDKFramework.UI;
 using UnityEngine;
 
 public class AgeTipMediator : UIMediator<AgeTipView>
 {
-    public class AgeTipConfig
-    {
-        public string gameName;
-        public ApplicableRange applicableRange;
-        public string details;
-        
-        public enum ApplicableRange
-        {
-            Range8,
-            Range12,
-            Range16,
-        }
-    }
-
-    private AgeTipConfig configData;
-    
     protected override void OnInit(AgeTipView view)
     {
         base.OnInit(view);
-        string jsonStr = File.ReadAllText(Application.streamingAssetsPath + "/SDKConfig/AgeTipConfig.json");
-        configData = JsonConvert.DeserializeObject<AgeTipConfig>(jsonStr);
+        HabbyFramework.Message.Subscribe<AgeTipConfig>(OnRefreshAgetip);
+        
         view.btnSure.onClick.AddListener(Close);
-        SetMsg(configData.gameName,configData.details);
+        
     }
 
+    private void OnRefreshAgetip(AgeTipConfig arg)
+    {
+        SetMsg(arg.gameName, arg.details);
+    }
+    
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);

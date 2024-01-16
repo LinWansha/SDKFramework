@@ -33,7 +33,7 @@ public class EntryMediator : UIMediator<EntryView>
     {
         if (view.argeeToggle.isOn == false)
         {
-            HabbyTextHelper.Instance.ShowTip("请勾选用户隐私协议");
+            HabbyTextHelper.Instance.ShowTip("请勾选用户协议");
         }
         else
         {

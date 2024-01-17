@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Reflection;
+
 
 namespace SDKFramework.Message
 {
@@ -8,104 +9,114 @@ namespace SDKFramework.Message
     {
     }
 
+    /// <summary>
+    /// 消息中心，后面如果用的多，可以考虑异步，并引入对象池
+    /// </summary>
     public class MessageModule : BaseModule
     {
-        public delegate void MessageEventArgs<T>(T arg) where T : struct;
+        public delegate void MessageHandlerEventArgs<T>(T arg);
 
-        /// <summary>
-        /// 存放侦听者的集合
-        /// </summary>
-        public Dictionary<Type, List<Delegate>> msgMap;
+        private Dictionary<Type, List<object>> globalMessageHandlers;
+        private Dictionary<Type, List<object>> localMessageHandlers;
+
+        public Monitor Monitor { get; private set; }
 
         protected internal override void OnModuleInit()
         {
             base.OnModuleInit();
-            msgMap = new Dictionary<Type, List<Delegate>>();
+            localMessageHandlers = new Dictionary<Type, List<object>>();
+            Monitor = new Monitor();
+            LoadAllMessageHandlers();
         }
 
-        /// <summary>
-        ///  注册 订阅  侦听，一个意思
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="msgType"></param>
-        /// <param name="Listener"></param>
-        public void Subscribe<T>(MessageEventArgs<T> Listener) where T : struct
+        protected internal override void OnModuleStop()
         {
-            Type t = typeof(T);
-            if (msgMap.TryGetValue(t, out var list)) //通过传过来的类型，找到管理委托的集合
+            base.OnModuleStop();
+            globalMessageHandlers = null;
+            localMessageHandlers = null;
+        }
+
+        private void LoadAllMessageHandlers()
+        {
+            globalMessageHandlers = new Dictionary<Type, List<object>>();
+            //Assembly assembly= Assembly.GetExecutingAssembly(); 
+            //Type[] arrtypes= Assembly.GetCallingAssembly().GetTypes();
+            foreach (var type in Assembly.GetCallingAssembly().GetTypes())
             {
-                if (!list.Contains(Listener)) //判断集合包含不包含这个委托
+                if (type.IsAbstract)
+                    continue;
+
+                MessageHandlerAttribute messageHandlerAttribute =
+                    type.GetCustomAttribute<MessageHandlerAttribute>(true);
+                if (messageHandlerAttribute != null)
                 {
-                    list.Add(Listener); //不包含向集合里添加委托
+                    IMessageHander messageHandler = Activator.CreateInstance(type) as IMessageHander;
+                    if (!globalMessageHandlers.ContainsKey(messageHandler.GetHandlerType()))
+                    {
+                        globalMessageHandlers.Add(messageHandler.GetHandlerType(), new List<object>());
+                    }
+
+                    globalMessageHandlers[messageHandler.GetHandlerType()].Add(messageHandler);
                 }
             }
-            else //在字典没有找到存委托的集合
-            {
-                List<Delegate> lst = new List<Delegate>(); //创建一个委托集合
-                lst.Add(Listener); //把委托添加到集合
-                msgMap.Add(t, lst); //再用字典添加委托集合
-            }
         }
 
         /// <summary>
-        /// 移除注册、订阅、侦听，一个意思
+        /// 订阅
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="msgType"></param>
-        /// <param name="Listener"></param>
-        public void UnSubscribe<T>(T msgType, MessageEventArgs<T> Listener) where T : struct
+        /// <param name="handler"></param>
+        public void Subscribe<T>(MessageHandlerEventArgs<T> handler)
         {
-            Type t = msgType.GetType();
-            if (msgMap.TryGetValue(t, out var list))
+            Type argType = typeof(T);
+            if (!localMessageHandlers.TryGetValue(argType, out var handlerList))
             {
-                if (list.Contains(Listener))
+                handlerList = new List<object>();
+                localMessageHandlers.Add(argType, handlerList);
+            }
+
+            handlerList.Add(handler);
+        }
+
+        /// <summary>
+        /// 取消订阅
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="handler"></param>
+        public void Unsubscribe<T>(MessageHandlerEventArgs<T> handler)
+        {
+            if (!localMessageHandlers.TryGetValue(typeof(T), out var handlerList))
+                return;
+
+            handlerList.Remove(handler);
+        }
+
+        public void Post<T>(T arg) where T : struct
+        {
+            if (globalMessageHandlers.TryGetValue(typeof(T), out List<object> globalHandlerList))
+            {
+                foreach (var handler in globalHandlerList)
                 {
-                    list.Remove(Listener);
+                    if (!(handler is MessageHandler<T> messageHandler))
+                        continue;
+
+                    { messageHandler.HandleMessage(arg);}
                 }
             }
-            else
-            {
-                Debug.LogWarning("消息ID{t.name}没有注册,无法移除");
-            }
-        }
 
-        /// <summary>
-        /// 移除某个消息的全部订阅者，侦听者
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="msgType"></param>
-        public void UnSubscribe<T>(T msgType) where T : struct //重载移除函数字典里的集合委托
-        {
-            Type t = msgType.GetType();
-            if (msgMap.TryGetValue(t, out var list))
+            if (localMessageHandlers.TryGetValue(typeof(T), out List<object> localHandlerList))
             {
-                list.Clear();
-                msgMap.Remove(t);
-            }
-            else
-            {
-                Debug.LogWarning("消息ID{t.name}没有注册,无法移除");
-            }
-        }
-
-        /// <summary>
-        /// 向订阅者消息派发
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="msgType"></param>
-        public void Post<T>(T msgType) where T : struct
-        {
-            Type t = msgType.GetType();
-            if (msgMap.TryGetValue(t, out var list))
-            {
-                foreach (MessageEventArgs<T> item in list)
+                List<object> list = new List<object>();
+                list.AddRangeNonAlloc(localHandlerList);
+                foreach (var handler in list)
                 {
-                    item?.Invoke(msgType);
+                    if (!(handler is MessageHandlerEventArgs<T> messageHandler))
+                        continue;
+
+                    { messageHandler(arg);}
                 }
-            }
-            else
-            {
-                Debug.LogError($"消息ID{t}没有注册，无法派发");
+
+                list = null; //TODO：这个地方发消息频繁的话就放到池子里
             }
         }
     }

@@ -10,19 +10,11 @@ public class AgeTipMediator : UIMediator<AgeTipView>
         HabbyFramework.Message.Subscribe<AgeTipConfig>(OnRefreshAgetip);
         
         view.btnSure.onClick.AddListener(Close);
-        
     }
 
     private void OnRefreshAgetip(AgeTipConfig arg)
     {
         SetMsg(arg.gameName, arg.details);
-    }
-    
-    protected override void OnShow(object arg)
-    {
-        base.OnShow(arg);
-        //UI不开bestfit就把这个打开
-        //view.StartCoroutine(TextDisaplayHelper.GetTextDisaplayHelper().RearrangingText(view.ContentText));
     }
 
     /// <summary>
@@ -34,5 +26,18 @@ public class AgeTipMediator : UIMediator<AgeTipView>
     {
         view.Tittle.text = string.Format("《{0}》适龄提示", gameName);
         view.ContentText.text = gameAgeRuleDesc;
+    }
+    
+    protected override void OnShow(object arg)
+    {
+        base.OnShow(arg);
+        //UI不开bestfit就把这个打开
+        //view.StartCoroutine(TextDisaplayHelper.GetTextDisaplayHelper().RearrangingText(view.ContentText));
+    }
+
+    protected override void OnHide()
+    {
+        base.OnHide();
+        HabbyFramework.Message.Unsubscribe<AgeTipConfig>(OnRefreshAgetip);
     }
 }

@@ -26,7 +26,7 @@ namespace Habby.CNUser
             AccountManager.OnUserLogout -= onUserLogout;
         }
 
-        private void onUserLogout(UserAccount account)
+        private void onUserLogout()
         {
             HLog.LogWarnFormat("--- onUserLogout try crash!");
 #if UNITY_EDITOR

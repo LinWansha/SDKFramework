@@ -185,23 +185,13 @@ namespace Habby.CNUser
 #if USE_ANTIADDICTION_TIME
                 timeManager.StopTimeCounter(CurrentAccount);
 #endif
-                if (removeUserAccount)
-                {
-                    ClearCurrent();
-                }
-                else
-                {
-                    Save();
-                }
+                (removeUserAccount ? (Action)ClearCurrent : Save)();
             }
 
             isLogin = false;
-            // RangerWarrper.Instance.Logout();
+            
             HLog.LogWarnFormat("--- Logout dispatch=" + dispatch);
-            if (dispatch)
-            {
-                OnUserLogout?.Invoke(CurrentAccount);
-            }
+            (dispatch ? OnUserLogout : OnShowLoginScene)?.Invoke();
         }
 
         public void ClearCurrent()

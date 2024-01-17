@@ -34,7 +34,7 @@ namespace Habby.CNUser
         public static event UserAction OnReadedUnderAgeTip;
 
         //用户登出
-        public static event UserAction OnUserLogout;
+        public static event Action OnUserLogout;
 
         //单次支付金额超过限制
         public static event UserAction OnExpenseOverRange;

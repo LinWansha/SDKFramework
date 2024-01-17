@@ -179,18 +179,20 @@ namespace Habby.CNUser
         public void Logout(bool dispatch = true, bool removeUserAccount = false)
         {
             HLog.LogFormat("UserAccountManager Logout, account={0}", CurrentAccount);
-            if (CurrentAccount == null) return;
-            CurrentAccount.LoginState = UserAccount.UserLoginState.Logout;
+            if (CurrentAccount != null)
+            {
+                CurrentAccount.LoginState = UserAccount.UserLoginState.Logout;
 #if USE_ANTIADDICTION_TIME
-            timeManager.StopTimeCounter(CurrentAccount);
+                timeManager.StopTimeCounter(CurrentAccount);
 #endif
-            if (removeUserAccount)
-            {
-                ClearCurrent();
-            }
-            else
-            {
-                Save();
+                if (removeUserAccount)
+                {
+                    ClearCurrent();
+                }
+                else
+                {
+                    Save();
+                }
             }
 
             isLogin = false;
@@ -279,19 +281,12 @@ namespace Habby.CNUser
 
         #region Event
 
-        public void FireCloseNoTimeLeft() => Logout();
-        public void FireTenMinutesLeftAndLogout() => Logout();
+        public void FireCloseNoTime() => Logout();
 
         public void FireCloseTenMinutesLeftAndContinueGame() =>
             OnCloseTenMinutesLeftAndContinueGame?.Invoke(); // 未成年点击弹出提示窗后才能进游戏
 
-        public void FireForbidenLogin() => Logout();
-
         public void FireCloseUnderAgePipPop() => OnReadedUnderAgeTip?.Invoke(CurrentAccount);
-
-        public void FireVisitorNoTimeLeft()
-        {
-        }
 
         public void FireCloseUnderAgeNotice() => OnCloseUnderAgeNotice?.Invoke();
         public void FireCloseNoGachaLeftForToday() => OnCloseNoGachaLeftForToday?.Invoke();

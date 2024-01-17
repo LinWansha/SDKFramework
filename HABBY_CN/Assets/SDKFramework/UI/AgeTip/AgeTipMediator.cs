@@ -22,7 +22,7 @@ public class AgeTipMediator : UIMediator<AgeTipView>
     {
         base.OnShow(arg);
         //UI不开bestfit就把这个打开
-        view.StartCoroutine(TextDisaplayHelper.GetTextDisaplayHelper().RearrangingText(view.ContentText));
+        //view.StartCoroutine(TextDisaplayHelper.GetTextDisaplayHelper().RearrangingText(view.ContentText));
     }
 
     /// <summary>

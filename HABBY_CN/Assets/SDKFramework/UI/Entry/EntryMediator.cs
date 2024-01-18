@@ -13,18 +13,20 @@ public class EntryMediator : UIMediator<EntryView>
     protected override void OnInit(EntryView view)
     {
         base.OnInit(view);
-        
-        string jsonStr = File.ReadAllText(HabbyFramework.Asset.SDKConfigPath + "AgeTipConfig.json");
-        _configData = JsonConvert.DeserializeObject<AgeTipConfig>(jsonStr);
-        
-        view.ageTip.GetComponent<Image>().sprite =
-            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)_configData.applicableRange);
-        
-        view.ageTip.onClick.AddListener(() =>
+
+        view.StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}AgeTipConfig.json", (jsonStr) =>
         {
-            HabbyFramework.UI.OpenUI(UIViewID.AgeTipUI);
-            HabbyFramework.Message.Post(_configData);
-        });
+            _configData = JsonConvert.DeserializeObject<AgeTipConfig>(jsonStr);
+
+            view.ageTip.GetComponent<Image>().sprite =
+                HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)_configData.applicableRange);
+
+            view.ageTip.onClick.AddListener(() =>
+            {
+                HabbyFramework.UI.OpenUI(UIViewID.AgeTipUI);
+                HabbyFramework.Message.Post(_configData);
+            });
+        }));
 
         view.btnEnter.onClick.AddListener(EnterGameOrLogin);
     }

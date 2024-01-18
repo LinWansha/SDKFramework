@@ -48,32 +48,51 @@ namespace SDKFramework.Config
         //         }
         //     }
         // }
-        public static IEnumerator DeserializeByFile()
+        public static IEnumerator DeserializeByFile(string path, System.Action<string> onComplete)
         {
-            string path = $"{Application.streamingAssetsPath}/SDKConfig/UIConfig.json";
-
             if (Application.platform == RuntimePlatform.Android)
             {
-                using (UnityEngine.Networking.UnityWebRequest request = UnityEngine.Networking.UnityWebRequest.Get(path))
-                {
-                    Debug.LogError("安卓平台通过UnityWebRequest加载配置");
-                    yield return request.SendWebRequest();
-                    if (!request.isNetworkError && !request.isHttpError)
-                    {
-                        ParseJson(request.downloadHandler.text);
-                    }
-                }
+                yield return DeserializeByWebRequest(path, onComplete);
             }
             else
             {
-                string json = File.ReadAllText(path);
-                ParseJson(json);
+                DeserializeByReadingLocalFile(path, onComplete);
+            }
+        }
+
+        private static IEnumerator DeserializeByWebRequest(string path, System.Action<string> onComplete)
+        {
+            using (UnityEngine.Networking.UnityWebRequest request = UnityEngine.Networking.UnityWebRequest.Get(path))
+            {
+                Debug.LogError("安卓平台通过UnityWebRequest加载配置");
+                yield return request.SendWebRequest();
+                if (!request.isNetworkError && !request.isHttpError)
+                {
+                    ProcessJsonData(request.downloadHandler.text, onComplete);
+                }
+            }
+        }
+
+        private static void DeserializeByReadingLocalFile(string path, System.Action<string> onComplete)
+        {
+            string json = File.ReadAllText(path);
+            ProcessJsonData(json, onComplete);
+        }
+
+        private static void ProcessJsonData(string jsonData, System.Action<string> onComplete)
+        {
+            if (onComplete != null)
+            {
+                onComplete(jsonData);
+            }
+            else
+            {
+                ParseJson(jsonData);
             }
         }
 
         private static void ParseJson(string json)
         {
-//            Debug.LogError(json);
             datas = new List<UIConfig>();
             indexMap = new Dictionary<int, int>();
             JArray array = JArray.Parse(json);

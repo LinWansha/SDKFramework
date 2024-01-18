@@ -8,23 +8,7 @@ namespace SDKFramework.Config
 {
     public partial struct UIConfig
     {
-        public static void DeserializeByAddressable(string directory)
-        {
-            // string path = $"{directory}/UIConfig.json";
-            // UnityEngine.TextAsset ta = Addressables.LoadAssetAsync<UnityEngine.TextAsset>(path).WaitForCompletion();
-            // string json = ta.text;
-            // datas = new List<UIConfig>();
-            // indexMap = new Dictionary<int, int>();
-            // JArray array = JArray.Parse(json);
-            // Count = array.Count;
-            // for (int i = 0; i < array.Count; i++)
-            // {
-            //     JObject dataObject = array[i] as JObject;
-            //     UIConfig data = (UIConfig)dataObject.ToObject(typeof(UIConfig));
-            //     datas.Add(data);
-            //     indexMap.Add(data.ID, i);
-            // }
-        }
+        #region File
 
         // public static void DeserializeByFile(string directory)
         // {
@@ -106,6 +90,32 @@ namespace SDKFramework.Config
             }
         }
 
+        #endregion
+        
+        #region Addressable
+
+        public static void DeserializeByAddressable(string directory)
+        {
+            // string path = $"{directory}/UIConfig.json";
+            // UnityEngine.TextAsset ta = Addressables.LoadAssetAsync<UnityEngine.TextAsset>(path).WaitForCompletion();
+            // string json = ta.text;
+            // datas = new List<UIConfig>();
+            // indexMap = new Dictionary<int, int>();
+            // JArray array = JArray.Parse(json);
+            // Count = array.Count;
+            // for (int i = 0; i < array.Count; i++)
+            // {
+            //     JObject dataObject = array[i] as JObject;
+            //     UIConfig data = (UIConfig)dataObject.ToObject(typeof(UIConfig));
+            //     datas.Add(data);
+            //     indexMap.Add(data.ID, i);
+            // }
+        }
+
+        #endregion
+
+        #region Bundle
+
         public static System.Collections.IEnumerator DeserializeByBundle(string directory, string subFolder)
         {
             string bundleName = $"{subFolder}/UIConfig.bytes".ToLower();
@@ -142,6 +152,8 @@ namespace SDKFramework.Config
                 indexMap.Add(data.ID, i);
             }
         }
+
+        #endregion
 
         public static int Count;
         private static List<UIConfig> datas;

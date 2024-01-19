@@ -34,7 +34,7 @@ namespace SDKFramework.Config
         // }
         public static IEnumerator DeserializeByFile(string path, System.Action<string> onComplete)
         {
-            if (Application.platform == RuntimePlatform.Android)
+            if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.WebGLPlayer)
             {
                 yield return DeserializeByWebRequest(path, onComplete);
             }
@@ -91,7 +91,7 @@ namespace SDKFramework.Config
         }
 
         #endregion
-        
+
         #region Addressable
 
         public static void DeserializeByAddressable(string directory)

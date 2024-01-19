@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Habby.CNUser;
+#if UNITY_EDITOR
+#endif
 using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class TestSDKRoot : MonoBehaviour
 {
@@ -14,7 +12,7 @@ public class TestSDKRoot : MonoBehaviour
         // HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
 
     }
-
+#if UNITY_EDITOR
     [MenuItem("SDKFramework/Output Persistent Data Folder")] 
     public static void OpenPersistentDataFolder()
     {
@@ -22,4 +20,6 @@ public class TestSDKRoot : MonoBehaviour
         HLog.Log("CNUser 账号文件目录: " + persistentDataPath,Color.cyan);
         
     }
+#endif
+
 }

@@ -13,7 +13,7 @@ namespace SDKFramework.Editor
     /// 目前存在问题：如果用的是Rider，IDE无法识别新生成的脚本，需要重启Rider
     /// TODO：扩展，UI属性写入配置表
     /// </summary>
-    public class Genertor_Mediator_Window : EditorWindow
+    public class Genertor_Mediator : EditorWindow
     {
         private string viewName = "";
         private GUIStyle headerStyle;
@@ -22,7 +22,7 @@ namespace SDKFramework.Editor
         [MenuItem("SDKFramework/Generator ViewMediator")]
         public static void ShowWindow()
         {
-            var window = GetWindow<Genertor_Mediator_Window>(Tittle);
+            var window = GetWindow<Genertor_Mediator>(Tittle);
             window.maxSize = new Vector2(300, 150);
             window.minSize = window.maxSize;
         }

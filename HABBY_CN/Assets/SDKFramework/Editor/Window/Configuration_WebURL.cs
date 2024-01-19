@@ -4,7 +4,7 @@ namespace SDKFramework.Editor
     using UnityEngine;
     using System.IO;
 
-    public class Configuration_WebURL_Window : EditorWindow
+    public class Configuration_WebURL : EditorWindow
     {
         private string gameLicenseUrl = "";
         private string privacyUrl = "";
@@ -20,7 +20,7 @@ namespace SDKFramework.Editor
         [MenuItem("SDKFramework/Configuration WebURL")]
         public static void ShowWindow()
         {
-            var window =   GetWindow<Configuration_WebURL_Window>(Tittle);
+            var window =   GetWindow<Configuration_WebURL>(Tittle);
             window.maxSize = new Vector2(600, 250);
             window.minSize = window.maxSize;
         }

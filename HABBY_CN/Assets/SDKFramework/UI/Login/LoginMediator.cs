@@ -19,7 +19,7 @@ public class LoginMediator : UIMediator<LoginView>
         if (InputFully(view.userIdInput.text, view.passwordInput.text))
         {
             
-            Debug.Log("点击注册");
+            HLog.Log("点击注册");
             //TODO:注册账号
             
         }
@@ -33,7 +33,6 @@ public class LoginMediator : UIMediator<LoginView>
     {
         if (InputFully(view.userIdInput.text, view.passwordInput.text))
         {
-            Debug.Log("点击登录");
             AccountManager.Instance.LoginOrIdentify(new UserAccount()
             {
                 UID = view.userIdInput.text,

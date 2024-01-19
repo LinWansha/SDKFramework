@@ -36,11 +36,6 @@ public class RealNameMediator : UIMediator<RealNameView>
     }
     
 
-    private void onNameError()
-    {
-        setNotice(wrongName);
-    }
-
     private void setNotice(string text)
     {
         view.notice.gameObject.SetActive(true);

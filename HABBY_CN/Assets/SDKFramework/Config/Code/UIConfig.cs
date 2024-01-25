@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -178,7 +179,7 @@ namespace SDKFramework.Config
         {
             return datas[index];
         }
-
+        [JsonIgnore]
         public bool IsNull { get; private set; }
         public static UIConfig Null { get; } = new UIConfig() { IsNull = true };
         public System.Int32 ID { get; set; }

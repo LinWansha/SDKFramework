@@ -1,29 +1,32 @@
 namespace SDKFramework.Editor
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
+    using System.Collections.Generic;
     using UnityEditor;
     using UnityEngine;
+    using Newtonsoft.Json;
+    using Config;
 
     /// <summary>
     /// 作者：mrq
     /// 时间：2024/1/3
     /// 功能：自动生成具体中介者和具体同事类脚本
-    /// 目前存在问题：如果用的是Rider，IDE无法识别新生成的脚本，需要重启Rider
-    /// TODO：扩展，UI属性写入配置表
     /// </summary>
     public class Genertor_Mediator : EditorWindow
     {
         private string viewName = "";
+        private string prefabPath = "";
+        private GameObject UIPrefab;
+        private UIMode UILayer = UIMode.Normal;
         private GUIStyle headerStyle;
         private const string Tittle = "ViewMediator Script Generator";
-        
+
         [MenuItem("SDKFramework/Generator ViewMediator")]
         public static void ShowWindow()
         {
             var window = GetWindow<Genertor_Mediator>(Tittle);
-            window.maxSize = new Vector2(300, 150);
+            window.maxSize = new Vector2(400, 250);
             window.minSize = window.maxSize;
         }
 
@@ -49,14 +52,36 @@ namespace SDKFramework.Editor
 
             GUILayout.BeginVertical(GUILayout.MaxWidth(250));
 
-            GUILayout.Label("Enter mediator script name");
-            viewName = EditorGUILayout.TextField(viewName, GUILayout.MinWidth(200), GUILayout.MinHeight(40));
+            GUILayout.Label("Drag in the prefab to instantiate a UI object\n(拖一个UI预制体进来)");
+            // 能够接受拖放进入的对象
+            UIPrefab = (GameObject)EditorGUILayout.ObjectField(UIPrefab, typeof(GameObject), false,
+                GUILayout.MinWidth(200), GUILayout.MinHeight(40));
+            GUILayout.Space(10);
+
+            GUILayout.Label("Configure UI hierarchy(配置UI层级):");
+            // 使用EnumPopup创建下拉菜单
+            UILayer = (UIMode)EditorGUILayout.EnumPopup(UILayer);
+            GUILayout.Space(10);
+
+            if (UIPrefab != null)
+            {
+                viewName = UIPrefab.name.Substring(0, UIPrefab.name.Length - 2);
+                prefabPath = AssetDatabase.GetAssetPath(UIPrefab);
+                GUILayout.Label($"View Name: {viewName}");
+            }
 
             EditorGUILayout.Space();
 
-            if (GUILayout.Button("Generate Scripts", GUILayout.MinWidth(200)))
+            if (GUILayout.Button("Generate Scripts", GUILayout.MinWidth(180), GUILayout.MinHeight(30)))
             {
-                GenerateMediator();
+                if (!string.IsNullOrEmpty(viewName))
+                {
+                    GenerateMediator();
+                }
+                else
+                {
+                    Debug.LogError("请先拖入UI预制 再生成脚本！！");
+                }
             }
 
             GUILayout.EndVertical();
@@ -76,7 +101,20 @@ namespace SDKFramework.Editor
             if (!string.IsNullOrEmpty(path))
             {
                 //先添加UIViewID
-                AddEnumItemToUIViewID($"{viewName}UI");
+                AddEnumItemToUIViewID($"{viewName}UI", (viewId) =>
+                {
+                    UIConfig viewInfo = new UIConfig();
+                    viewInfo.ID = viewId;
+                    viewInfo.Description = viewName;
+                    viewInfo.Asset = prefabPath;
+                    viewInfo.Mode = UILayer;
+                    string jsonStr = File.ReadAllText("Assets/StreamingAssets/SDKConfig/UIConfig.json");
+                    List<UIConfig> infolist = JsonConvert.DeserializeObject<List<UIConfig>>(jsonStr);
+                    infolist.Add(viewInfo);
+
+                    File.WriteAllText("Assets/StreamingAssets/SDKConfig/UIConfig.json",
+                        JsonConvert.SerializeObject(infolist, Formatting.Indented));
+                });
                 //生成脚本写入文件时 继承抽象中介者或抽象同事
                 string viewScript =
                     $"using SDKFramework.UI;\n\n[UIView(typeof({viewName}Mediator), UIViewID.{viewName}UI)]\npublic class " +
@@ -95,7 +133,7 @@ namespace SDKFramework.Editor
             }
         }
 
-        private void AddEnumItemToUIViewID(string newItem)
+        private void AddEnumItemToUIViewID(string newItem, Action<int> callback)
         {
             // Replace this with the path to your UIViewID.cs file
             string path = Application.dataPath + "/SDKFramework/Framework/UI/UIViewID.cs";
@@ -139,6 +177,7 @@ namespace SDKFramework.Editor
             string newContent = string.Join("\n", updatedLines);
 
             File.WriteAllText(path, newContent);
+            callback?.Invoke(lastEnumIntValue + 1);
         }
     }
 }

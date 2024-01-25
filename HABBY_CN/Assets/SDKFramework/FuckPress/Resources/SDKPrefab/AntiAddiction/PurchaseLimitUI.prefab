@@ -113,8 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ebdab7309a50be44b7131e31673b8f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  residueLimit: {fileID: 0}
-  detail: {fileID: 0}
+  residueLimit: {fileID: 3698737285241151359}
+  detail: {fileID: 3698737285241151359}
   btnSure: {fileID: 3214465236505838033}
 --- !u!1 &3749969586691152990
 GameObject:

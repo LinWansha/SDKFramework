@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Habby.CNUser;
 using SDKFramework.UI;
 
@@ -8,64 +9,42 @@ public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
         base.OnInit(view);
         view.btnSure.onClick.AddListener(Close);
     }
-    
-    public void SetRemainMsg(string str)
-    {
-        view.residueLimit.text = str;
-    }
+
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        var account= arg as UserAccount;
-        if (account!=null)
+        
+        UserAccount account = AccountManager.Instance.CurrentAccount;
+        if (account.AgeRange == UserAccount.AgeLevel.Adult)
         {
-            switch (account.AgeRange)
-            {
-                case UserAccount.AgeLevel.Unknown:
-                case UserAccount.AgeLevel.Under8:
-                    //OpenOncePurchaseNoticeWithoutRemain(account);
-                    break;
-                case UserAccount.AgeLevel.Under16:
-                case UserAccount.AgeLevel.Under18:
-                    //OpenOncePurchaseNoticeWithRemain(account);
-                    break;
-                default:
-                    return;
-            }
+            Close();
+            return;
         }
+        LimitType type = (LimitType)arg;
+        SetPurchaseLimitNotice(account, type);
     }
-    // public void OpenMonthlyPurchaseNotice(UserAccount account)
-    // {
-    //     switch (account.AgeRange) {
-    //         case UserAccount.AgeLevel.Under16:
-    //             purchaseLimitPopup.SetMsg(ErrPopupType.Usually, AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder16);
-    //             purchaseLimitPopup.SetRemainMsg(string.Format(AntiAddictionDisaplayText.MonthRemain, (PurchaseChecker.MonthlyAmountLimit_U16- account.IAP.Monthly)));
-    //
-    //             break;
-    //         case UserAccount.AgeLevel.Under18:
-    //             purchaseLimitPopup.SetMsg(ErrPopupType.Usually, AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder18);
-    //             purchaseLimitPopup.SetRemainMsg(string.Format(AntiAddictionDisaplayText.MonthRemain, (PurchaseChecker.MonthlyAmountLimit_U18 - account.IAP.Monthly)));
-    //
-    //             break;
-    //         default:
-    //             return;
-    //     }
-    // }
-    
-    
-    // public void OpenOncePurchaseNoticeWithoutRemain(UserAccount account)
-    // {
-    //
-    //     switch (account.AgeRange) {
-    //         case UserAccount.AgeLevel.Unknown:
-    //             errorMsgPopup.SetMsg(ErrPopupType.Usually, AntiAddictionDisaplayText.PurchaseNotice_NotLogin);
-    //             break;
-    //         case UserAccount.AgeLevel.Under8:
-    //             errorMsgPopup.SetMsg(ErrPopupType.Usually, AntiAddictionDisaplayText.PurchaseNotice_SpendUnder8);
-    //             break;
-    //         default:
-    //             return;
-    //     }
-    //
-    // }
+
+    private void SetPurchaseLimitNotice(UserAccount account, LimitType type)
+    {
+        var messageMap = new Dictionary<(UserAccount.AgeLevel, LimitType), string>
+        {
+            { (UserAccount.AgeLevel.Unknown, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder16 },
+            { (UserAccount.AgeLevel.Under8, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder16 },
+            { (UserAccount.AgeLevel.Unknown, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder16 },
+            { (UserAccount.AgeLevel.Under8, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder16 },
+
+            { (UserAccount.AgeLevel.Under16, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder18 },
+            { (UserAccount.AgeLevel.Under18, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder18 },
+            { (UserAccount.AgeLevel.Under16, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder18 },
+            { (UserAccount.AgeLevel.Under18, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder18 }
+        };
+
+        view.detail.text = messageMap[(UserAccount.AgeLevel.Under18, type)];
+    }
+}
+
+public enum LimitType : byte
+{
+    Single,
+    Monthly
 }

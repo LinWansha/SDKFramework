@@ -5,6 +5,7 @@ namespace SDKFramework.Config
         public bool IsNull { get; private set; }
         public static AgeTipConfig Null { get; } = new AgeTipConfig() { IsNull = true };
         
+        public bool hasLicense;
         public string gameName;
         public ApplicableRange applicableRange;
         public string details;

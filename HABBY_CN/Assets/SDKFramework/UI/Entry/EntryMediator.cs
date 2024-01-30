@@ -14,7 +14,7 @@ public class EntryMediator : UIMediator<EntryView>
     {
         base.OnInit(view);
 
-        view.StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}AgeTipConfig.json", (jsonStr) =>
+        view.StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}App.json", (jsonStr) =>
         {
             _configData = JsonConvert.DeserializeObject<AgeTipConfig>(jsonStr);
 

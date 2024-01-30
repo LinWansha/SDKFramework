@@ -5,7 +5,7 @@ namespace SDKFramework.Editor
     using UnityEditor;
     using UnityEngine;
 
-    public class Configuration_AgeTip : EditorWindow
+    public class Configuration_App : EditorWindow
     {
         private string configFilePath = "Assets/StreamingAssets/SDKConfig/App.json";
         private AgeTipConfig _ageTipConfig;
@@ -17,7 +17,7 @@ namespace SDKFramework.Editor
         [MenuItem("SDKFramework/Configuration Application")]
         private static void ShowWindow()
         {
-            var window = GetWindow<Configuration_AgeTip>(Tittle);
+            var window = GetWindow<Configuration_App>(Tittle);
             window.maxSize = new Vector2(1600, 800);
             window.minSize = window.maxSize;
         }

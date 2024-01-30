@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000050"
+    android:orientation="vertical"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginBottom="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="200dp"
+        android:alpha="1"
+        android:background="@drawable/radius_4_bg_cccccc"
+        android:orientation="vertical"
+        android:outlineAmbientShadowColor="@android:color/holo_blue_bright"
+        android:outlineSpotShadowColor="@android:color/holo_red_dark"
+        android:paddingTop="5dp"
+        android:visibility="visible">
+
+             <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:alpha="1"
+            android:contentDescription="@android:string/cut"
+            android:src="@drawable/img"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="1"
+                android:background="@drawable/grayshape">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#A39A9A"
+                    android:visibility="invisible">
+
+                </FrameLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="用户协议与隐私政策"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textviewDes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="40dp"
+                android:gravity="start"
+                android:text="@string/common_des"
+                android:textColorLink="#607AFF"
+                android:textSize="9sp"
+                android:textStyle="normal" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/refuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:background="@drawable/button_frame_shape"
+                android:text="拒绝"
+                android:textColor="#FF0000" />
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/button_red"
+                android:textColor="#FFFFFF"
+                android:text="确定" />
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

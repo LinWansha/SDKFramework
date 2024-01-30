@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000050"
+    android:orientation="vertical"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:alpha="0.4"
+        android:background="#100F0F"
+        android:padding="0dp"
+        android:visibility="invisible">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="346dp"
+        android:layout_marginBottom="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="200dp"
+        android:alpha="1"
+        android:background="@drawable/radius_4_bg_cccccc"
+        android:orientation="vertical"
+        android:outlineAmbientShadowColor="@android:color/holo_blue_bright"
+        android:outlineSpotShadowColor="@android:color/holo_red_dark"
+        android:paddingTop="5dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:alpha="1"
+            android:contentDescription="@android:string/cut"
+            android:src="@drawable/img"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="1"
+                android:background="@drawable/grayshape">
+
+            </FrameLayout>
+
+            <ListView
+                android:id="@+id/permissionList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:alpha="1"
+                android:divider="@null"
+                android:padding="10dp"
+                android:visibility="visible">
+
+            </ListView>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="权限申请说明"
+                android:textStyle="bold" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+       
+             <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+<!-- 
+                <Button
+                    android:id="@+id/cancle"
+                    style="@android:style/Widget.Button"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/button_red"
+                    android:text="取消"
+                    android:textColor="#FFFFFF" /> -->
+
+                <Button
+                android:id="@+id/entrue"
+                style="@android:style/Widget.Button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_red"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="确定"
+                android:textColor="#FFFFFF" />
+            </FrameLayout> 
+        </FrameLayout>
+    </LinearLayout>
+
+</FrameLayout>

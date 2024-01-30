@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#ffffff" /><!-- 填充的颜色 -->
+    <!-- 设置按钮的四个角为弧形 -->
+    <!-- android:radius 弧形的半径 -->
+    <corners android:topLeftRadius="155dp"
+        android:topRightRadius="155dp"
+        android:bottomRightRadius="155dp"
+        android:bottomLeftRadius="155dp"/>
+    <!-- 边框粗细及颜色 -->
+    <stroke android:width="2dp" android:color="#FF0000" />
+</shape>

@@ -1,4 +1,4 @@
-
+using Habby.CNUser;
 using UnityEngine;
 
 public class SDKExample : MonoBehaviour

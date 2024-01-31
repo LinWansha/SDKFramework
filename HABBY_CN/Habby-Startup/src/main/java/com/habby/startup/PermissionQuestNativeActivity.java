@@ -86,9 +86,6 @@ public class PermissionQuestNativeActivity extends Activity implements OnPermiss
         data.add("11、读写手机外置存储信息 ：腾讯开放平台SDK保存和读取游戏信息，保存游戏截图等");
         data.add("12、获取WiFi_SSID ：广告，移动分析sdk获取网络状态。");
         data.add("13、自启动或关联启动 ：广告sdk权限，当点击广告时触发启动或者关联启动。");
-//        data.add("3、安装应用权限：点击广告可以直接安装您想要的应用。");
-//        data.add("4、安装应用权限：点击广告可以直接安装您想要的应用。");
-//        data.add("5、安装应用权限：点击广告可以直接安装您想要的应用。");
 
         // 通过ArrayAdapter将数组中的数据传给ListView
         ListAdapter adapter = new ListAdapter(this, R.layout.item,data);

@@ -20,22 +20,13 @@ import org.json.JSONObject;
 import com.habby.startup.utils.JsonUtil;
 import com.habby.startup.utils.ReflectionUtil;
 
-public class GameStartNativeUIActivty  extends Activity implements OnStartResult {
+public class GameStartNativeUIActivty  extends Activity {
 
     private String TAG="GameStartNativeUIActivty";
     private Button btnOk;
     private Button btnRefuse;
     private Context _content;
-    @Override
-    public void onRefuse() {
-        finish();
-    }
 
-    @Override
-    public void onOk() {
-        SharedPrefsUtil.SaveAgreePrivacy(true,_content);
-        toPermission();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

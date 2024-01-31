@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using SDKFramework.Config;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,14 +29,35 @@ public class StartupPanelController : MonoBehaviour
         set { isNewUser = value; }
     }
 
+    private AppConfig _appdata;
+
+    private void Awake()
+    {
+        StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}App.json", (jsonStr) =>
+        {
+            _appdata = JsonUtility.FromJson<AppConfig>(jsonStr);
+
+            if (_appdata.hasLicense)
+            {
+                HabbyFramework.UI.OpenUI(UIViewID.EntryUI,_appdata);
+                panel.SetActive(false);
+            }
+            else
+            {
+                foreach (var VARIABLE in texts)
+                {
+                    VARIABLE.gameObject.SetActive(true);
+                }
+                StartCoroutine(DisplayStartupPanel());
+            }
+            
+        }));
+    }
+
     private void Start()
     {
-        // foreach (var VARIABLE in texts)
-        // {
-        //     VARIABLE.gameObject.SetActive(true);
-        // }
 
-        StartCoroutine(DisplayStartupPanel());
+        
     }
 
     private IEnumerator DisplayStartupPanel()
@@ -75,7 +98,7 @@ public class StartupPanelController : MonoBehaviour
 
         // Deactivate panel
         panel.SetActive(false);
-        HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+        HabbyFramework.UI.OpenUI(UIViewID.EntryUI,_appdata);
         if (isNewUser == true)
         {
             PlayerPrefs.SetInt("IntroVideo", 1);

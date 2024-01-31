@@ -8,9 +8,9 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
     private Vector2 _startPos = Vector2.zero;
     private Coroutine _animationCoroutine;
 
-    protected override void OnInit(LoginSuccessView view)
+    protected override void OnInit()
     {
-        base.OnInit(view);
+        base.OnInit();
         _startPos = view.root.anchoredPosition;
     }
 
@@ -20,7 +20,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
         ShowAnimation();
     }
 
-    public void ShowAnimation(UserAccount account=null)
+    public void ShowAnimation(UserAccount account = null)
     {
         if (account == null)
         {
@@ -130,6 +130,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
             CoroutineScheduler.Instance.StopCoroutine(_animationCoroutine);
             _animationCoroutine = null;
         }
+
         view.root.anchoredPosition = new Vector2(_startPos.x, _startPos.y);
     }
 }

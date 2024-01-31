@@ -28,7 +28,7 @@ namespace SDKFramework.UI
         protected internal override void OnModuleInit()
         {
             base.OnModuleInit();
-            StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}UIConfig.json",null));
+            StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}UIConfig.json"));
         }
 
         protected internal override void OnModuleStop()

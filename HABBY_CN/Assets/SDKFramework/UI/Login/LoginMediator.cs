@@ -4,16 +4,33 @@ using UnityEngine;
 
 public class LoginMediator : UIMediator<LoginView>
 {
-    protected override void OnInit(LoginView view)
-    {
-        base.OnInit(view);
-        view.userIdInput.onValueChanged.AddListener((field) => { });
 
-        view.passwordInput.onValueChanged.AddListener((field) => { });
-        view.btnRegister.onClick.AddListener(Register);
+    protected override void OnShow(object arg)
+    {
+        base.OnShow(arg);
+
+        AccountManager.OnUserNotExists += onUserNotExists;
+        AccountManager.OnFailedToCreateUser += faileToCreateUser;
+        AccountManager.OnLoginResponseSuccess += onUserExists;
         view.btnLogin.onClick.AddListener(Login);
+        view.btnRegister.onClick.AddListener(Register);
+        view.userIdInput.onValueChanged.AddListener((field) => { });
+        view.passwordInput.onValueChanged.AddListener((field) => { });
     }
 
+    protected override void OnHide()
+    {
+        AccountManager.OnUserNotExists -= onUserNotExists;
+        AccountManager.OnFailedToCreateUser -= faileToCreateUser;
+        AccountManager.OnLoginResponseSuccess -= onUserExists;
+        view.btnLogin.onClick.RemoveListener(Login);
+        view.btnRegister.onClick.RemoveListener(Register);
+        view.userIdInput.onValueChanged.RemoveListener((field) => { });
+        view.passwordInput.onValueChanged.RemoveListener((field) => { });
+        
+        base.OnHide();
+    }
+    
     private void Register()
     {
         if (InputFully(view.userIdInput.text, view.passwordInput.text))
@@ -56,22 +73,6 @@ public class LoginMediator : UIMediator<LoginView>
         }
 
         return false;
-    }
-
-    protected override void OnShow(object arg)
-    {
-        base.OnShow(arg);
-        AccountManager.OnUserNotExists += onUserNotExists;
-        AccountManager.OnFailedToCreateUser += faileToCreateUser;
-        AccountManager.OnLoginResponseSuccess += onUserExists;
-    }
-
-    protected override void OnHide()
-    {
-        base.OnHide();
-        AccountManager.OnUserNotExists += onUserNotExists;
-        AccountManager.OnFailedToCreateUser += faileToCreateUser;
-        AccountManager.OnLoginResponseSuccess += onUserExists;
     }
     
     private void onUserNotExists()

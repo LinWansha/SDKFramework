@@ -1,4 +1,3 @@
-using System;
 using SDKFramework.Config;
 using UnityEngine;
 
@@ -28,10 +27,10 @@ namespace SDKFramework.UI
         {
             base.InitMediator(v);
             view = v as T;
-            OnInit(v as T);
+            OnInit();
         }
 
-        protected virtual void OnInit(T view) { }
+        protected virtual void OnInit() { }
     }
 
     public abstract class UIMediator

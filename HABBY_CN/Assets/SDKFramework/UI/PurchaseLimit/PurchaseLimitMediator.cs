@@ -4,16 +4,12 @@ using SDKFramework.UI;
 
 public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
 {
-    protected override void OnInit(PurchaseLimitView view)
-    {
-        base.OnInit(view);
-        view.btnSure.onClick.AddListener(Close);
-    }
 
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        
+        view.btnSure.onClick.AddListener(Close);
+
         UserAccount account = AccountManager.Instance.CurrentAccount;
         if (account.AgeRange == UserAccount.AgeLevel.Adult)
         {
@@ -40,6 +36,12 @@ public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
         };
 
         view.detail.text = messageMap[(UserAccount.AgeLevel.Under18, type)];
+    }
+    
+    protected override void OnHide()
+    {
+        view.btnSure.onClick.RemoveListener(Close);
+        base.OnHide();
     }
 }
 

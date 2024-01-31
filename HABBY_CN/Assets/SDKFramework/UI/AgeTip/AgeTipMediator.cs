@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class AgeTipMediator : UIMediator<AgeTipView>
 {
-    protected override void OnInit(AgeTipView view)
+    protected override void OnShow(object arg)
     {
-        base.OnInit(view);
+        base.OnShow(arg);
+
+        view.btnSure.onClick.AddListener(Close);
         HabbyFramework.Message.Subscribe<AppConfig>(OnRefreshAgetip);
         
-        view.btnSure.onClick.AddListener(Close);
+        //UI不开bestfit就把这个打开
+        //view.StartCoroutine(TextDisaplayHelper.GetTextDisaplayHelper().RearrangingText(view.ContentText));
     }
 
     private void OnRefreshAgetip(AppConfig arg)
@@ -28,16 +31,11 @@ public class AgeTipMediator : UIMediator<AgeTipView>
         view.ContentText.text = gameAgeRuleDesc;
     }
     
-    protected override void OnShow(object arg)
-    {
-        base.OnShow(arg);
-        //UI不开bestfit就把这个打开
-        //view.StartCoroutine(TextDisaplayHelper.GetTextDisaplayHelper().RearrangingText(view.ContentText));
-    }
 
     protected override void OnHide()
     {
-        base.OnHide();
+        view.btnSure.onClick.RemoveListener(Close); 
         HabbyFramework.Message.Unsubscribe<AppConfig>(OnRefreshAgetip);
+        base.OnHide();
     }
 }

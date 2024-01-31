@@ -33,7 +33,12 @@ namespace SDKFramework.Config
         //         }
         //     }
         // }
-        public static IEnumerator DeserializeByFile(string path, System.Action<string> onComplete)
+        
+        /// <summary>
+        /// 功能：所有平台读取流媒体资文件的公共接口
+        /// 因为要开携程调用，所以读S目录除外的其他文件文件尽量别用
+        /// </summary>
+        public static IEnumerator DeserializeByFile(string path, System.Action<string> onComplete=null)
         {
             if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.WebGLPlayer)
             {
@@ -45,11 +50,11 @@ namespace SDKFramework.Config
             }
         }
 
-        private static IEnumerator DeserializeByWebRequest(string path, System.Action<string> onComplete)
+        private static IEnumerator DeserializeByWebRequest(string path, System.Action<string> onComplete=null)
         {
             using (UnityEngine.Networking.UnityWebRequest request = UnityEngine.Networking.UnityWebRequest.Get(path))
             {
-                Debug.LogError("安卓平台通过UnityWebRequest加载配置");
+                Debug.Log("安卓平台通过UnityWebRequest加载配置");
                 yield return request.SendWebRequest();
                 if (!request.isNetworkError && !request.isHttpError)
                 {
@@ -58,13 +63,13 @@ namespace SDKFramework.Config
             }
         }
 
-        private static void DeserializeByReadingLocalFile(string path, System.Action<string> onComplete)
+        private static void DeserializeByReadingLocalFile(string path, System.Action<string> onComplete=null)
         {
             string json = File.ReadAllText(path);
             ProcessJsonData(json, onComplete);
         }
 
-        private static void ProcessJsonData(string jsonData, System.Action<string> onComplete)
+        private static void ProcessJsonData(string jsonData, System.Action<string> onComplete=null)
         {
             if (onComplete != null)
             {

@@ -8,7 +8,7 @@ namespace SDKFramework.Editor
     public class Configuration_App : EditorWindow
     {
         private string configFilePath = "Assets/StreamingAssets/SDKConfig/App.json";
-        private AgeTipConfig _ageTipConfig;
+        private AppConfig _ageTipConfig;
 
         private Vector2 _scrollPosition;
         private GUIStyle headerStyle;
@@ -48,7 +48,7 @@ namespace SDKFramework.Editor
             _ageTipConfig.gameName = EditorGUILayout.TextField("Game Name", _ageTipConfig.gameName);
             EditorGUILayout.Space();
             _ageTipConfig.applicableRange =
-                (AgeTipConfig.ApplicableRange)EditorGUILayout.EnumPopup("Applicable Range",
+                (AppConfig.ApplicableRange)EditorGUILayout.EnumPopup("Applicable Range",
                     _ageTipConfig.applicableRange);
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("游戏介绍（适龄提示内容）：");
@@ -83,16 +83,16 @@ namespace SDKFramework.Editor
             GUILayout.EndHorizontal();
             EditorGUILayout.EndScrollView();
         }
-        private AgeTipConfig LoadConfiguration()
+        private AppConfig LoadConfiguration()
         {
             if (!File.Exists(configFilePath))
             {
                 Debug.LogWarning("Configuration file not found! Please ensure the file exists at: " + configFilePath);
-                return new AgeTipConfig(); // 返回默认对象
+                return new AppConfig(); // 返回默认对象
             }
 
             string json = File.ReadAllText(configFilePath);
-            return JsonUtility.FromJson<AgeTipConfig>(json);
+            return JsonUtility.FromJson<AppConfig>(json);
         }
 
         private void SaveConfiguration()

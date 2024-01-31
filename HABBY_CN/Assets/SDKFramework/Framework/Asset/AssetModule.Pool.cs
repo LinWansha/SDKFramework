@@ -6,7 +6,7 @@ namespace SDKFramework.Asset
     public partial class AssetModule : BaseModule
     {
         private readonly GameObjectPool<GameObjectAsset> gameObjectPool = new GameObjectPool<GameObjectAsset>();
-        public readonly string SDKConfigPath = Application.streamingAssetsPath + "/SDKConfig/";
+        public readonly string SDKConfigPath = $"{Application.streamingAssetsPath}/SDKConfig/";
         public GameObject LoadGameObject(string path, Action<GameObject> createNewCallback = null)
         {
             //UnityLog.Info($"Load GameObject:{path}");

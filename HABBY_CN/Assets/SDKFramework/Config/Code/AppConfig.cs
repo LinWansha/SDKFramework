@@ -1,9 +1,9 @@
 namespace SDKFramework.Config
 {
-    public struct AgeTipConfig
+    public struct AppConfig
     {
         public bool IsNull { get; private set; }
-        public static AgeTipConfig Null { get; } = new AgeTipConfig() { IsNull = true };
+        public static AppConfig Null { get; } = new AppConfig() { IsNull = true };
         
         public bool hasLicense;
         public string gameName;

@@ -7,12 +7,12 @@ public class AgeTipMediator : UIMediator<AgeTipView>
     protected override void OnInit(AgeTipView view)
     {
         base.OnInit(view);
-        HabbyFramework.Message.Subscribe<AgeTipConfig>(OnRefreshAgetip);
+        HabbyFramework.Message.Subscribe<AppConfig>(OnRefreshAgetip);
         
         view.btnSure.onClick.AddListener(Close);
     }
 
-    private void OnRefreshAgetip(AgeTipConfig arg)
+    private void OnRefreshAgetip(AppConfig arg)
     {
         SetMsg(arg.gameName, arg.details);
     }
@@ -38,6 +38,6 @@ public class AgeTipMediator : UIMediator<AgeTipView>
     protected override void OnHide()
     {
         base.OnHide();
-        HabbyFramework.Message.Unsubscribe<AgeTipConfig>(OnRefreshAgetip);
+        HabbyFramework.Message.Unsubscribe<AppConfig>(OnRefreshAgetip);
     }
 }

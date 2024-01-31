@@ -8,7 +8,7 @@ using SDKFramework.Config;
 
 public class EntryMediator : UIMediator<EntryView>
 {
-    private AgeTipConfig _configData;
+    private AppConfig _configData;
 
     protected override void OnInit(EntryView view)
     {
@@ -16,7 +16,7 @@ public class EntryMediator : UIMediator<EntryView>
 
         view.StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}App.json", (jsonStr) =>
         {
-            _configData = JsonConvert.DeserializeObject<AgeTipConfig>(jsonStr);
+            _configData = JsonConvert.DeserializeObject<AppConfig>(jsonStr);
 
             view.ageTip.GetComponent<Image>().sprite =
                 HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)_configData.applicableRange);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using SDKFramework.Config;
 using UnityEngine;
@@ -21,8 +20,8 @@ public class StartupPanelController : MonoBehaviour
     [SerializeField] private float fadeOutDuration = 1f;
 
     [SerializeField] private float panelDisplayTime = 5f;
+    
     private static bool? isNewUser;
-
     public static bool? IsNewUser
     {
         get => isNewUser;
@@ -52,12 +51,6 @@ public class StartupPanelController : MonoBehaviour
             }
             
         }));
-    }
-
-    private void Start()
-    {
-
-        
     }
 
     private IEnumerator DisplayStartupPanel()

@@ -25,27 +25,8 @@ public class HabbyFramework : MonoBehaviour
     public static MessageModule Message => ModuleDriver.Instance.GetModule<MessageModule>();
     
 
-    //[Module(2)]
-    //public static ProcedureModule Procedure { get => ModuleDriver.Instance.GetModule<ProcedureModule>(); }
-    // [Module(4)]
-    // public static TimeModule Time { get => ModuleDriver.Instance.GetModule<TimeModule>(); }
-    // [Module(5)]
-    // public static AudioModule Audio { get => ModuleDriver.Instance.GetModule<AudioModule>(); }
-    // [Module(6)]
-    // public static MessageModule Message { get => ModuleDriver.Instance.GetModule<MessageModule>(); }
-    // [Module(7)]
-    // public static ECSModule ECS { get => ModuleDriver.Instance.GetModule<ECSModule>(); }
-    // [Module(8)]
-    // public static NetModule Net { get => ModuleDriver.Instance.GetModule<NetModule>(); }
-    // [Module(98)]
-    // public static SaveModule Save { get => ModuleDriver.Instance.GetModule<SaveModule>(); }
-    // [Module(99)]
-    // public static ScheduleModule Schedule { get => ModuleDriver.Instance.GetModule<ScheduleModule>(); }
-    // [Module(100)]
-    // public static TutorialModule Tutorial { get => ModuleDriver.Instance.GetModule<TutorialModule>(); }
     private bool activing;
-
-    public bool networkRun;
+    
 
     private void Awake()
     {
@@ -63,7 +44,6 @@ public class HabbyFramework : MonoBehaviour
         ModuleDriver.Initialize();
         StartupModules();
         ModuleDriver.Instance.InitModules();
-        ///网络初始化
     }
 
     private void Start()
@@ -74,11 +54,6 @@ public class HabbyFramework : MonoBehaviour
     private void Update()
     {
         ModuleDriver.Instance.Update();
-
-        if (this.networkRun)
-        {
-            //如果是长连就在这里轮询网络消息队列
-        }
     }
 
     private void LateUpdate()

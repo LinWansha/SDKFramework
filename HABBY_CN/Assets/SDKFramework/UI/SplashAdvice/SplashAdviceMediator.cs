@@ -1,4 +1,3 @@
-using System.Collections;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,52 +10,96 @@ public class SplashAdviceMediator : UIMediator<SplashAdviceView>
 
     internal float panelDisplayTime = 5f;
 
-    protected override void OnShow(object arg)
+    private enum State : byte
     {
-        base.OnShow(arg);
-
-        view.StartCoroutine(DisplayStartupPanel());
+        FadeIn,
+        Wait,
+        FadeOut,
+        None
     }
 
-    private IEnumerator DisplayStartupPanel()
+    private struct PanelAnimationData
     {
-        // Fade in texts
-        float timer = 0f;
-        while (timer < fadeInDuration)
+        public State state;
+        public float timer;
+
+        public PanelAnimationData(State state, float timer)
         {
-            timer += Time.deltaTime;
-
-            foreach (Text text in view.texts)
-            {
-                var tempColor = text.color;
-                tempColor.a = SmoothStep(0, 1, timer / fadeInDuration);
-                text.color = tempColor;
-            }
-
-            yield return null;
+            this.state = state;
+            this.timer = timer;
         }
+    }
 
-        // Wait for display time
-        yield return new WaitForSeconds(panelDisplayTime - fadeInDuration - fadeOutDuration);
+    private PanelAnimationData panelData;
 
-        timer = 0f;
-        while (timer < fadeOutDuration)
+    protected override void OnInit()
+    {
+        base.OnInit();
+        panelData = new PanelAnimationData(State.FadeIn, 0f);
+    }
+
+    protected override void OnUpdate(float deltaTime)
+    {
+        base.OnUpdate(deltaTime);
+        switch (panelData.state)
         {
-            timer += Time.deltaTime;
+            case State.FadeIn:
+                panelData.timer += deltaTime;
 
-            foreach (Text text in view.texts)
-            {
-                var tempColor = text.color;
-                tempColor.a = SmoothStep(1, 0, timer / fadeOutDuration);
-                text.color = tempColor;
-            }
+                if (panelData.timer >= fadeInDuration)
+                {
+                    panelData.timer = 0f;
+                    panelData.state = State.Wait;
+                }
+                else
+                {
+                    UpdateTextsAlpha(SmoothStep(0, 1, panelData.timer / fadeInDuration));
+                }
 
-            yield return null;
+                break;
+
+            case State.Wait:
+                panelData.timer += deltaTime;
+
+                if (panelData.timer >= (panelDisplayTime - fadeInDuration - fadeOutDuration))
+                {
+                    panelData.timer = 0f;
+                    panelData.state = State.FadeOut;
+                }
+
+                break;
+
+            case State.FadeOut:
+                panelData.timer += deltaTime;
+
+                if (panelData.timer >= fadeOutDuration)
+                {
+                    panelData.state = State.None;
+                    Close();
+                    HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+                }
+                else
+                {
+                    UpdateTextsAlpha(SmoothStep(1, 0, panelData.timer / fadeOutDuration));
+                }
+
+                break;
+
+            case State.None:
+            default:
+                // No action needed
+                break;
         }
+    }
 
-        // Deactivate panel
-        Close();
-        HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+    private void UpdateTextsAlpha(float alpha)
+    {
+        foreach (Text text in view.texts)
+        {
+            var tempColor = text.color;
+            tempColor.a = alpha;
+            text.color = tempColor;
+        }
     }
 
     private float SmoothStep(float start, float end, float t)

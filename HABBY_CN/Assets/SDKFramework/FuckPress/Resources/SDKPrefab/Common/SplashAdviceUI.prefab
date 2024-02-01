@@ -327,9 +327,9 @@ GameObject:
   - component: {fileID: 516836300401539247}
   - component: {fileID: 516836300401539245}
   - component: {fileID: 516836300401539246}
-  - component: {fileID: -538153747549371377}
   - component: {fileID: 4862724868143780333}
   - component: {fileID: -9212963785580517733}
+  - component: {fileID: -538153747549371377}
   m_Layer: 5
   m_Name: SplashAdviceUI
   m_TagString: Untagged
@@ -405,25 +405,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &-538153747549371377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516836300401539240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4a65a93ab0b43c4d8070bfe277fb25c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 516836300401539240}
-  texts:
-  - {fileID: 516836300431024220}
-  - {fileID: 516836299444137400}
-  - {fileID: 516836299728640037}
-  - {fileID: 516836299532914106}
-  - {fileID: 516836300137410345}
 --- !u!222 &4862724868143780333
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -462,6 +443,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-538153747549371377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516836300401539240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4a65a93ab0b43c4d8070bfe277fb25c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texts:
+  - {fileID: 516836300431024220}
+  - {fileID: 516836299444137400}
+  - {fileID: 516836299728640037}
+  - {fileID: 516836299532914106}
+  - {fileID: 516836300137410345}
 --- !u!1 &516836300431024222
 GameObject:
   m_ObjectHideFlags: 0

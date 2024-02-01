@@ -41,18 +41,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
         float height = Screen.height - safe.height;
         float frigeHeigh = 0;
 
-        //*** if (SDKHubUtils.IsIOS)
-        // {
-        //     if (topPixel > 0)
-        //     {
-        //         frigeHeigh = topPixel * transform.localScale.y;
-        //     }
-        // }
-        // else
-        // {
-        //     frigeHeigh = 55;
-        // }
-        //
+
         var targetPositionY = _startPos.y - view.root.rect.height - frigeHeigh;
         _animationCoroutine = CoroutineScheduler.Instance.StartCoroutine(AnimateLoginTip(1f, targetPositionY));
     }
@@ -131,6 +120,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
             _animationCoroutine = null;
         }
 
+        Close();
         view.root.anchoredPosition = new Vector2(_startPos.x, _startPos.y);
     }
 }

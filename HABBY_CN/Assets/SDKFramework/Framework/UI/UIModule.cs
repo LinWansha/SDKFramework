@@ -73,9 +73,9 @@ namespace SDKFramework.UI
         {
             base.OnModuleUpdate(deltaTime);
             uiObjectPool.UpdateLoadRequests();
-            foreach (var mediator in usingMediators)
+            for (int i = 0; i < usingMediators.Count; i++)
             {
-                mediator.Update(deltaTime);
+                usingMediators[i].Update(deltaTime);
             }
 
             UpdateMask(deltaTime);

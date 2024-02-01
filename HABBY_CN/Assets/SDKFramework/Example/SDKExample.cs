@@ -6,7 +6,7 @@ public class SDKExample : MonoBehaviour
 {
     private AppConfig _appdata;
 
-    void Start()
+    void Awake()
     {
         // AccountManager.Instance.ClearCurrent();
 

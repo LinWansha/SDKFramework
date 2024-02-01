@@ -56,7 +56,9 @@ namespace SDKFramework.Config
             {
                 Debug.Log("安卓平台通过UnityWebRequest加载配置");
                 yield return request.SendWebRequest();
+#pragma warning disable 0618
                 if (!request.isNetworkError && !request.isHttpError)
+#pragma warning restore 0618
                 {
                     ProcessJsonData(request.downloadHandler.text, onComplete);
                 }

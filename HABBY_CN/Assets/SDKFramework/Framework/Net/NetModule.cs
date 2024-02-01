@@ -125,8 +125,9 @@ namespace SDKFramework.Net
             Debug.Log("=== habby status code "+request.responseCode);
 #endif
 
-
+#pragma warning disable 0618
             if (request.isHttpError || request.isNetworkError || !request.isDone)
+#pragma warning restore 0618
             {
                 Debug.Log("=== habby UnityWebRequestPosCN  network error");
                 callback?.Invoke(false,string.Empty);

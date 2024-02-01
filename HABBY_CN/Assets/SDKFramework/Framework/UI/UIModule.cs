@@ -395,7 +395,7 @@ namespace SDKFramework.UI
         }
 
         private float destMaskAlpha = 0;
-        private float maskDuration = 0;
+        private float maskDuration = 1;
 
         private void UpdateMask(float deltaTime)
         {

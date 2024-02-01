@@ -136,6 +136,17 @@ namespace SDKFramework.Asset
                         //     OnGameObjectLoaded(asset);
                         //     request.LoadFinish(asset);
                         // };
+                        Resources.LoadAsync<GameObject>(request.Path).Completed((obj) =>
+                        {
+                            GameObject go = UnityEngine.Object.Instantiate(obj);
+                            T asset = go.AddComponent<T>();
+                            request.CreateNewCallback?.Invoke(go);
+                            asset.ID = hash;
+                            go.SetActive(false);
+                            
+                            OnGameObjectLoaded(asset);
+                            request.LoadFinish(asset);
+                        });
                     }
                     else
                     {

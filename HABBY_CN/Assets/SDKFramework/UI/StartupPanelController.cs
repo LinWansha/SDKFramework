@@ -43,10 +43,6 @@ public class StartupPanelController : MonoBehaviour
             }
             else
             {
-                foreach (var VARIABLE in texts)
-                {
-                    VARIABLE.gameObject.SetActive(true);
-                }
                 StartCoroutine(DisplayStartupPanel());
             }
             

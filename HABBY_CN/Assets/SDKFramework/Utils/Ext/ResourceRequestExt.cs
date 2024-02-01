@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Object = UnityEngine.Object;
 
 /// <summary>
 /// 项目中没有Addressable情况下，
@@ -32,13 +31,13 @@ public static class ResourceRequestExt
         }
 
         // 异步加载完成时执行的回调函数
-        IEnumerator LoadAssetAsync(ResourceRequest request)
+        IEnumerator LoadAssetAsync(ResourceRequest req)
         {
-            yield return request;
-            if (callbacks.ContainsKey(request))
+            yield return req;
+            if (callbacks.ContainsKey(req))
             {
-                callbacks[request](request.asset as GameObject);
-                callbacks.Remove(request);
+                callbacks[req](req.asset as GameObject);
+                callbacks.Remove(req);
             }
         }
 

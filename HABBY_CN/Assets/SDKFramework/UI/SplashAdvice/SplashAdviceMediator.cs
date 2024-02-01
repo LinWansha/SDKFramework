@@ -2,7 +2,7 @@ using System.Collections;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
-//为了尽可能更早的展示健康游戏忠告，不再从UI管理中打开此面板，目前已经从UI管理中弃用
+
 public class SplashAdviceMediator : UIMediator<SplashAdviceView>
 {
     internal float fadeInDuration = 1f;
@@ -14,11 +14,7 @@ public class SplashAdviceMediator : UIMediator<SplashAdviceView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        
-        foreach (var VARIABLE in view.texts)
-        {
-            VARIABLE.gameObject.SetActive(true);
-        }
+
         view.StartCoroutine(DisplayStartupPanel());
     }
 

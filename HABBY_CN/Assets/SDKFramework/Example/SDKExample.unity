@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 205735}
-  - component: {fileID: 205736}
   - component: {fileID: 205737}
+  - component: {fileID: 205736}
   m_Layer: 0
   m_Name: SDK
   m_TagString: Untagged
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 137598000}
   - component: {fileID: 137598002}
   - component: {fileID: 137598001}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 949398683}
   - component: {fileID: 949398682}
   - component: {fileID: 949398681}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UIMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -749,7 +749,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

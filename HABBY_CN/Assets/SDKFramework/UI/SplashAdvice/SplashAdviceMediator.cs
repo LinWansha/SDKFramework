@@ -55,7 +55,7 @@ public class SplashAdviceMediator : UIMediator<SplashAdviceView>
         }
 
         // Deactivate panel
-        view.panel.SetActive(false);
+        Close();
         HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
     }
 

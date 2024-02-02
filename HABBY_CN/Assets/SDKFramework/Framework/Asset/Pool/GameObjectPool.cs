@@ -25,7 +25,6 @@ namespace SDKFramework.Asset
                 T asset = go.AddComponent<T>();
                 createNewCallback?.Invoke(go);
                 asset.ID = hash;
-                //go.SetActive(false);//---xxx
                 q.Enqueue(asset);
             }
 
@@ -42,7 +41,7 @@ namespace SDKFramework.Asset
             requests.Add(request);
         }
         /// <summary>
-        /// 卸载(SetActive(false))对象池中所有对象
+        /// 卸载(Destroy)对象池中所有对象
         /// </summary>
         public void UnloadAllGameObjects()
         {
@@ -94,7 +93,7 @@ namespace SDKFramework.Asset
             T asset = go.GetComponent<T>();
             if (asset == null)
             {
-              //  UnityLog.Warn($"Unload GameObject失败，找不到GameObjectAsset:{go.name}");
+                Debug.LogError($"Unload GameObject失败，找不到GameObjectAsset:{go.name}");
                 UnityEngine.Object.Destroy(go);
                 return;
             }

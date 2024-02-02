@@ -120,7 +120,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
             _animationCoroutine = null;
         }
 
-        Close();
         view.root.anchoredPosition = new Vector2(_startPos.x, _startPos.y);
+        Close();
     }
 }

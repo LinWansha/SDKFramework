@@ -142,7 +142,6 @@ namespace SDKFramework.Asset
                             T asset = go.AddComponent<T>();
                             request.CreateNewCallback?.Invoke(go);
                             asset.ID = hash;
-                            go.SetActive(false);
                             
                             OnGameObjectLoaded(asset);
                             request.LoadFinish(asset);
@@ -162,6 +161,7 @@ namespace SDKFramework.Asset
 
         private void OnGameObjectLoaded(T asset)
         {
+            asset.gameObject.SetActive(true);
             asset.transform.SetParent(ModuleDriver.Instance.GetModule<AssetModule>().usingObjectRoot);
             int id = asset.gameObject.GetInstanceID();
             usingObjects.Add(id, asset.gameObject);

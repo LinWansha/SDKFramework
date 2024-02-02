@@ -331,7 +331,6 @@ namespace SDKFramework.UI
             mediator.SortingOrder = sortingOrder;
             canvas.sortingOrder = sortingOrder;
 
-            uiObject.SetActive(true);
             mediator.Show(uiObject, obj);
             return mediator;
         }

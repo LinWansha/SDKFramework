@@ -1,9 +1,9 @@
+using SDKFramework.Config;
+using UnityEditor;
+using UnityEngine;
+using System.IO;
 namespace SDKFramework.Editor
 {
-    using UnityEditor;
-    using UnityEngine;
-    using System.IO;
-
     public class Configuration_WebURL : EditorWindow
     {
         private string gameLicenseUrl = "";
@@ -64,7 +64,7 @@ namespace SDKFramework.Editor
             if (File.Exists(configFilePath))
             {
                 string jsonContent = File.ReadAllText(configFilePath);
-                var configData = JsonUtility.FromJson<ConfigData>(jsonContent);
+                var configData = JsonUtility.FromJson<WebConfig>(jsonContent);
 
                 gameLicenseUrl = configData.gameLicenseUrl;
                 privacyUrl = configData.privacyUrl;
@@ -80,7 +80,7 @@ namespace SDKFramework.Editor
 
         private void SaveLinks()
         {
-            var configData = new ConfigData
+            var configData = new WebConfig
             {
                 gameLicenseUrl = gameLicenseUrl,
                 privacyUrl = privacyUrl,
@@ -95,12 +95,4 @@ namespace SDKFramework.Editor
         }
     }
 
-    [System.Serializable]
-    public class ConfigData
-    {
-        public string gameLicenseUrl;
-        public string privacyUrl;
-        public string childrenProtUrl;
-        public string thirdPartySharingUrl;
-    }
 }

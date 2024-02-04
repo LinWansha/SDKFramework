@@ -1,5 +1,6 @@
 namespace SDKFramework.Config
 {
+    [System.Serializable]
     public struct AppConfig
     {
         public bool IsNull { get; private set; }

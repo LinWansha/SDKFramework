@@ -147,7 +147,7 @@ public class HabbyFramework : MonoBehaviour
 #if!UNITY_EDITOR
         if (type == LogType.Exception)
         {
-            HLog.LogError($"{condition}\n{stackTrace}");
+            HLogger.LogError($"{condition}\n{stackTrace}");
         }
 #endif
     }

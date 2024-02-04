@@ -36,7 +36,7 @@ public class LoginMediator : UIMediator<LoginView>
         if (InputFully(view.userIdInput.text, view.passwordInput.text))
         {
             
-            HLog.Log("点击注册");
+            HLogger.Log("点击注册");
             //TODO:注册账号
             
         }

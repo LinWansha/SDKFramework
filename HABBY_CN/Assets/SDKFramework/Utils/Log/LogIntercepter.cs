@@ -36,7 +36,7 @@ public class LogIntercepter
     private static readonly Regex LogRegex = new Regex(@" \(at (.+)\:(\d+)\)\r?\n");
 
     //Log类所在的脚本名称，用来比较调用信息，判断log信息是否由自定义Log类打印
-    private static readonly string KeyCs = "xHLog.cs";
+    private static readonly string KeyCs = "xHLogger.cs";
 
 
     [OnOpenAsset(0)]

@@ -121,7 +121,7 @@ namespace Habby.CNUser
         public void Reload()
         {
             CurrentAccount = FileSaveLoad.LoadAccount();
-            HLog.LogFormat("UserAccoutManager Reload data UID={0} IAP={1}, IAP={2}", CurrentAccount?.UID,
+            HLogger.LogFormat("UserAccoutManager Reload data UID={0} IAP={1}, IAP={2}", CurrentAccount?.UID,
                 CurrentAccount?.IAP, CurrentAccount?.Online);
             _update_count = 0;
         }
@@ -138,7 +138,7 @@ namespace Habby.CNUser
 
         public void SaveAccountInfo(UserAccount account)
         {
-            HLog.LogFormat("UserAccoutManager SaveAccountInfo account={0}, age={1}", account?.AccessToken,
+            HLogger.LogFormat("UserAccoutManager SaveAccountInfo account={0}, age={1}", account?.AccessToken,
                 account?.AgeRange);
             account.LoginState = UserAccount.UserLoginState.Logout;
             CurrentAccount = account;
@@ -147,7 +147,7 @@ namespace Habby.CNUser
 
         public void ClearAccountInfo()
         {
-            HLog.LogFormat("UserAccoutManager ClearAccountInfo account={0}, age={1}", CurrentAccount?.AccessToken,
+            HLogger.LogFormat("UserAccoutManager ClearAccountInfo account={0}, age={1}", CurrentAccount?.AccessToken,
                 CurrentAccount?.AgeRange);
             if (CurrentAccount != null) timeManager.StopTimeCounter(CurrentAccount);
             CurrentAccount = null;
@@ -155,7 +155,7 @@ namespace Habby.CNUser
 
         public void Login(UserAccount account)
         {
-            HLog.Log(string.Format("--- UserAccoutManager Login account={0}, age={1}", account?.AccessToken,
+            HLogger.Log(string.Format("--- UserAccoutManager Login account={0}, age={1}", account?.AccessToken,
                 account?.AgeRange));
             account.LoginState = UserAccount.UserLoginState.Logedin;
             account.SaveLoginTime();
@@ -178,7 +178,7 @@ namespace Habby.CNUser
 
         public void Logout(bool dispatch = true, bool removeUserAccount = false)
         {
-            HLog.LogFormat("UserAccountManager Logout, account={0}", CurrentAccount);
+            HLogger.LogFormat("UserAccountManager Logout, account={0}", CurrentAccount);
             if (CurrentAccount != null)
             {
                 CurrentAccount.LoginState = UserAccount.UserLoginState.Logout;
@@ -190,7 +190,7 @@ namespace Habby.CNUser
 
             isLogin = false;
             
-            HLog.LogWarnFormat("--- Logout dispatch=" + dispatch);
+            HLogger.LogWarnFormat("--- Logout dispatch=" + dispatch);
             (dispatch ? OnUserLogout : OnShowLoginScene)?.Invoke();
         }
 
@@ -244,16 +244,16 @@ namespace Habby.CNUser
         public bool CanPurchase(double amount) => PurchaseChecker.CanPurchase(CurrentAccount, amount);
         public void Purchase(int amount)
         {
-            HLog.LogWarnFormat("--- Purchase add amount=" + amount + ",nowMonth=" + CurrentAccount.IAP.Monthly);
+            HLogger.LogWarnFormat("--- Purchase add amount=" + amount + ",nowMonth=" + CurrentAccount.IAP.Monthly);
             CurrentAccount.AddIap(amount);
-            HLog.LogWarnFormat("--- Purchase add amount complete! nowMonth=" + CurrentAccount.IAP.Monthly);
+            HLogger.LogWarnFormat("--- Purchase add amount complete! nowMonth=" + CurrentAccount.IAP.Monthly);
         }
 #endif
 
 #if USE_ANTIADDICTION_TIME
         public bool IsRestrictedTime(UserAccount account)
         {
-            HLog.LogFormat("ShouldForbidLogin age={0}, time={1}", account?.AgeRange,
+            HLogger.LogFormat("ShouldForbidLogin age={0}, time={1}", account?.AgeRange,
                 account.Online != null ? account.Online.Today / 60 : 0);
             if (account == null) return true;
             return timeManager.IsBadTime(account);
@@ -261,7 +261,7 @@ namespace Habby.CNUser
 
         public bool HasTimeLeft(UserAccount account)
         {
-            HLog.LogFormat("HasTimeLeft age={0}, time={1}", account?.AgeRange,
+            HLogger.LogFormat("HasTimeLeft age={0}, time={1}", account?.AgeRange,
                 account.Online != null ? account.Online.Today / 60 : 0);
             if (account == null) return true;
             return timeManager.HasTimeLeft(account);

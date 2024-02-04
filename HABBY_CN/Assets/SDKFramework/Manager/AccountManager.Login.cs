@@ -8,7 +8,7 @@ namespace Habby.CNUser
     {
         public void onClearUserCache()
         {
-            HLog.LogWarning("--- onClearUserCache");
+            HLogger.LogWarning("--- onClearUserCache");
             AccountHistory.DeleteHistory();
             ClearCurrent();
         }
@@ -28,7 +28,7 @@ namespace Habby.CNUser
 
         private void onUserLogout()
         {
-            HLog.LogWarnFormat("--- onUserLogout try crash!");
+            HLogger.LogWarnFormat("--- onUserLogout try crash!");
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -39,7 +39,7 @@ namespace Habby.CNUser
 
         public void onUserLogin(UserAccount account)
         {
-            HLog.Log("onUserLogin登录成功");
+            HLogger.Log("onUserLogin登录成功");
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
         }
@@ -47,12 +47,12 @@ namespace Habby.CNUser
 
         void Start()
         {
-            HLog.Log("--- LoginManager Start");
+            HLogger.Log("--- LoginManager Start");
         }
 
         public void ShowLoginScene()
         {
-            HLog.Log("showLoginScene");
+            HLogger.Log("showLoginScene");
             if (OnShowLoginScene != null) OnShowLoginScene();
         }
 
@@ -61,7 +61,7 @@ namespace Habby.CNUser
             if (HasAccount)
             {
                 UserAccount account = CurrentAccount;
-                HLog.LogFormat("LoginManager checkUser token={0}, state={1}", account.AccessToken, account.LoginState);
+                HLogger.LogFormat("LoginManager checkUser token={0}, state={1}", account.AccessToken, account.LoginState);
                 switch (account.LoginState)
                 {
                     case UserAccount.UserLoginState.Logout:
@@ -71,7 +71,7 @@ namespace Habby.CNUser
             }
             else
             {
-                HLog.Log("LoginManager checkUser has no account info");
+                HLogger.Log("LoginManager checkUser has no account info");
                 ShowLoginScene();
             }
         }
@@ -126,7 +126,7 @@ namespace Habby.CNUser
             // TGAManager.Instance.track_cn_verify_result("SUBMIT","SUCCESS",0,$"name={account.RealName},id={account.IdCard}");
             // HabbyUserClient.Instance.ValidateIdentity(account, (response) => {
             //     HabbyAntiAddictionPopupManager.Instance.CloseIndicator();
-            //     HLog.LogFormat("ValidateIdentity code={0}", response.code);
+            //     HLogger.LogFormat("ValidateIdentity code={0}", response.code);
             //     if  (IdentityResponse.CODE_SUCCESS == response.code )
             //     {
             //         account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
@@ -168,14 +168,14 @@ namespace Habby.CNUser
 
         private void onLoginNetworkError(string error)
         {
-            HLog.LogFormat("Login failed network error {0}", error);
+            HLogger.LogFormat("Login failed network error {0}", error);
             HabbyFramework.UI.CloseUI(UIViewID.LatencyTimeUI);
         }
 
 
         public void LoginOrIdentify(UserAccount account)
         {
-            HLog.LogFormat("LoginOrIdentify token={0}, channel={1}, age={2}", account.AccessToken, account.LoginChannel,
+            HLogger.LogFormat("LoginOrIdentify token={0}, channel={1}, age={2}", account.AccessToken, account.LoginChannel,
                 account.AgeRange);
             // 不允许匿名登陆
             if (string.IsNullOrEmpty(account.LoginChannel))
@@ -221,7 +221,7 @@ namespace Habby.CNUser
 
         private void OnApplicationFocus(bool hasFocus)
         {
-            HLog.Log("LoginManager OnApplicationFocus");
+            HLogger.Log("LoginManager OnApplicationFocus");
         }
     }
 }

@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 /// 并且后续如果出问题可以直接开启 ENABLE_DEBUG 看日志
 /// 有其余扩展需求后续加入
 /// </summary>
-public class HLog
+public class HLogger
 {
     [Conditional("ENABLE_DEBUG")]
     public static void Log(string context ,Color color)

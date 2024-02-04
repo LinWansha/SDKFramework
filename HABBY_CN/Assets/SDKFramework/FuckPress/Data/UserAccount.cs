@@ -206,7 +206,7 @@ namespace Habby.CNUser
         // {
         //     get
         //     {
-        //         HLog.LogWarnFormat("--- IsExpired isExpire: ExpireAt" + ExpireAt + " nowTick=" +  TimerHelper.GetNowTime().Ticks );
+        //         HLogger.LogWarnFormat("--- IsExpired isExpire: ExpireAt" + ExpireAt + " nowTick=" +  TimerHelper.GetNowTime().Ticks );
         //         if (ExpireAt > 0)
         //         {
         //             return TimerHelper.GetNowTime().Ticks >= ExpireAt;

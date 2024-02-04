@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SDKFramework
 {
@@ -35,7 +36,7 @@ namespace SDKFramework
             Type moduleType = module.GetType();
             if (m_modules.ContainsKey(moduleType))
             {
-                HLog.Log($"Module添加失败，重复:{moduleType.Name}");
+                Debug.Log($"Module添加失败，重复:{moduleType.Name}");
                 return;
             }
             m_modules.Add(moduleType, module);

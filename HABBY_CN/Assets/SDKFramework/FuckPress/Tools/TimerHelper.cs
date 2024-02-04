@@ -135,7 +135,7 @@ public class TimerHelper
             }
             catch (Exception e)
             {
-                HLog.LogError(e);
+                HLogger.LogError(e);
             }
         }
 

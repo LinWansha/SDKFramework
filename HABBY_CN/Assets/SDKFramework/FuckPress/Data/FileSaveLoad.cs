@@ -38,7 +38,7 @@ namespace Habby.CNUser
             catch (Exception e)
             {
                 //TrackAdapter.Instance.trace_account_list_result("save","FAIL");
-                HLog.LogError(e);
+                HLogger.LogError(e);
                 DeleteHistory();
             }
         }
@@ -62,7 +62,7 @@ namespace Habby.CNUser
                 }
                 catch (Exception e)
                 {
-                    HLog.LogError(e);
+                    HLogger.LogError(e);
                     //TrackAdapter.Instance.trace_account_list_result("load","FAIL");
                 }
             }
@@ -112,7 +112,7 @@ namespace Habby.CNUser
                 {
                     Delete(kUserAccount);
                     DeleteHistory();
-                    HLog.LogError(e);
+                    HLogger.LogError(e);
 
                     //TrackAdapter.Instance.trace_account_result("load","FAIL");
                 }

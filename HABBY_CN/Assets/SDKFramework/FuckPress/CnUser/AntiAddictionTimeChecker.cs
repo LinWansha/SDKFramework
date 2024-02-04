@@ -73,7 +73,7 @@ namespace Habby.CNUser
         {
             if (!_ticking) return TimeRegulation.None;
             if (account == null) return TimeRegulation.Exit;
-            HLog.LogFormat("AntiAddictionTimeChecker CheckOnlineTime age={0} time={1}", account.AgeRange,
+            HLogger.LogFormat("AntiAddictionTimeChecker CheckOnlineTime age={0} time={1}", account.AgeRange,
                 Time.realtimeSinceStartup);
             // 用户没有登陆
             if (_last_time == 0 || account.Online == null) return TimeRegulation.None;
@@ -93,7 +93,7 @@ namespace Habby.CNUser
                 seconds = 0;
             }
 
-            HLog.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today, account.Online.Total);
+            HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today, account.Online.Total);
             int remain;
             switch (account.AgeRange)
             {

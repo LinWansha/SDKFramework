@@ -36,7 +36,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
             {
                 if (Debug.isDebugBuild)
                 {
-                    HLog.Log("[Singleton] " + typeof(T) +
+                    HLogger.Log("[Singleton] " + typeof(T) +
                                " already destroyed on application quit." +
                                " Won't create again - returning null.");
                 }
@@ -55,7 +55,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
                     {
                         if (Debug.isDebugBuild)
                         {
-                            HLog.Log("[Singleton] " + typeof(T).Name + " should never be more than 1 in scene!");
+                            HLogger.Log("[Singleton] " + typeof(T).Name + " should never be more than 1 in scene!");
                         }
 
                         return _instance;

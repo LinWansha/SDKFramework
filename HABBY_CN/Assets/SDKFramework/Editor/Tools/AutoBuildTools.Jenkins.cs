@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using UnityEngine;
 using UnityEditor;
 
@@ -11,5 +12,20 @@ public class BuildUnityProject
     {
         BuildPipeline.BuildPlayer(Scenes, EXPORT_FOLDER, BuildTarget.Android,
             BuildOptions.AcceptExternalModificationsToPlayer);
+    }
+    
+    [MenuItem("SDKFramework/Open PersistentDataPath")]
+    public static void OpenDirectory()
+    {
+        string directoryPath = Application.persistentDataPath;
+        
+        try
+        {
+            Process.Start(directoryPath);
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError("Error opening directory: " + ex.Message);
+        }
     }
 }

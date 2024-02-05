@@ -11,7 +11,7 @@ namespace SDKFramework.Network
             StartCoroutine(PostRequest(url, json, callback, timeOut));
         }
 
-        public void ReceiveRequest(string url, string json, Action<bool, string> callback, int timeOut = 0)
+        public void ReceiveRequest(string url, Action<bool, string> callback, int timeOut = 0)
         {
             StartCoroutine(GetRequest(url, callback, timeOut));
         }

@@ -4,7 +4,7 @@ using System.Reflection;
 using SDKFramework;
 using SDKFramework.Asset;
 using SDKFramework.Message;
-using SDKFramework.Net;
+using SDKFramework.Network;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -19,7 +19,7 @@ public class HabbyFramework : MonoBehaviour
     public static UIModule UI => ModuleDriver.Instance.GetModule<UIModule>();
 
     [Module(3)] 
-    public static NetModule Net => ModuleDriver.Instance.GetModule<NetModule>();
+    public static NetworkModule Network => ModuleDriver.Instance.GetModule<NetworkModule>();
 
     [Module(4)] 
     public static MessageModule Message => ModuleDriver.Instance.GetModule<MessageModule>();

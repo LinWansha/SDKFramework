@@ -3,10 +3,10 @@ using SDKFramework.UI;
 
 public class RealNameMediator : UIMediator<RealNameView>
 {
-    public const string wrongName = "您输入的姓名有误,请重新输入";
-    public const string wrongId = "您输入的身份证号码有误,请重新输入";
+    public const string WrongName = "您输入的姓名有误,请重新输入";
+    public const string WrongId = "您输入的身份证号码有误,请重新输入";
 
-    private UserAccount m_Account;
+    private UserAccount _account;
 
     protected override void OnShow(object arg)
     {
@@ -16,16 +16,16 @@ public class RealNameMediator : UIMediator<RealNameView>
         view.idInput.onEndEdit.AddListener(OnEditEnd);
         AccountManager.OnIdentityFailed += onError;
         AccountManager.OnIdentitySuccess += onSuccess;
-        m_Account=arg as UserAccount;
-        if (m_Account == null)
+        _account=arg as UserAccount;
+        if (_account == null)
         {
             Close();
             AccountManager.Instance.CheckUser();
         }
         else
         {
-            view.nameInput.text = m_Account.RealName;
-            view.idInput.text = m_Account.IdCard;
+            view.nameInput.text = _account.RealName;
+            view.idInput.text = _account.IdCard;
         }
     }
     protected override void OnHide()
@@ -46,7 +46,7 @@ public class RealNameMediator : UIMediator<RealNameView>
     {
         if (!LocalIdentityUtil.IsChineseName(view.nameInput.text))
         {
-            view.notice.text = wrongName;
+            view.notice.text = WrongName;
             view.notice.gameObject.SetActive(true);
             //TrackAdapter.Instance.track_cn_verify_result("SUBMIT","LOCALFAILED",0,"inout name empty or too long");
             return;
@@ -54,20 +54,20 @@ public class RealNameMediator : UIMediator<RealNameView>
 
         if (string.IsNullOrEmpty(view.idInput.text)||view.idInput.text.Length != 15 && view.idInput.text.Length != 18)
         {
-            view.notice.text = wrongId;
+            view.notice.text = WrongId;
             view.notice.gameObject.SetActive(true);
             //TrackAdapter.Instance.track_cn_verify_result("SUBMIT","LOCALFAILED",0,"inout id is too short,length less than 15");
             return;
         }
 
-        if (m_Account == null)
+        if (_account == null)
         {
             AccountManager.Instance.CheckUser();
             //TrackAdapter.Instance.track_cn_verify_result("SUBMIT","NO_DATA",0,"can not find account");
             return;
         }
 
-        m_Account.RealName = view.nameInput.text;
+        _account.RealName = view.nameInput.text;
 
         string id = view.idInput.text.Trim();
         if (id.Contains("x"))
@@ -75,10 +75,10 @@ public class RealNameMediator : UIMediator<RealNameView>
             id = id.ToUpper();
         }
 
-        m_Account.IdCard = id;
+        _account.IdCard = id;
 
-        //LoginManager.Instance.ValidateIdentity(m_Account);
-        AccountManager.Instance.LocalValidateIdentity(m_Account);
+        //LoginManager.Instance.ValidateIdentity(_account);
+        AccountManager.Instance.LocalValidateIdentity(_account);
     }
 
     private void OnEditEnd(string arg0)

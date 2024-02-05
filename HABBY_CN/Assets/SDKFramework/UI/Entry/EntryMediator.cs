@@ -12,7 +12,7 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnShow(arg);
 
         view.ageTip.GetComponent<Image>().sprite =
-            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)MessageHandler.appData.applicableRange);
+            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)MessageHandler.AppData.applicableRange);
 
         view.btnEnter.onClick.AddListener(EnterGameOrLogin);
         view.ageTip.onClick.AddListener(ShowAgeTip);
@@ -21,7 +21,7 @@ public class EntryMediator : UIMediator<EntryView>
     private void ShowAgeTip()
     {
         HabbyFramework.UI.OpenUI(UIViewID.AgeTipUI);
-        HabbyFramework.Message.Post(MessageHandler.appData);
+        HabbyFramework.Message.Post(MessageHandler.AppData);
     }
     private void EnterGameOrLogin()
     {
@@ -52,11 +52,11 @@ public class EntryMediator : UIMediator<EntryView>
 
     private class MessageHandler : MessageHandler<AppConfig>
     {
-        public static AppConfig appData;
+        public static AppConfig AppData;
 
         public override void HandleMessage(AppConfig arg)
         {
-            appData = arg;
+            AppData = arg;
         }
     }
 }

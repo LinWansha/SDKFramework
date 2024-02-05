@@ -4,6 +4,23 @@ using SDKFramework.UI;
 
 public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
 {
+    private Dictionary<(UserAccount.AgeLevel, LimitType), string> _messageMap;
+    protected override void OnInit()
+    {
+        base.OnInit();
+        _messageMap = new Dictionary<(UserAccount.AgeLevel, LimitType), string>
+        {
+            { (UserAccount.AgeLevel.Unknown, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder16 },
+            { (UserAccount.AgeLevel.Under8, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder16 },
+            { (UserAccount.AgeLevel.Unknown, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder16 },
+            { (UserAccount.AgeLevel.Under8, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder16 },
+
+            { (UserAccount.AgeLevel.Under16, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder18 },
+            { (UserAccount.AgeLevel.Under18, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder18 },
+            { (UserAccount.AgeLevel.Under16, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder18 },
+            { (UserAccount.AgeLevel.Under18, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder18 }
+        };
+    }
 
     protected override void OnShow(object arg)
     {
@@ -22,20 +39,7 @@ public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
 
     private void SetPurchaseLimitNotice(UserAccount account, LimitType type)
     {
-        var messageMap = new Dictionary<(UserAccount.AgeLevel, LimitType), string>
-        {
-            { (UserAccount.AgeLevel.Unknown, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder16 },
-            { (UserAccount.AgeLevel.Under8, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder16 },
-            { (UserAccount.AgeLevel.Unknown, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder16 },
-            { (UserAccount.AgeLevel.Under8, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder16 },
-
-            { (UserAccount.AgeLevel.Under16, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder18 },
-            { (UserAccount.AgeLevel.Under18, LimitType.Single), AntiAddictionDisaplayText.PurchaseNotice_SpendUnder18 },
-            { (UserAccount.AgeLevel.Under16, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder18 },
-            { (UserAccount.AgeLevel.Under18, LimitType.Monthly), AntiAddictionDisaplayText.PurchaseNotice_MonthlySpendUnder18 }
-        };
-
-        view.detail.text = messageMap[(UserAccount.AgeLevel.Under18, type)];
+        view.detail.text = _messageMap[(account.AgeRange, type)];
     }
     
     protected override void OnHide()

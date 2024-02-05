@@ -5,15 +5,12 @@ namespace Habby.CNUser
 {
     public class AntiAddictionTimeChecker
     {
-        public int VisitorOnlineTimeLimit = 0; // 游玩模式可以在线时长 CN不允许游玩模式
         public int Day_OnlineTimeLimit = 0; // 工作日可以在线时长   CN工作日不可以玩
         public int Holiday_OnlineTimeLimit = 60 * 60; // 节假日可以游玩时间   GM
 
-        public int NotifyWhenRemainTimeLeft = 10 * 60; // 最后剩余十分钟的时候的提醒  GM
 
         //上次登录时间
         private float _last_time = 0;
-        private bool _remain_time_notified;
         private bool _ticking;
         private bool _data_dirty;
         private bool _is_holiday;
@@ -64,11 +61,6 @@ namespace Habby.CNUser
             }
         }
 
-        public void ResetNotice()
-        {
-            _remain_time_notified = false;
-        }
-
         public TimeRegulation CheckOnlineTime(UserAccount account)
         {
             if (!_ticking) return TimeRegulation.None;
@@ -93,49 +85,24 @@ namespace Habby.CNUser
                 seconds = 0;
             }
 
-            HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today, account.Online.Total);
+            HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today,
+                account.Online.Total);
             int remain;
-            switch (account.AgeRange)
+            if (account.AgeRange != UserAccount.AgeLevel.Unknown)
             {
-                case UserAccount.AgeLevel.Unknown:
-                    //15天累计在线不超过60min
-                    // 新版防沉迷游客不能进入 
+                //登录时段限制
+                if (isRestrictTime()) return TimeRegulation.Exit; //ForbidLogin
+
+                //累计在线时间不超过**
+                remain = gamingTimeLeft(account) - seconds;
+                if (remain <= 0)
+                {
                     return TimeRegulation.Exit;
-                    // remain = VisitorOnlineTimeLimit - account.Online.Total - seconds;
-                    // if (remain <= 0)
-                    // {
-                    //     return TimeRegulation.Exit;
-                    // }
-                    // else if (remain <= NotifyWhenRemainTimeLeft && !_remain_time_notified)
-                    // {
-                    //     _remain_time_notified = true;
-                    //     return TimeRegulation.RemainTenMinute;
-                    // }
-                    break;
-                case UserAccount.AgeLevel.Under8:
-                case UserAccount.AgeLevel.Under16:
-                case UserAccount.AgeLevel.Under18:
-                    //登录时段限制
-                    if (isRestrictTime()) return TimeRegulation.Exit; //ForbidLogin
-
-                    //累计在线时间不超过**
-                    remain = gamingTimeLeft(account) - seconds;
-                    if (remain <= 0)
-                    {
-                        return TimeRegulation.Exit;
-                    }
-                    else if (remain <= NotifyWhenRemainTimeLeft && !_remain_time_notified)
-                    {
-                        _remain_time_notified = true;
-                        return TimeRegulation.RemainTenMinute;
-                    }
-                    else if (isLastTenTime() && !_remain_time_notified)
-                    {
-                        _remain_time_notified = true;
-                        return TimeRegulation.RemainTenMinute;
-                    }
-
-                    break;
+                }
+            }
+            else
+            {
+                return TimeRegulation.Exit;
             }
 
             return TimeRegulation.None;
@@ -148,13 +115,9 @@ namespace Habby.CNUser
 
         public bool IsBadTime(UserAccount account)
         {
-            switch (account.AgeRange)
+            if (account.AgeRange != UserAccount.AgeLevel.Unknown)
             {
-                case UserAccount.AgeLevel.Under8:
-                case UserAccount.AgeLevel.Under16:
-                case UserAccount.AgeLevel.Under18:
-                    //登录时段限制
-                    return isRestrictTime();
+                return isRestrictTime();
             }
 
             return false;
@@ -166,15 +129,9 @@ namespace Habby.CNUser
             //尝试在登录判定时清除久的时间数据
             _last_time = 0;
             if (account == null || account.Online == null) return true;
-            switch (account.AgeRange)
+            if (account.AgeRange != UserAccount.AgeLevel.Unknown)
             {
-                case UserAccount.AgeLevel.Unknown:
-                    return VisitorOnlineTimeLimit > account.Online.Total;
-                case UserAccount.AgeLevel.Under8:
-                case UserAccount.AgeLevel.Under16:
-                case UserAccount.AgeLevel.Under18:
-                    //登录时段限制
-                    return gamingTimeLeft(account) > 70;
+                return gamingTimeLeft(account) > 70;
             }
 
             return true;
@@ -182,12 +139,7 @@ namespace Habby.CNUser
 
         private bool isRestrictTime()
         {
-            //// 旧版本登陆时间限制  
-            //DateTime now = TimerHelper.GetNowTime();
-            //int hour = now.Hour;
-            //int minute = now.Minute;
-            //return (hour < 8 || (hour == 8 && minute == 0) || hour >= 22);
-            //---------------------------------- GM
+
             _is_holiday = _holiday_checker.IsHoliday(TimerHelper.GetNowTime());
             if (!_is_holiday)
                 return true;
@@ -247,8 +199,6 @@ namespace Habby.CNUser
         public enum TimeRegulation
         {
             None = 0,
-            ForbidLogin,
-            RemainTenMinute,
             Exit
         }
     }

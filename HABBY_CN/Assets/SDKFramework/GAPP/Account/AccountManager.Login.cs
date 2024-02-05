@@ -37,7 +37,7 @@ namespace Habby.CNUser
 #endif
         }
 
-        public void onUserLogin(UserAccount account)
+        public void onUserLogin()
         {
             HLogger.Log("onUserLoginµÇÂ¼³É¹¦");
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
@@ -109,7 +109,6 @@ namespace Habby.CNUser
                 account.AgeRange = UserAccount.AgeLevel.Under8;
             }
 
-            // HabbyAntiAddictionPopupManager.Instance.CloseIndicator();
             if (CanLogin(account))
             {
                 if (account.AgeRange != UserAccount.AgeLevel.Adult)
@@ -191,7 +190,7 @@ namespace Habby.CNUser
                 else
                 {
                     if (!CanLogin(account)) return;
-#if USE_ANTIADDICTION_TIME
+#if USE_ANTIADDICTION
                     if (account.AgeRange != UserAccount.AgeLevel.Adult)
                         HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
 #endif
@@ -203,7 +202,7 @@ namespace Habby.CNUser
 
         public bool CanLogin(UserAccount accout)
         {
-#if USE_ANTIADDICTION_TIME
+#if USE_ANTIADDICTION
 
             if (IsRestrictedTime(accout))
             {

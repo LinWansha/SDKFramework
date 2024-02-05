@@ -10,26 +10,16 @@ namespace Habby.CNUser
     {
         //刷新间隔（帧为单位）
         private int _update_interval = 100;
+
         private int _update_count = 0;
 
         private bool isLogin = false;
+        public bool IsLogin => isLogin;
 
         private uint _reloginFailCount;
+        public void UpCountReloginFail() => _reloginFailCount++;
+        public uint ReloginFailCount => _reloginFailCount;
 
-        public void UpCountReloginFail()
-        {
-            _reloginFailCount++;
-        }
-
-        public uint ReloginFailCount
-        {
-            get { return _reloginFailCount; }
-        }
-
-        public bool IsLogin
-        {
-            get { return isLogin; }
-        }
 
         public readonly AntiAddictionTimeChecker timeManager = new AntiAddictionTimeChecker();
 
@@ -40,7 +30,7 @@ namespace Habby.CNUser
             Debug.unityLogger.logEnabled = true;
             Reload();
         }
-#if USE_ANTIADDICTION_TIME
+#if USE_ANTIADDICTION
         public void OnApplicationPause(bool pause)
         {
             if (CurrentAccount == null) return;
@@ -78,16 +68,10 @@ namespace Habby.CNUser
             AntiAddictionTimeChecker.TimeRegulation regulation = timeManager.CheckOnlineTime(account);
             switch (regulation)
             {
-                case AntiAddictionTimeChecker.TimeRegulation.ForbidLogin:
-                    OnLoginForbiddenTime?.Invoke(account);
-                    break;
-                case AntiAddictionTimeChecker.TimeRegulation.RemainTenMinute:
-                    OnTenMinutesLeft?.Invoke(account);
-                    break;
                 case AntiAddictionTimeChecker.TimeRegulation.Exit:
                     //强制
                     // timeManager.UploadData(account.Online);
-                    OnNoTimeLeft?.Invoke(account);
+                    OnNoTimeLeft?.Invoke();
                     break;
             }
 
@@ -131,7 +115,7 @@ namespace Habby.CNUser
             if (CurrentAccount == null) return;
             AccountHistory.SaveAccount(CurrentAccount);
             FileSaveLoad.SaveAccount(CurrentAccount);
-#if USE_ANTIADDICTION_TIME
+#if USE_ANTIADDICTION
             timeManager.UploadData(CurrentAccount.Online);
 #endif
         }
@@ -162,9 +146,8 @@ namespace Habby.CNUser
             CurrentAccount = account;
             FileSaveLoad.SaveAccount(account);
             AccountHistory.SaveAccount(account);
-#if USE_ANTIADDICTION_TIME
+#if USE_ANTIADDICTION
             account.Online?.Refresh();
-            timeManager.ResetNotice();
             timeManager.StartTimeCounter();
 #endif
 #if USE_ANTIADDICTION_PURCHASE
@@ -172,7 +155,7 @@ namespace Habby.CNUser
             account.IAP?.Refresh();
 #endif
             isLogin = true;
-            OnUserLogin?.Invoke(account);
+            OnUserLogin?.Invoke();
             _reloginFailCount = 0; // reset fail count when login success
         }
 
@@ -189,7 +172,7 @@ namespace Habby.CNUser
             }
 
             isLogin = false;
-            
+
             HLogger.LogWarnFormat("--- Logout dispatch=" + dispatch);
             (dispatch ? OnUserLogout : OnShowLoginScene)?.Invoke();
         }
@@ -237,8 +220,7 @@ namespace Habby.CNUser
                 _AccountHistory = new UserAccountHistory();
             }
         }
-#if USE_ANTIADDICTION_PURCHASE
-
+#if USE_ANTIADDICTION
         public bool CanGacha(string gacha) => PurchaseChecker.CanGacha(CurrentAccount, gacha);
         public void Gacha(string gacha, int amount) => CurrentAccount.AddGacha(gacha, amount);
         public bool CanPurchase(double amount) => PurchaseChecker.CanPurchase(CurrentAccount, amount);
@@ -248,9 +230,7 @@ namespace Habby.CNUser
             CurrentAccount.AddIap(amount);
             HLogger.LogWarnFormat("--- Purchase add amount complete! nowMonth=" + CurrentAccount.IAP.Monthly);
         }
-#endif
 
-#if USE_ANTIADDICTION_TIME
         public bool IsRestrictedTime(UserAccount account)
         {
             HLogger.LogFormat("ShouldForbidLogin age={0}, time={1}", account?.AgeRange,
@@ -272,33 +252,10 @@ namespace Habby.CNUser
         #region Event
 
         public void FireCloseNoTime() => Logout();
-
-        public void FireCloseTenMinutesLeftAndContinueGame() =>
-            OnCloseTenMinutesLeftAndContinueGame?.Invoke(); // 未成年点击弹出提示窗后才能进游戏
-
-        public void FireCloseUnderAgePipPop() => OnReadedUnderAgeTip?.Invoke(CurrentAccount);
-
-        public void FireCloseUnderAgeNotice() => OnCloseUnderAgeNotice?.Invoke();
-        public void FireCloseNoGachaLeftForToday() => OnCloseNoGachaLeftForToday?.Invoke();
-        public void FireExpenseOverRange() => OnExpenseOverRange?.Invoke(CurrentAccount);
-        public void FireMonthlyExpenseOverRange() => OnMonthlyExpenseOverRange?.Invoke(CurrentAccount);
+        public void FireCloseUnderAgePipPop() => OnReadedUnderAgeTip?.Invoke();
+        public void FireExpenseOverRange() => OnSingleExpenseOverRange?.Invoke(LimitType.Single);
+        public void FireMonthlyExpenseOverRange() => OnMonthlyExpenseOverRange?.Invoke(LimitType.Monthly);
 
         #endregion
-
-        private void RefreshUsuallyLoginChannel(UserLoginChannel channel)
-        {
-            string currChannel = channel.ToString();
-            String usuallyLoginChannel = PlayerPrefs.GetString("UsuallyLoginChannel", "");
-
-            var channels = usuallyLoginChannel.Split(';').ToArray();
-            if (channels.Contains(currChannel)) return;
-
-            PlayerPrefs.SetString("UsuallyLoginChannel", usuallyLoginChannel + ";" + currChannel);
-        }
-
-        public string GetUsuallyLoginChannel()
-        {
-            return PlayerPrefs.GetString("UsuallyLoginChannel", "");
-        }
     }
 }

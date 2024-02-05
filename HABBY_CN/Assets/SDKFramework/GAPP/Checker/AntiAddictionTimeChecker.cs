@@ -43,6 +43,7 @@ namespace Habby.CNUser
         /// </summary>
         public void StopTimeCounter(UserAccount account)
         {
+            HLogger.LogFormat("AntiAddictionTimeChecker StopTimeCounter ticking={0}", _ticking);
             if (!_ticking) return;
             _ticking = false;
 
@@ -58,15 +59,15 @@ namespace Habby.CNUser
 
             if (account != null && account.Online != null)
             {
+                HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Total, account.Online.Today);
             }
+            
         }
 
         public TimeRegulation CheckOnlineTime(UserAccount account)
         {
             if (!_ticking) return TimeRegulation.None;
             if (account == null) return TimeRegulation.Exit;
-            HLogger.LogFormat("AntiAddictionTimeChecker CheckOnlineTime age={0} time={1}", account.AgeRange,
-                Time.realtimeSinceStartup);
             // 用户没有登陆
             if (_last_time == 0 || account.Online == null) return TimeRegulation.None;
 
@@ -88,7 +89,7 @@ namespace Habby.CNUser
             HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today,
                 account.Online.Total);
             int remain;
-            if (account.AgeRange != UserAccount.AgeLevel.Unknown)
+            if (account.AgeRange != UserAccount.AgeLevel.Adult)
             {
                 //登录时段限制
                 if (isRestrictTime()) return TimeRegulation.Exit; //ForbidLogin
@@ -115,7 +116,7 @@ namespace Habby.CNUser
 
         public bool IsBadTime(UserAccount account)
         {
-            if (account.AgeRange != UserAccount.AgeLevel.Unknown)
+            if (account.AgeRange != UserAccount.AgeLevel.Adult)
             {
                 return isRestrictTime();
             }
@@ -125,11 +126,11 @@ namespace Habby.CNUser
 
         public bool HasTimeLeft(UserAccount account)
         {
-            Debug.Log("##### HasTimeLeft _last_time : " + _last_time);
+            HLogger.Log("##### HasTimeLeft _last_time : " + _last_time);
             //尝试在登录判定时清除久的时间数据
             _last_time = 0;
             if (account == null || account.Online == null) return true;
-            if (account.AgeRange != UserAccount.AgeLevel.Unknown)
+            if (account.AgeRange != UserAccount.AgeLevel.Adult)
             {
                 return gamingTimeLeft(account) > 70;
             }
@@ -139,7 +140,6 @@ namespace Habby.CNUser
 
         private bool isRestrictTime()
         {
-
             _is_holiday = _holiday_checker.IsHoliday(TimerHelper.GetNowTime());
             if (!_is_holiday)
                 return true;
@@ -196,7 +196,7 @@ namespace Habby.CNUser
             //     });
         }
 
-        public enum TimeRegulation
+        public enum TimeRegulation : byte
         {
             None = 0,
             Exit

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Habby.CNUser
 {
     public partial class AccountManager : MonoSingleton<AccountManager>

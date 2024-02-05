@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using UnityEngine;
 using static Habby.CNUser.UserAccount;
 using Debug = UnityEngine.Debug;
 
@@ -63,19 +61,17 @@ namespace Habby.CNUser
             CheckRegulation(CurrentAccount);
         }
 
-        public AntiAddictionTimeChecker.TimeRegulation CheckRegulation(UserAccount account)
+        public void CheckRegulation(UserAccount account)
         {
             AntiAddictionTimeChecker.TimeRegulation regulation = timeManager.CheckOnlineTime(account);
             switch (regulation)
             {
                 case AntiAddictionTimeChecker.TimeRegulation.Exit:
-                    //强制
                     // timeManager.UploadData(account.Online);
                     OnNoTimeLeft?.Invoke();
                     break;
             }
-
-            return regulation;
+            
         }
 #endif
         public void CheckAndClean()
@@ -149,8 +145,7 @@ namespace Habby.CNUser
 #if USE_ANTIADDICTION
             account.Online?.Refresh();
             timeManager.StartTimeCounter();
-#endif
-#if USE_ANTIADDICTION_PURCHASE
+
             account.Gacha?.Refresh();
             account.IAP?.Refresh();
 #endif
@@ -165,7 +160,7 @@ namespace Habby.CNUser
             if (CurrentAccount != null)
             {
                 CurrentAccount.LoginState = UserAccount.UserLoginState.Logout;
-#if USE_ANTIADDICTION_TIME
+#if USE_ANTIADDICTION
                 timeManager.StopTimeCounter(CurrentAccount);
 #endif
                 (removeUserAccount ? (Action)ClearCurrent : Save)();

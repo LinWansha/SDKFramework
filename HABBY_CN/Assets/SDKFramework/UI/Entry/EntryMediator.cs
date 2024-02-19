@@ -7,6 +7,17 @@ using SDKFramework.Message;
 
 public class EntryMediator : UIMediator<EntryView>
 {
+    protected override void OnInit()
+    {
+        base.OnInit();
+        if (MessageHandler.AppData.hasLicense)
+        {
+            view.licenseObj.SetActive(true);
+            view.btnPrivacy.onClick.AddListener(() => { });//TODO:open webview
+            view.btnPersonalInfo.onClick.AddListener(() => { });
+        }
+    }
+
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);

@@ -12,6 +12,7 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnInit();
         if (MessageHandler.AppData.hasLicense)
         {
+            view.argeeToggle.isOn = false;
             view.licenseObj.SetActive(true);
             view.btnPrivacy.onClick.AddListener(() => { });//TODO:open webview
             view.btnPersonalInfo.onClick.AddListener(() => { });

@@ -3,11 +3,9 @@ using UnityEngine;
 
 namespace SDKFramework.Asset
 {
-   // [Beebyte.Obfuscator.Skip]
     public partial class AssetModule : BaseModule
     {
 #if UNITY_EDITOR
-        //[XLua.BlackList]
         public const string BUNDLE_LOAD_NAME = "Tools/Build/Bundle Load";
 #endif
 

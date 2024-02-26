@@ -1,4 +1,5 @@
 ﻿using System;
+using SDKFramework.Utils;
 using static Habby.CNUser.UserAccount;
 using Debug = UnityEngine.Debug;
 
@@ -116,15 +117,6 @@ namespace Habby.CNUser
 #endif
         }
 
-        public void SaveAccountInfo(UserAccount account)
-        {
-            HLogger.LogFormat("UserAccoutManager SaveAccountInfo account={0}, age={1}", account?.AccessToken,
-                account?.AgeRange);
-            account.LoginState = UserAccount.UserLoginState.Logout;
-            CurrentAccount = account;
-            FileSaveLoad.SaveAccount(account);
-        }
-
         public void ClearAccountInfo()
         {
             HLogger.LogFormat("UserAccoutManager ClearAccountInfo account={0}, age={1}", CurrentAccount?.AccessToken,
@@ -206,15 +198,7 @@ namespace Habby.CNUser
                 return _AccountHistory;
             }
         }
-
-        public void ReloadHistory()
-        {
-            _AccountHistory = FileSaveLoad.LoadHistory();
-            if (_AccountHistory == null)
-            {
-                _AccountHistory = new UserAccountHistory();
-            }
-        }
+        
 #if USE_ANTIADDICTION
         public bool CanGacha(string gacha) => PurchaseChecker.CanGacha(CurrentAccount, gacha);
         public void Gacha(string gacha, int amount) => CurrentAccount.AddGacha(gacha, amount);

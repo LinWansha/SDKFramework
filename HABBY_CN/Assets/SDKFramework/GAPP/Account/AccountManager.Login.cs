@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SDKFramework.Utils;
 using UnityEngine;
 
 namespace Habby.CNUser
@@ -75,13 +76,7 @@ namespace Habby.CNUser
                 ShowLoginScene();
             }
         }
-
-
-        public void LoginNative()
-        {
-            HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
-        }
-
+        
         public void LocalValidateIdentity(UserAccount account)
         {
             if (OnIdentitySuccess != null) OnIdentitySuccess();

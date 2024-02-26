@@ -703,7 +703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1232536567
 Transform:
   m_ObjectHideFlags: 0
@@ -811,7 +811,7 @@ MonoBehaviour:
   normalUIRoot: {fileID: 1947385041}
   modalUIRoot: {fileID: 1593334654}
   closeUIRoot: {fileID: 1511322433}
-  UICamera: {fileID: 1232536570}
+  UICamera: {fileID: 0}
   imgMask: {fileID: 137598001}
   textTip: {fileID: 849211275}
 --- !u!1 &1511322432

@@ -13,7 +13,7 @@ namespace SDKFramework.UI
         public Transform normalUIRoot;
         public Transform modalUIRoot;
         public Transform closeUIRoot;
-        public Camera UICamera;
+        //public Camera UICamera;
         public Image imgMask;
         public Text textTip;
 
@@ -229,29 +229,6 @@ namespace SDKFramework.UI
             return OnUIObjectLoaded(mediator, uiConfig, uiObject, arg);
         }
 
-        // /// <summary>
-        // /// 打开弹窗方法       //TODO:后续把面板逻辑少的弹窗统一为一个公共面板
-        // /// </summary>
-        // /// <param name="btnType">按钮类型，一个按钮还是两个</param>
-        // /// <param name="title">标题</param>
-        // /// <param name="content">弹窗内容</param>
-        // /// <param name="isMask">遮罩是否启动</param>
-        // /// <param name="submmitCallback">确定回调</param>
-        // /// <param name="cancelCallback">取消回调</param>
-        // public void PopupDialog(DialogWindowType btnType, string title, string content, bool isMask=true,
-        //     Action<object> submmitCallback=null, Action<object> cancelCallback=null)
-        // {
-        //     DialogWindowMediator mediator=this.OpenUI(UIViewID.DialogWindow) as DialogWindowMediator;//先把UI打开
-        //     if(mediator!=null)
-        //     {
-        //         mediator.SetDialog(btnType, title,content,isMask,submmitCallback,cancelCallback); 
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError("没打开弹窗");
-        //     }
-        // }
-
         public IEnumerator OpenUISingleAsync(UIViewID id, object arg = null)
         {
             if (!IsUIOpened(id))
@@ -315,8 +292,8 @@ namespace SDKFramework.UI
             usingMediators.Add(mediator);
 
             Canvas canvas = uiObject.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            canvas.worldCamera = UICamera;
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            //canvas.worldCamera = UICamera;
             if (uiConfig.Mode == UIMode.Normal)
             {
                 uiObject.transform.SetParentAndResetAll(normalUIRoot);

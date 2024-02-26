@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Habby.CNUser
 {
@@ -8,7 +6,7 @@ namespace Habby.CNUser
     {
         private void OnEnable()
         {
-            Debug.Log("1");
+            HLogger.Log("开始侦听未成年人游戏行为",Color.green);
             AccountManager.OnNoTimeLeft += NoTimeLeft;
 
             AccountManager.OnSingleExpenseOverRange += ExpenseOverRange;
@@ -21,6 +19,7 @@ namespace Habby.CNUser
 
             AccountManager.OnSingleExpenseOverRange -= ExpenseOverRange;
             AccountManager.OnMonthlyExpenseOverRange -= ExpenseOverRange;
+            HLogger.Log("取消侦听未成年人游戏行为",Color.red);
         }
         
         private void ExpenseOverRange(LimitType limitType)

@@ -1,94 +1,94 @@
+using System;
 using Habby.CNUser;
+using SDKFramework.Message;
 using SDKFramework.UI;
-using UnityEngine;
+using SDKFramework.Utils;
 
 public class LoginMediator : UIMediator<LoginView>
 {
+    private string userId;
+    private string passward;
 
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-
-        AccountManager.OnUserNotExists += onUserNotExists;
-        AccountManager.OnFailedToCreateUser += faileToCreateUser;
-        AccountManager.OnLoginResponseSuccess += onUserExists;
         view.btnLogin.onClick.AddListener(Login);
         view.btnRegister.onClick.AddListener(Register);
-        view.userIdInput.onValueChanged.AddListener((field) => { });
-        view.passwordInput.onValueChanged.AddListener((field) => { });
+        HabbyFramework.Message.Subscribe<MsgType.ClosePopup>(ClickMaskCallBack);
     }
+
+    private void ClickMaskCallBack(MsgType.ClosePopup arg)
+    {
+        if (arg.ViewID==UIViewID.LoginUI)
+        {
+            Close();
+        }
+    }
+
 
     protected override void OnHide()
     {
-        AccountManager.OnUserNotExists -= onUserNotExists;
-        AccountManager.OnFailedToCreateUser -= faileToCreateUser;
-        AccountManager.OnLoginResponseSuccess -= onUserExists;
         view.btnLogin.onClick.RemoveListener(Login);
         view.btnRegister.onClick.RemoveListener(Register);
-        view.userIdInput.onValueChanged.RemoveListener((field) => { });
-        view.passwordInput.onValueChanged.RemoveListener((field) => { });
-        
+        HabbyFramework.Message.Unsubscribe<MsgType.ClosePopup>(ClickMaskCallBack);
+        view.userIdInput.text = "";
+        view.passwordInput.text = "";
         base.OnHide();
     }
-    
+
     private void Register()
     {
-        if (InputFully(view.userIdInput.text, view.passwordInput.text))
+        if (!InputFully()) return;
+        HabbyUserClient.Instance.RegisterWithAccount(userId, passward, (response) =>
         {
-            
-            HLogger.Log("点击注册");
-            //TODO:注册账号
-            
-        }
-        else
-        {
-            view.noticeLabel.text = "无法创建该用户，请重试"; //todo:封装成事件，松耦合
-        }
+            HLogger.Log($"Register Response Code：{response.code}");
+            if (response.code == 0)
+            {
+                HabbyTextHelper.Instance.ShowTip("注册成功！");
+                Login();
+            }
+            else
+            {
+                HabbyTextHelper.Instance.ShowTip("无法创建该用户，请重试");
+            }
+        });
     }
 
     private void Login()
     {
-        if (InputFully(view.userIdInput.text, view.passwordInput.text))
+        if (!InputFully()) return;
+        HabbyUserClient.Instance.LoginWithAccount(userId, passward, (response) =>
         {
-            AccountManager.Instance.LoginOrIdentify(new UserAccount()
+            HLogger.Log($"Login Response Code：{response.code}");
+            if (response.code == LoginResponse.CODE_SUCCESS)
             {
-                UID = view.userIdInput.text,
-                Password = view.passwordInput.text,
-                LoginChannel = "qq",
-                NickName = "林万厦"
-            });
-            Close();
-        }
-        else
-        {
-            view.noticeLabel.text = "您输入的用户名或者密码错误";
-        }
+                UserAccount account = AccountDataUtil.ParseLoginAccountInfo(response);
+                account.LoginChannel = UserAccount.ChannelAccount;
+                AccountManager.Instance.LoginOrIdentify(account);
+                Close();
+            }
+            else if (response.code == LoginResponse.CODE_USER_NOT_FOUND)
+            {
+                HabbyTextHelper.Instance.ShowTip("当前账号尚未注册");
+            }
+            else
+            {
+                HabbyTextHelper.Instance.ShowTip("您输入的用户名或者密码错误");
+                HLogger.LogError("登录失败");
+            }
+        });
     }
 
-    private bool InputFully(string uid, string pwd)
+    private bool InputFully()
     {
-        if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(pwd))
+        if (!string.IsNullOrEmpty(view.passwordInput.text) && !string.IsNullOrEmpty(view.userIdInput.text))
         {
+            userId = view.userIdInput.text;
+            passward = view.passwordInput.text;
             return true;
         }
 
+        HabbyTextHelper.Instance.ShowTip("输入的用户名和密码不能为空");
         return false;
-    }
-    
-    private void onUserNotExists()
-    {
-        view.noticeLabel.gameObject.SetActive(true);
-        view.noticeLabel.text = "您输入的用户名或者密码错误";
-    }
-
-    private void faileToCreateUser()
-    {
-        view.noticeLabel.gameObject.SetActive(true);
-        view.noticeLabel.text = "无法创建该用户，请重试";
-    }
-
-    private void onUserExists()
-    {
-        Close();
     }
 }

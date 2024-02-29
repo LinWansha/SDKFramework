@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SDKFramework.Config;
 using SDKFramework.Message;
+using SDKFramework.Utils;
 
 public class EntryMediator : UIMediator<EntryView>
 {
@@ -40,18 +41,16 @@ public class EntryMediator : UIMediator<EntryView>
         if (view.argeeToggle.isOn == false)
         {
             HabbyTextHelper.Instance.ShowTip("请勾选用户协议");
+            return;
+        }
+        
+        if (AccountManager.Instance.HasAccount)
+        {
+            AccountManager.Instance.LoginOrIdentify(AccountManager.Instance.CurrentAccount);
         }
         else
         {
-            if (AccountManager.Instance.HasAccount)
-            {
-                Debug.Log("登录");
-                AccountManager.Instance.LoginOrIdentify(AccountManager.Instance.CurrentAccount);
-            }
-            else
-            {
-                HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
-            }
+            HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
         }
     }
 

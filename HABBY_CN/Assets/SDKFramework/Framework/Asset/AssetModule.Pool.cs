@@ -6,15 +6,13 @@ namespace SDKFramework.Asset
     public partial class AssetModule : BaseModule
     {
         private readonly GameObjectPool<GameObjectAsset> gameObjectPool = new GameObjectPool<GameObjectAsset>();
-        public readonly string SDKConfigPath = $"{Application.streamingAssetsPath}/SDKConfig/";
+        public static readonly string SDKConfigPath = $"{Application.streamingAssetsPath}/SDKConfig/";
         public GameObject LoadGameObject(string path, Action<GameObject> createNewCallback = null)
         {
-            //UnityLog.Info($"Load GameObject:{path}");
             return gameObjectPool.LoadGameObject(path, createNewCallback).gameObject;
         }
         public T LoadGameObject<T>(string path, Action<GameObject> createNewCallback = null) where T : Component
         {
-            //UnityLog.Info($"Load GameObject:{path}");
             GameObject go = gameObjectPool.LoadGameObject(path, createNewCallback).gameObject;
             return go.GetComponent<T>();
         }

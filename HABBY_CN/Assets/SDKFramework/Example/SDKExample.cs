@@ -1,4 +1,5 @@
 using Habby.CNUser;
+using SDKFramework.Asset;
 using SDKFramework.Config;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class SDKExample : MonoBehaviour
     {
         // AccountManager.Instance.ClearCurrent();
 
-        StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}App.json", (jsonStr) =>
+        StartCoroutine(UIConfig.DeserializeByFile($"{AssetModule.SDKConfigPath}App.json", (jsonStr) =>
         {
             _appdata = JsonUtility.FromJson<AppConfig>(jsonStr);
 

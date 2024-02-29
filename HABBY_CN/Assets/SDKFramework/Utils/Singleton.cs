@@ -1,24 +1,27 @@
-public class Singleton<T> where T : new()
+namespace SDKFramework.Utils
 {
-    private static T _instance;
-    private static readonly object objlock = new object();
-
-    public static T Instance
+    public class Singleton<T> where T : new()
     {
-        get
+        private static T _instance;
+        private static readonly object objlock = new object();
+
+        public static T Instance
         {
-            if (_instance == null)
+            get
             {
-                lock (objlock)
+                if (_instance == null)
                 {
-                    if (_instance == null)
+                    lock (objlock)
                     {
-                        _instance = new T();
+                        if (_instance == null)
+                        {
+                            _instance = new T();
+                        }
                     }
                 }
-            }
 
-            return _instance;
+                return _instance;
+            }
         }
     }
 }

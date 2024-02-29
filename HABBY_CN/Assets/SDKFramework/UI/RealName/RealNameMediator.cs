@@ -1,5 +1,6 @@
 using Habby.CNUser;
 using SDKFramework.UI;
+using SDKFramework.Utils;
 
 public class RealNameMediator : UIMediator<RealNameView>
 {
@@ -48,7 +49,6 @@ public class RealNameMediator : UIMediator<RealNameView>
         {
             view.notice.text = WrongName;
             view.notice.gameObject.SetActive(true);
-            //TrackAdapter.Instance.track_cn_verify_result("SUBMIT","LOCALFAILED",0,"inout name empty or too long");
             return;
         }
 
@@ -56,14 +56,12 @@ public class RealNameMediator : UIMediator<RealNameView>
         {
             view.notice.text = WrongId;
             view.notice.gameObject.SetActive(true);
-            //TrackAdapter.Instance.track_cn_verify_result("SUBMIT","LOCALFAILED",0,"inout id is too short,length less than 15");
             return;
         }
 
         if (_account == null)
         {
             AccountManager.Instance.CheckUser();
-            //TrackAdapter.Instance.track_cn_verify_result("SUBMIT","NO_DATA",0,"can not find account");
             return;
         }
 
@@ -77,8 +75,8 @@ public class RealNameMediator : UIMediator<RealNameView>
 
         _account.IdCard = id;
 
-        //LoginManager.Instance.ValidateIdentity(_account);
-        AccountManager.Instance.LocalValidateIdentity(_account);
+        AccountManager.Instance.ValidateIdentity(_account);
+        //AccountManager.Instance.LocalValidateIdentity(_account);
     }
 
     private void OnEditEnd(string arg0)
@@ -96,48 +94,43 @@ public class RealNameMediator : UIMediator<RealNameView>
 
     private void onError(int code)
     {
+        HLogger.LogWarnFormat(string.Format("----- UserIdentifyPopup rps error:code={0}",code));
          HabbyTextHelper.Instance.ShowTip("实名认证失败!错误代码：" + code);
-        // switch (code)
-        // {
-        //     case IdentityResponse.PARAM_ERROR:
-        //         setNotice("输入参数错误");
-        //         break;
-        //     case IdentityResponse.USER_NOT_FOUND:
-        //         setNotice("找不到此用户");
-        //         break;
-        //     case IdentityResponse.ID_CARD_EXIST:
-        //         setNotice(binded);
-        //         break;
-        //     case IdentityResponse.TOKEN_EXPIRE:
-        //         setNotice("登陆已过期,请从新登陆");
-        //         break;
-        //     case IdentityResponse.SERVER_FATAL_ERROR:
-        //         setNotice("GM 服务器故障");
-        //         break;
-        //     case IdentityResponse.SERVER_BUSY:
-        //         setNotice("服务器繁忙");
-        //         break;
-        //     case IdentityResponse.GAME_SERVER_ERROR:
-        //         setNotice("游戏服务器故障");
-        //         break;
-        //     case IdentityResponse.ID_CARD_CHECK_PENDING:
-        //         setNotice("认证中！稍后再试");
-        //         break;
-        //     case IdentityResponse.ID_CARD_OVER_COUNT:
-        //         setNotice("认证次数超限");
-        //         break;
-        //     case IdentityResponse.ID_CARD_CHECK_FAILED:
-        //     case IdentityResponse.ERROR:
-        //         setNotice("认证失败");
-        //         break;
-        //     default:
-        //         setNotice("未知错误 错误码");
-        //         break;
-        // }
         switch (code)
         {
-            case 1001:
+            case IdentityResponse.PARAM_ERROR:
+                setNotice("输入参数错误");
+                break;
+            case IdentityResponse.USER_NOT_FOUND:
+                setNotice("找不到此用户");
+                break;
+            case IdentityResponse.ID_CARD_EXIST:
+                setNotice("此身份证已经绑定过其他账号");
+                break;
+            case IdentityResponse.TOKEN_EXPIRE:
+                setNotice("登陆已过期,请从新登陆");
+                break;
+            case IdentityResponse.SERVER_FATAL_ERROR:
+                setNotice("GM 服务器故障");
+                break;
+            case IdentityResponse.SERVER_BUSY:
+                setNotice("服务器繁忙");
+                break;
+            case IdentityResponse.GAME_SERVER_ERROR:
+                setNotice("游戏服务器故障");
+                break;
+            case IdentityResponse.ID_CARD_CHECK_PENDING:
+                setNotice("认证中！稍后再试");
+                break;
+            case IdentityResponse.ID_CARD_OVER_COUNT:
                 setNotice("认证次数超限");
+                break;
+            case IdentityResponse.ID_CARD_CHECK_FAILED:
+            case IdentityResponse.ERROR:
+                setNotice("认证失败");
+                break;
+            default:
+                setNotice("未知错误 错误码");
                 break;
         }
     }

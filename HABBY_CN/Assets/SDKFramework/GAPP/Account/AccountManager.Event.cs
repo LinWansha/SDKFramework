@@ -9,12 +9,6 @@ namespace Habby.CNUser
         
         public static event Action OnUserLogout;                    //用户登出
         
-        public static event Action OnFailedToCreateUser;            //创建用户失败
-        
-        public static event Action OnUserNotExists;                 //登录用户时候，发现用户不存在
-
-        public static event Action OnLoginResponseSuccess;          //用户存在
-        
         public static event Action OnShowLoginScene;                //没有得到用户信息，需要重新登录或注册
         
         /*=====================Anti-addiction======================*/

@@ -8,7 +8,7 @@ namespace Habby.CNUser
     [Serializable]
     public class UserAccount
     {
-         #region channel name
+        #region channel name
         public const string ChannelTapTap = "taptap";
         public const string ChannelWeiXin = "weixin";
         public const string ChannelQQ = "qq";
@@ -16,6 +16,8 @@ namespace Habby.CNUser
         public const string ChannelGameCenter = "gc";
         public const string ChannelAppleId = "appleid";
         public const string ChannelPhone = "phone";
+        public const string ChannelAccount = "account";
+        public const string ChannelNACA = "ncac";
         
         public const string ChannelTraditional = "traditional";
         #endregion
@@ -200,6 +202,13 @@ namespace Habby.CNUser
 
             userOnlineData.Total = totalSeconds;
             userOnlineData.Today = todaySeconds;
+        }
+
+        public void RefreshMonthlyExpense(double value)
+        { 
+            if (userExpense == null) userExpense = new UserExpenseData();
+            userExpense.Refresh();
+            userExpense.monthlyExpense.value = value;
         }
 
         // public bool IsExpired

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Habby.CNUser;
 using UnityEngine;
 using UnityEditor;
 
@@ -27,5 +28,12 @@ public class BuildUnityProject
         {
             UnityEngine.Debug.LogError("Error opening directory: " + ex.Message);
         }
+    }
+    
+    [MenuItem("SDKFramework/清除本地账号数据")]
+    public static void ClearAccountData()
+    {
+        FileSaveLoad.SaveAccount(null);
+        HLogger.Log("清除本地账号数据！");
     }
 }

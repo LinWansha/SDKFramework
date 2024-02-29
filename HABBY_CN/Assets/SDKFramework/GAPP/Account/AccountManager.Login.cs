@@ -114,56 +114,32 @@ namespace Habby.CNUser
 
         public void ValidateIdentity(UserAccount account)
         {
-            // Debug.LogWarningFormat("--- ValidateIdentity age={0}",account.AgeRange);
-            //
-            // HabbyAntiAddictionPopupManager.Instance.OpenIndicator();
-            // TGAManager.Instance.track_cn_verify_result("SUBMIT","SUCCESS",0,$"name={account.RealName},id={account.IdCard}");
-            // HabbyUserClient.Instance.ValidateIdentity(account, (response) => {
-            //     HabbyAntiAddictionPopupManager.Instance.CloseIndicator();
-            //     HLogger.LogFormat("ValidateIdentity code={0}", response.code);
-            //     if  (IdentityResponse.CODE_SUCCESS == response.code )
-            //     {
-            //         account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
-            //         Debug.LogWarningFormat("--- ValidateIdentity result AgeRange={0},age={1}",account.AgeRange,response.data.age);
-            //         SDKHub.VerifyingAge = response.data.addictLevel;
-            //         TGAManager.Instance.track_cn_verify_result("FINISH","SUCCESS",0,$"age={response.data.age},ageLv={account.AgeRange}");
-            //         OnIdentitySuccess?.Invoke();
-            //         
-            //         if (!CanLogin(account))
-            //         {
-            //             OnAntiAddictionResultLogin?.Invoke(false);
-            //             // TGAManager.Instance.track_cn_verify_result("SUBMIT","SUCCESS");
-            //             return;
-            //         }
-            //         if (account.AgeRange != UserAccount.AgeLevel.Adult)
-            //         {
-            //             HabbyAntiAddictionPopupManager.Instance.OpenNoticeTeenager();
-            //         }
-            //         Login(account);
-            //         OnAntiAddictionResultLogin?.Invoke(true);
-            //         
-            //     }
-            //     else
-            //     {
-            //         if (response.code == IdentityResponse.ID_CARD_OVER_COUNT)
-            //         {
-            //            // TGAManager.Instance.track_cn_verify_result("FINISH","over_max",response.code,$"name={account.RealName},id={account.IdCard}");
-            //         }
-            //         else
-            //         {
-            //          //   TGAManager.Instance.track_cn_verify_result("FINISH","FAIL",response.code,$"name={account.RealName},id={account.IdCard}");
-            //         }
-            //        
-            //         OnIdentityFailed(response.code);
-            //     }
-            //     
-            // }, onLoginNetworkError);
-        }
+            HabbyUserClient.Instance.ValidateIdentity(account, (response) =>
+            {
+                HLogger.LogFormat("ValidateIdentity code={0}", response.code);
+                if (IdentityResponse.CODE_SUCCESS==response.code)
+                {
+                    account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
+                    OnIdentitySuccess?.Invoke();
 
-        private void onLoginNetworkError(string error)
-        {
-            HLogger.LogFormat("Login failed network error {0}", error);
-            HabbyFramework.UI.CloseUI(UIViewID.LatencyTimeUI);
+                    if (!CanLogin(account))
+                    {
+                        OnAntiAddictionResultLogin?.Invoke(false);
+                        return;
+                    }
+
+                    if (account.AgeRange != UserAccount.AgeLevel.Adult)
+                    {
+                        HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
+                    }
+                
+                    Login(account);
+                
+                    OnAntiAddictionResultLogin?.Invoke(true);
+                    return;
+                }
+                OnIdentityFailed(response.code);
+            });
         }
 
 
@@ -213,9 +189,5 @@ namespace Habby.CNUser
             return true;
         }
 
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            HLogger.Log("LoginManager OnApplicationFocus");
-        }
     }
 }

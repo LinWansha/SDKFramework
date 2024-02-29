@@ -1,37 +1,44 @@
 using System;
 using System.Collections;
+using System.Text;
+using Habby.CNUser;
+using Newtonsoft.Json;
 using UnityEngine.Networking;
 
 namespace SDKFramework.Network
 {
     public class NetworkModule : BaseModule
     {
-        public void SendRequest(string url, string json, Action<bool, string> callback, int timeOut = 0)
+        private const string NCAC_URL = "https://ncac-pq.lezuan9.com/api/v1/{0}";
+        
+        #region POST
+
+        public void SendRequest<TResponse>(Request request, Action<TResponse> callback,  string path)
         {
-            StartCoroutine(PostRequest(url, json, callback, timeOut));
+            string url = string.Format(NCAC_URL, path);
+            string json = JsonConvert.SerializeObject(request);
+            StartCoroutine(PostRequest(url, json, callback));
         }
 
-        public void ReceiveRequest(string url, Action<bool, string> callback, int timeOut = 0)
+        private static void onRetrieveData<TResponse>(UnityWebRequest webRequest, Action<TResponse> callback)
         {
-            StartCoroutine(GetRequest(url, callback, timeOut));
+            string result = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
+            HLogger.LogFormat("response data = {0}", result);
+            TResponse response = JsonConvert.DeserializeObject<TResponse>(result);
+            if (callback != null) callback(response);
         }
 
-
-        private IEnumerator PostRequest(string url, string json, Action<bool, string> callback, int timeOut = 0)
+        private IEnumerator PostRequest<TResponse>(string url, string json, Action<TResponse> callback)
         {
-            byte[] postBytes = System.Text.Encoding.UTF8.GetBytes(json);
+            byte[] postBytes = Encoding.UTF8.GetBytes(json);
 
             using (UnityWebRequest request = UnityWebRequest.Post(url, ""))
             {
+                request.timeout = 30;
                 request.uploadHandler = new UploadHandlerRaw(postBytes);
                 request.downloadHandler = new DownloadHandlerBuffer();
-                if (timeOut > 0)
-                {
-                    request.timeout = timeOut;
-                }
 
-                HLogger.Log("=== habby UnityWebRequestPosCN  call url=" + url + " data=" + json + " timeOut=" +
-                            timeOut);
+                HLogger.Log("=== habby UnityWebRequestPosCN  call url=" + url + " data=" + json );
 
                 request.SetRequestHeader("Content-Type", "application/json");
                 yield return request.SendWebRequest();
@@ -41,8 +48,7 @@ namespace SDKFramework.Network
                 if (request.result == UnityWebRequest.Result.ConnectionError ||
                     request.result == UnityWebRequest.Result.DataProcessingError || !request.isDone)
                 {
-                    HLogger.Log("=== habby UnityWebRequestPostCN  network error");
-                    callback?.Invoke(false, string.Empty);
+                    HLogger.LogError("=== habby UnityWebRequestPostCN  network error");
                 }
                 else
                 {
@@ -60,9 +66,19 @@ namespace SDKFramework.Network
                                     ",downloadHandler=" + request.downloadHandler.text);
                     }
 
-                    callback?.Invoke(true, request.downloadHandler.text);
+                    onRetrieveData(request, callback);
                 }
             }
+        }
+
+        #endregion
+
+
+        #region GET
+
+        public void ReceiveRequest(string url, Action<bool, string> callback, int timeOut = 0)
+        {
+            StartCoroutine(GetRequest(url, callback, timeOut));
         }
 
         private IEnumerator GetRequest(string url, Action<bool, string> callback, int timeOut = 0)
@@ -105,5 +121,7 @@ namespace SDKFramework.Network
                 }
             }
         }
+
+        #endregion
     }
 }

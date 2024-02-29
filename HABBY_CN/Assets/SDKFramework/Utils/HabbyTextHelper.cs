@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Habby.CNUser
+namespace SDKFramework.Utils
 {
     public class HabbyText
     {

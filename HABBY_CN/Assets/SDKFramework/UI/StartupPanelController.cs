@@ -1,4 +1,5 @@
 using System.Collections;
+using SDKFramework.Asset;
 using SDKFramework.Config;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,7 +33,7 @@ public class StartupPanelController : MonoBehaviour
 
     private void Awake()
     {
-        StartCoroutine(UIConfig.DeserializeByFile($"{HabbyFramework.Asset.SDKConfigPath}App.json", (jsonStr) =>
+        StartCoroutine(UIConfig.DeserializeByFile($"{AssetModule.SDKConfigPath}App.json", (jsonStr) =>
         {
             _appdata = JsonUtility.FromJson<AppConfig>(jsonStr);
 

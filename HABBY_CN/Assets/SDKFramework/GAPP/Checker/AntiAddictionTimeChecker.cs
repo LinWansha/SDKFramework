@@ -59,9 +59,9 @@ namespace Habby.CNUser
 
             if (account != null && account.Online != null)
             {
-                HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Total, account.Online.Today);
+                HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Total,
+                    account.Online.Today);
             }
-            
         }
 
         public TimeRegulation CheckOnlineTime(UserAccount account)
@@ -184,16 +184,16 @@ namespace Habby.CNUser
 
             if (data.segments.Count < 2) return;
 
-            // HabbyUserClient.Instance.UpdateUserOnlineData(AccountManager.Instance.CurrentAccount, data.segments,
-            //     (response) =>
-            //     {
-            //         if (response.code == SyncOnlineDataResponse.CODE_SUCCESS)
-            //         {
-            //             if (data != null) data.segments.Clear();
-            //         }
-            //     }, (error) =>
-            //     {
-            //     });
+            HLogger.LogFormat("AntiTimeChecker startAt={0}, endAt={1}", data.segments[0].startAt,
+                data.segments[0].endAt);
+            HabbyUserClient.Instance.UpdateUserOnlineData(AccountManager.Instance.CurrentAccount, data.segments,
+                (response) =>
+                {
+                    if (response.code == SyncOnlineDataResponse.CODE_SUCCESS)
+                    {
+                        data.segments.Clear();
+                    }
+                });
         }
 
         public enum TimeRegulation : byte

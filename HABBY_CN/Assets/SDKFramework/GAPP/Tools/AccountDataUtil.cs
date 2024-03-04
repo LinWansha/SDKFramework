@@ -1,3 +1,5 @@
+using SDKFramework.Config;
+
 namespace Habby.CNUser
 {
     public class AccountDataUtil
@@ -5,6 +7,13 @@ namespace Habby.CNUser
         public static UserAccount ParseLoginAccountInfo(LoginResponse response)
         {
             HLogger.LogFormat("ParseLoginAccountInfo token={0}, age={1}", response.token, response.data.age);
+            // int applicableRange = (int)SDKExample.AppData.applicableRange;
+            // if (response.data.age < applicableRange)
+            // {
+            //     HabbyFramework.UI.OpenUI(UIViewID.NotGameTimeUI,
+            //         string.Format(AntiAddictionDisaplayText.UnderAgeRangeNotice, applicableRange));
+            // }        //TODO:逻辑梳理和整改
+
             UserAccount account = new UserAccount()
             {
                 AccessToken = response.data.token,

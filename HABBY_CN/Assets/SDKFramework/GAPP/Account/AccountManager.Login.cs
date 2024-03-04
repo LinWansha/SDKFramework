@@ -33,7 +33,6 @@ namespace Habby.CNUser
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-            // Utils.ForceCrash(ForcedCrashCategory.Abort);
             Application.Quit();
 #endif
         }
@@ -43,12 +42,6 @@ namespace Habby.CNUser
             HLogger.Log("onUserLoginµÇÂ¼³É¹¦");
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
-        }
-
-
-        void Start()
-        {
-            HLogger.Log("--- LoginManager Start");
         }
 
         public void ShowLoginScene()
@@ -79,31 +72,29 @@ namespace Habby.CNUser
         
         public void LocalValidateIdentity(UserAccount account)
         {
-            if (OnIdentitySuccess != null) OnIdentitySuccess();
+            OnIdentitySuccess?.Invoke();
 
-            BirthdayAgeSex entity = new BirthdayAgeSex();
-            entity = LocalIdentityUtil.GetBirthdayAgeSex(account.IdCard);
-
+            BirthdayAgeSex entity = LocalIdentityUtil.GetBirthdayAgeSex(account.IdCard);
+    
+            // ÉèÖÃÄêÁä·¶Î§
             if (entity.Age >= 18)
             {
                 account.AgeRange = UserAccount.AgeLevel.Adult;
             }
-
-            if (entity.Age >= 8 && entity.Age < 16)
-            {
-                account.AgeRange = UserAccount.AgeLevel.Under16;
-            }
-
-            if (entity.Age >= 16 && entity.Age < 18)
+            else if (entity.Age >= 16)
             {
                 account.AgeRange = UserAccount.AgeLevel.Under18;
             }
-
-            if (entity.Age < 8)
+            else if (entity.Age >= 8)
+            {
+                account.AgeRange = UserAccount.AgeLevel.Under16;
+            }
+            else
             {
                 account.AgeRange = UserAccount.AgeLevel.Under8;
             }
 
+            // µÇÂ¼Âß¼­
             if (CanLogin(account))
             {
                 if (account.AgeRange != UserAccount.AgeLevel.Adult)
@@ -142,7 +133,6 @@ namespace Habby.CNUser
             });
         }
 
-
         public void LoginOrIdentify(UserAccount account)
         {
             HLogger.LogFormat("LoginOrIdentify token={0}, channel={1}, age={2}", account.AccessToken, account.LoginChannel,
@@ -168,19 +158,18 @@ namespace Habby.CNUser
                     Login(account);
                 }
             }
+            
         }
 
-
-        public bool CanLogin(UserAccount accout)
+        public bool CanLogin(UserAccount account)
         {
 #if USE_ANTIADDICTION
-
-            if (IsRestrictedTime(accout))
+            if (IsRestrictedTime(account))
             {
                 HabbyFramework.UI.OpenUI(UIViewID.NotGameTimeUI);
                 return false;
             }
-            else if (!HasTimeLeft(accout))
+            if (!HasTimeLeft(account))
             {
                 HabbyFramework.UI.OpenUI(UIViewID.NoTimeLeftUI);
                 return false;

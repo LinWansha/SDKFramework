@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SDKExample : MonoBehaviour
 {
-    private AppConfig _appdata;
+    public static AppConfig AppData;
 
     void Awake()
     {
@@ -13,10 +13,10 @@ public class SDKExample : MonoBehaviour
 
         StartCoroutine(UIConfig.DeserializeByFile($"{AssetModule.SDKConfigPath}App.json", (jsonStr) =>
         {
-            _appdata = JsonUtility.FromJson<AppConfig>(jsonStr);
+            AppData = JsonUtility.FromJson<AppConfig>(jsonStr);
 
-            HabbyFramework.Message.Post(_appdata);
-            if (_appdata.hasLicense)
+            HabbyFramework.Message.Post(AppData);
+            if (AppData.hasLicense)
             {
                HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
             }

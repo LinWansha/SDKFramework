@@ -68,6 +68,7 @@ namespace Habby.CNUser
         public static string Normal_RemainTimeNotice = "<color=#FFFFFF00>缩进</color>尊敬的玩家您好，根据国家规定，未成年玩家非节假日时间每日游戏时长不得超过1.5小时。";
         public static string Holiday_RemainTimeNotice = "<color=#FFFFFF00>缩进</color>尊敬的玩家您好，根据国家规定，未成年玩家节假日时间每日游戏时长不得超过3.0小时。";
         public static string TimeRemain = "<color=#fd4444>当前剩余在线时间：{0}</color>";
+        public static string UnderAgeRangeNotice = "您属于未满{0}周岁的未成年人，已被纳入防沉迷系统。\n为严格防止未成年人沉迷网络游戏，遵照本游戏的\n分级划分，本游戏将无法为您提供游戏服务。";
 
     }
 }

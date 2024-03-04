@@ -256,10 +256,10 @@ namespace Habby.CNUser
         public enum AgeLevel : int
         {
             Unknown = 0,  // 未实名
-            Adult = 4,    // 成年
             Under8 = 1,   // 8岁以下
             Under16 = 2,  // 8 - 16岁以下
-            Under18 = 3   // 16 - 18岁
+            Under18 = 3,   // 16 - 18岁
+            Adult = 4    // 成年
         }
 
         public static AgeLevel ParseAgeLevel(int age)

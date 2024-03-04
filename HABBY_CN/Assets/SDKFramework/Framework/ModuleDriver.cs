@@ -1,19 +1,40 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            佛祖保佑       永无BUG
+*/
 namespace SDKFramework
 {
     /// <summary>
     /// 作者: mrq
     /// 时间: 2024/01/02
-    /// 功能: 
+    /// 功能: 架构驱动层
     /// </summary>
     public sealed class ModuleDriver
     {
         public static ModuleDriver Instance { get; private set; }
         public static bool Initialized { get; private set; }
-        //private List<BaseModule> s_modules;
+        
         private Dictionary<Type, BaseModule> m_modules = new Dictionary<Type, BaseModule>();
 
         public static void Initialize()

@@ -7,16 +7,18 @@ public class RealNameMediator : UIMediator<RealNameView>
     public const string WrongName = "您输入的姓名有误,请重新输入";
     public const string WrongId = "您输入的身份证号码有误,请重新输入";
 
+    private string Name, IdCard;
     private UserAccount _account;
 
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
+        AccountManager.OnIdentityFailed += onError;
+        AccountManager.OnIdentitySuccess += onSuccess;
         view.btConfirm.onClick.AddListener(Confirm);
         view.nameInput.onEndEdit.AddListener(OnEditEnd);
         view.idInput.onEndEdit.AddListener(OnEditEnd);
-        AccountManager.OnIdentityFailed += onError;
-        AccountManager.OnIdentitySuccess += onSuccess;
+        
         _account=arg as UserAccount;
         if (_account == null)
         {
@@ -31,9 +33,12 @@ public class RealNameMediator : UIMediator<RealNameView>
     }
     protected override void OnHide()
     {
-        base.OnHide();
+        view.btConfirm.onClick.RemoveListener(Confirm);
+        view.idInput.onEndEdit.RemoveListener(OnEditEnd);
+        view.nameInput.onEndEdit.RemoveListener(OnEditEnd);
         AccountManager.OnIdentityFailed -= onError;
         AccountManager.OnIdentitySuccess -= onSuccess;
+        base.OnHide();
     }
     
 
@@ -45,17 +50,16 @@ public class RealNameMediator : UIMediator<RealNameView>
     
     public void Confirm()
     {
-        if (!LocalIdentityUtil.IsChineseName(view.nameInput.text))
+        if (!InputFully()) return;
+        if (!LocalIdentityUtil.IsChineseName(Name))
         {
-            view.notice.text = WrongName;
-            view.notice.gameObject.SetActive(true);
+            setNotice(WrongName);
             return;
         }
 
-        if (string.IsNullOrEmpty(view.idInput.text)||view.idInput.text.Length != 15 && view.idInput.text.Length != 18)
+        if (IdCard.Length != 15 && IdCard.Length != 18)
         {
-            view.notice.text = WrongId;
-            view.notice.gameObject.SetActive(true);
+            setNotice(WrongId);
             return;
         }
 
@@ -65,9 +69,9 @@ public class RealNameMediator : UIMediator<RealNameView>
             return;
         }
 
-        _account.RealName = view.nameInput.text;
+        _account.RealName =Name;
 
-        string id = view.idInput.text.Trim();
+        string id = IdCard.Trim();
         if (id.Contains("x"))
         {
             id = id.ToUpper();
@@ -84,7 +88,18 @@ public class RealNameMediator : UIMediator<RealNameView>
         if (view.notice && view.notice.gameObject.activeSelf)
             view.notice.gameObject.SetActive(false);
     }
+    private bool InputFully()
+    {
+        if (!string.IsNullOrEmpty(view.nameInput.text) && !string.IsNullOrEmpty(view.idInput.text))
+        {
+            Name = view.nameInput.text;
+            IdCard = view.idInput.text;
+            return true;
+        }
 
+        HabbyTextHelper.Instance.ShowTip("输入的姓名和身份证号不能为空");
+        return false;
+    }
    
 
     private void onSuccess()

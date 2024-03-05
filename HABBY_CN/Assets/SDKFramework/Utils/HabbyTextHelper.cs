@@ -26,7 +26,7 @@ namespace SDKFramework.Utils
             _callback = onComplete;
 
             var startPosition = _text.rectTransform.position;
-            var targetPosition = startPosition + new Vector3(0, 0.3f, 0);
+            var targetPosition = startPosition + new Vector3(0, 100, 0);
 
             var startColor = _text.material.color;
             var endColor = new Color(startColor.r, startColor.g, startColor.b, 0);

@@ -27,15 +27,8 @@ namespace Habby.CNUser
             _last_time = Time.realtimeSinceStartup;
             _ticking = true;
             _is_holiday = _holiday_checker.IsHoliday(TimerHelper.GetNowTime());
-#if CHANNEL_CN
-            if (HabbyCloudConfigManager.Instance.CloudData != null)
-            {
-                _interval = HabbyCloudConfigManager.Instance.CloudData.heartbeatInterval;
-            }
-            _interval = Math.Max(_interval,30);
-#else
+
             _interval = 100;
-#endif
         }
 
         /// <summary>

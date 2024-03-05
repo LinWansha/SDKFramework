@@ -68,11 +68,10 @@ namespace Habby.CNUser
             switch (regulation)
             {
                 case AntiAddictionTimeChecker.TimeRegulation.Exit:
-                    // timeManager.UploadData(account.Online);
+                    timeManager.UploadData(account.Online);
                     OnNoTimeLeft?.Invoke();
                     break;
             }
-            
         }
 #endif
         public void CheckAndClean()
@@ -198,11 +197,12 @@ namespace Habby.CNUser
                 return _AccountHistory;
             }
         }
-        
+
 #if USE_ANTIADDICTION
         public bool CanGacha(string gacha) => PurchaseChecker.CanGacha(CurrentAccount, gacha);
         public void Gacha(string gacha, int amount) => CurrentAccount.AddGacha(gacha, amount);
         public bool CanPurchase(double amount) => PurchaseChecker.CanPurchase(CurrentAccount, amount);
+
         public void Purchase(int amount)
         {
             HLogger.LogWarnFormat("--- Purchase add amount=" + amount + ",nowMonth=" + CurrentAccount.IAP.Monthly);

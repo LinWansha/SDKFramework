@@ -33,21 +33,21 @@ public class StartupPanelController : MonoBehaviour
 
     private void Awake()
     {
-        StartCoroutine(UIConfig.DeserializeByFile($"{AssetModule.SDKConfigPath}App.json", (jsonStr) =>
-        {
-            _appdata = JsonUtility.FromJson<AppConfig>(jsonStr);
-
-            if (_appdata.hasLicense)
-            {
-                HabbyFramework.UI.OpenUI(UIViewID.EntryUI,_appdata);
-                panel.SetActive(false);
-            }
-            else
-            {
-                StartCoroutine(DisplayStartupPanel());
-            }
-            
-        }));
+        // StartCoroutine(UIConfig.DeserializeByFile($"{AssetModule.ConfigPath}App.json", (jsonStr) =>
+        // {
+        //     _appdata = JsonUtility.FromJson<AppConfig>(jsonStr);
+        //
+        //     if (_appdata.hasLicense)
+        //     {
+        //         HabbyFramework.UI.OpenUI(UIViewID.EntryUI,_appdata);
+        //         panel.SetActive(false);
+        //     }
+        //     else
+        //     {
+        //         StartCoroutine(DisplayStartupPanel());
+        //     }
+        //     
+        // }));
     }
 
     private IEnumerator DisplayStartupPanel()

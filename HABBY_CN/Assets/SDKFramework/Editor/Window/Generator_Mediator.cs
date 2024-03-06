@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Newtonsoft.Json;
+using SDKFramework.Asset;
 using SDKFramework.Config;
 
 namespace SDKFramework.Editor
 {
     public class Generator_Mediator : EditorWindow
     {
+        private readonly string FilePath = $"{AssetModule.ConfigPath}UIConfig.json";
         private string viewName = "";
         private GameObject UIPrefab;
         private UIMode UILayer = UIMode.Normal;
@@ -111,11 +113,11 @@ namespace SDKFramework.Editor
                     Mode = UILayer
                 };
 
-                string jsonStr = File.ReadAllText("Assets/StreamingAssets/SDKConfig/UIConfig.json");
+                string jsonStr = File.ReadAllText(FilePath);
                 List<UIConfig> infoList = JsonConvert.DeserializeObject<List<UIConfig>>(jsonStr);
                 infoList.Add(viewInfo);
 
-                File.WriteAllText("Assets/StreamingAssets/SDKConfig/UIConfig.json",
+                File.WriteAllText(FilePath,
                     JsonConvert.SerializeObject(infoList, Formatting.Indented));
             });
 

@@ -2,6 +2,8 @@ using SDKFramework.Config;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
+using SDKFramework.Asset;
+
 namespace SDKFramework.Editor
 {
     public class Configuration_WebURL : EditorWindow
@@ -12,8 +14,7 @@ namespace SDKFramework.Editor
         private string thirdPartySharingUrl = "";
 
         // 配置文件路径
-        private string streamingAssetsDir = "Assets/StreamingAssets/SDKConfig";
-        private string configFileName = "WebConfig.json";
+        private readonly string FilePath = $"{AssetModule.ConfigPath}WebConfig.json";
 
         private GUIStyle headerStyle;
         private const string Tittle = "WebUrl Configuration Linker";
@@ -59,11 +60,10 @@ namespace SDKFramework.Editor
 
         private void LoadExistingLinks()
         {
-            string configFilePath = Path.Combine(streamingAssetsDir, configFileName);
 
-            if (File.Exists(configFilePath))
+            if (File.Exists(FilePath))
             {
-                string jsonContent = File.ReadAllText(configFilePath);
+                string jsonContent = File.ReadAllText(FilePath);
                 var configData = JsonUtility.FromJson<WebConfig>(jsonContent);
 
                 gameLicenseUrl = configData.gameLicenseUrl;
@@ -89,7 +89,7 @@ namespace SDKFramework.Editor
             };
 
             string jsonContent = JsonUtility.ToJson(configData, true);
-            File.WriteAllText(Path.Combine(streamingAssetsDir, configFileName), jsonContent);
+            File.WriteAllText(FilePath, jsonContent);
 
             Debug.Log("Links saved to WebConfig.json");
         }

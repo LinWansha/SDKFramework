@@ -28,7 +28,7 @@ namespace SDKFramework.UI
         protected internal override void OnModuleInit()
         {
             base.OnModuleInit();
-            StartCoroutine(UIConfig.DeserializeByFile($"{AssetModule.SDKConfigPath}UIConfig.json"));
+            UIConfig.DeserializeByFile();
         }
 
         protected internal override void OnModuleStop()

@@ -1,3 +1,5 @@
+using SDKFramework.Asset;
+
 namespace SDKFramework.Editor
 {
     using System.IO;
@@ -7,7 +9,7 @@ namespace SDKFramework.Editor
 
     public class Configuration_App : EditorWindow
     {
-        private string configFilePath = "Assets/StreamingAssets/SDKConfig/App.json";
+        private readonly string FilePath = $"{AssetModule.ConfigPath}App.json";
         private AppConfig _ageTipConfig;
 
         private Vector2 _scrollPosition;
@@ -31,6 +33,7 @@ namespace SDKFramework.Editor
                 alignment = TextAnchor.MiddleCenter,
                 normal = new GUIStyleState() { textColor = Color.green }
             };
+            HLogger.LogError(FilePath);
             _ageTipConfig = LoadConfiguration();
         }
 
@@ -39,7 +42,7 @@ namespace SDKFramework.Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(Tittle, headerStyle);
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Configuration file path: " + configFilePath);
+            EditorGUILayout.LabelField("Configuration file path: " + FilePath);
             EditorGUILayout.Space();
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
             EditorGUILayout.Space();
@@ -85,22 +88,22 @@ namespace SDKFramework.Editor
         }
         private AppConfig LoadConfiguration()
         {
-            if (!File.Exists(configFilePath))
+            if (!File.Exists(FilePath))
             {
-                Debug.LogWarning("Configuration file not found! Please ensure the file exists at: " + configFilePath);
+                Debug.LogWarning("Configuration file not found! Please ensure the file exists at: " + FilePath);
                 return new AppConfig(); // 返回默认对象
             }
 
-            string json = File.ReadAllText(configFilePath);
+            string json = File.ReadAllText(FilePath);
             return JsonUtility.FromJson<AppConfig>(json);
         }
 
         private void SaveConfiguration()
         {
             string json = JsonUtility.ToJson(_ageTipConfig, true);
-            File.WriteAllText(configFilePath, json);
+            File.WriteAllText(FilePath, json);
             AssetDatabase.Refresh();
-            Debug.Log("Configuration saved to: " + configFilePath);
+            Debug.Log("Configuration saved to: " + FilePath);
         }
     }
 }

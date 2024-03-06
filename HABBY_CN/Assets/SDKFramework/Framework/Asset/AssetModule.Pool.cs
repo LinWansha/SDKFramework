@@ -6,7 +6,6 @@ namespace SDKFramework.Asset
     public partial class AssetModule : BaseModule
     {
         private readonly GameObjectPool<GameObjectAsset> gameObjectPool = new GameObjectPool<GameObjectAsset>();
-        public static readonly string SDKConfigPath = $"{Application.streamingAssetsPath}/SDKConfig/";
         public GameObject LoadGameObject(string path, Action<GameObject> createNewCallback = null)
         {
             return gameObjectPool.LoadGameObject(path, createNewCallback).gameObject;

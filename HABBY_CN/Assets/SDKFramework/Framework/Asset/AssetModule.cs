@@ -5,6 +5,7 @@ namespace SDKFramework.Asset
 {
     public partial class AssetModule : BaseModule
     {
+        public static readonly string ConfigPath = $"Assets/SDKFramework/Resources/SDKConfig/";
 #if UNITY_EDITOR
         public const string BUNDLE_LOAD_NAME = "Tools/Build/Bundle Load";
 #endif

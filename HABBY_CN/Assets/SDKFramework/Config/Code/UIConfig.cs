@@ -11,93 +11,57 @@ namespace SDKFramework.Config
     {
         #region File
 
-        // public static void DeserializeByFile(string directory)
-        // {
-        //     string path = $"{directory}/UIConfig.json";
-        //     using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
-        //     {
-        //         using (System.IO.StreamReader reader = new System.IO.StreamReader(fs))
-        //         {
-        //             datas = new List<UIConfig>();
-        //             indexMap = new Dictionary<int, int>();
-        //             string json = reader.ReadToEnd();
-        //             JArray array = JArray.Parse(json);
-        //             Count = array.Count;
-        //             for (int i = 0; i < array.Count; i++)
-        //             {
-        //                 JObject dataObject = array[i] as JObject;
-        //                 UIConfig data = (UIConfig)dataObject.ToObject(typeof(UIConfig));
-        //                 datas.Add(data);
-        //                 indexMap.Add(data.ID, i);
-        //             }
-        //         }
-        //     }
-        // }
-        
-        /// <summary>
-        /// 功能：所有平台读取流媒体资文件的公共接口
-        /// 因为要开携程调用，所以读S目录除外的其他文件文件尽量别用
-        /// </summary>
-        public static IEnumerator DeserializeByFile(string path, System.Action<string> onComplete=null)
+        public static void DeserializeByFile(string directory)
         {
-            if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.WebGLPlayer)
+            string path = $"{directory}UIConfig.json";
+            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             {
-                yield return DeserializeByWebRequest(path, onComplete);
-            }
-            else
-            {
-                DeserializeByReadingLocalFile(path, onComplete);
-            }
-        }
-
-        private static IEnumerator DeserializeByWebRequest(string path, System.Action<string> onComplete=null)
-        {
-            using (UnityEngine.Networking.UnityWebRequest request = UnityEngine.Networking.UnityWebRequest.Get(path))
-            {
-                Debug.Log("安卓平台通过UnityWebRequest加载配置");
-                yield return request.SendWebRequest();
-#pragma warning disable 0618
-                if (!request.isNetworkError && !request.isHttpError)
-#pragma warning restore 0618
+                using (System.IO.StreamReader reader = new System.IO.StreamReader(fs))
                 {
-                    ProcessJsonData(request.downloadHandler.text, onComplete);
+                    datas = new List<UIConfig>();
+                    indexMap = new Dictionary<int, int>();
+                    string json = reader.ReadToEnd();
+                    JArray array = JArray.Parse(json);
+                    Count = array.Count;
+                    for (int i = 0; i < array.Count; i++)
+                    {
+                        JObject dataObject = array[i] as JObject;
+                        UIConfig data = (UIConfig)dataObject.ToObject(typeof(UIConfig));
+                        datas.Add(data);
+                        indexMap.Add(data.ID, i);
+                    }
                 }
             }
         }
 
-        private static void DeserializeByReadingLocalFile(string path, System.Action<string> onComplete=null)
+        public static async  void DeserializeByFile()
         {
-            string json = File.ReadAllText(path);
-            ProcessJsonData(json, onComplete);
-        }
+            string resourcePath = "SDKConfig/UIConfig";
+            TextAsset textAsset = Resources.Load<TextAsset>(resourcePath);
 
-        private static void ProcessJsonData(string jsonData, System.Action<string> onComplete=null)
-        {
-            if (onComplete != null)
+            if (textAsset == null)
             {
-                onComplete(jsonData);
+                Debug.LogError("UIConfig not found at path: " + resourcePath);
             }
-            else
-            {
-                ParseJson(jsonData);
-            }
-        }
 
-        private static void ParseJson(string json)
-        {
-            datas = new List<UIConfig>();
-            indexMap = new Dictionary<int, int>();
-            JArray array = JArray.Parse(json);
-            Count = array.Count;
-            for (int i = 0; i < array.Count; i++)
+            using (StringReader reader = new StringReader(textAsset.text))
             {
-                JObject dataObject = array[i] as JObject;
-                UIConfig data = (UIConfig)dataObject.ToObject(typeof(UIConfig));
-                datas.Add(data);
-                indexMap.Add(data.ID, i);
+                datas = new List<UIConfig>();
+                indexMap = new Dictionary<int, int>();
+                string json = await reader.ReadToEndAsync();
+                JArray array = JArray.Parse(json);
+                Count = array.Count;
+
+                for (int i = 0; i < array.Count; i++)
+                {
+                    JObject dataObject = array[i] as JObject;
+                    UIConfig data = (UIConfig)dataObject.ToObject(typeof(UIConfig));
+                    datas.Add(data);
+                    indexMap.Add(data.ID, i);
+                }
             }
         }
-
+        
         #endregion
 
         #region Addressable
@@ -193,5 +157,11 @@ namespace SDKFramework.Config
         public string Description { get; set; }
         public string Asset { get; set; }
         public UIMode Mode { get; set; }
+    }
+    
+    public enum UIMode
+    {
+        Normal = 0,
+        Modal = 1,
     }
 }

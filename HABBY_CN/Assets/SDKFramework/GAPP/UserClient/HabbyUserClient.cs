@@ -64,7 +64,7 @@ namespace Habby.CNUser
                 idCardName = account.RealName,
                 idCardNumber = account.IdCard,
             };
-            HabbyFramework.Network.SendRequest(request,response,PATH_IDENTITY);
+            HabbyFramework.Network.Post(request,response,PATH_IDENTITY);
         }
         
         public void RegisterWithAccount(string userName, string password, Action<RegisterResponse> response)
@@ -75,7 +75,7 @@ namespace Habby.CNUser
                 customPassword = password,
                 deviceId = DeviceId
             };
-            HabbyFramework.Network.SendRequest(request,response,PATH_REGISTER);
+            HabbyFramework.Network.Post(request,response,PATH_REGISTER);
         }
         
         public void LoginWithAccount(string userName ,string password, Action<LoginResponse> response)
@@ -87,7 +87,7 @@ namespace Habby.CNUser
                 password = password,
                 deviceId = DeviceId
             };
-            HabbyFramework.Network.SendRequest(request,response,PATH_LOGIN);
+            HabbyFramework.Network.Post(request,response,PATH_LOGIN);
         }
         
         public void UpdateUserOnlineData(UserAccount account, List<UserOnlieSegment> segments, Action<SyncOnlineDataResponse> response)
@@ -99,7 +99,7 @@ namespace Habby.CNUser
                 token = account.AccessToken,
                 activeTimeSegments = segments,
             };
-            HabbyFramework.Network.SendRequest(request,response,PATH_HEARTBEAT);
+            HabbyFramework.Network.Post(request,response,PATH_HEARTBEAT);
         }
         private bool _clientDataDirty = true;
         

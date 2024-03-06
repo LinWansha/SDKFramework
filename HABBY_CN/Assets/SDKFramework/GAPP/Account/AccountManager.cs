@@ -145,7 +145,7 @@ namespace Habby.CNUser
             _reloginFailCount = 0; // reset fail count when login success
         }
 
-        public void Logout(bool dispatch = true, bool removeUserAccount = false)
+        public void Logout(int actionCode = 0)
         {
             HLogger.LogFormat("UserAccountManager Logout, account={0}", CurrentAccount);
             if (CurrentAccount != null)
@@ -154,13 +154,13 @@ namespace Habby.CNUser
 #if USE_ANTIADDICTION
                 timeManager.StopTimeCounter(CurrentAccount);
 #endif
-                (removeUserAccount ? (Action)ClearCurrent : Save)();
+                (actionCode == 0 ? (Action)Save : ClearCurrent)();
             }
 
             isLogin = false;
 
-            HLogger.LogWarnFormat("--- Logout dispatch=" + dispatch);
-            (dispatch ? OnUserLogout : OnShowLoginScene)?.Invoke();
+            (actionCode == 0 ? OnUserLogout : OnShowLoginScene)?.Invoke();
+            HLogger.LogWarnFormat("--- Logout ActionCode=" + actionCode);
         }
 
         public void ClearCurrent()

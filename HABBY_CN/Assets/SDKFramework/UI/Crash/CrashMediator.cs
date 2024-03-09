@@ -1,4 +1,6 @@
 using Habby.CNUser;
+using SDKFramework.Config;
+using SDKFramework.Message;
 using SDKFramework.UI;
 
 public class CrashMediator : UIMediator<CrashView>
@@ -10,7 +12,7 @@ public class CrashMediator : UIMediator<CrashView>
 
         string displayText = "";
         float alignment = 1f;
-        
+
         switch ((ExitReason)arg)
         {
             case ExitReason.NoGameTime:
@@ -23,7 +25,8 @@ public class CrashMediator : UIMediator<CrashView>
                 break;
             case ExitReason.NoRightAge:
                 alignment = 1.3f;
-                displayText = string.Format(AntiAddictionDisaplayText.NoRightAge, 8);
+                displayText = string.Format(AntiAddictionDisaplayText.NoRightAge,
+                    (int)MessageHandler.AppData.applicableRange);
                 break;
         }
 
@@ -37,11 +40,11 @@ public class CrashMediator : UIMediator<CrashView>
     private void UpdateDetailView(string text)
     {
         View.detail.text = text;
-        View.detail.resizeTextMinSize = 24;
     }
 
     private void aligning(float lineSpacing)
     {
+        View.detail.resizeTextMinSize = 24;
         View.detail.lineSpacing = lineSpacing;
     }
 
@@ -49,6 +52,16 @@ public class CrashMediator : UIMediator<CrashView>
     {
         View.btnSure.onClick.RemoveListener(Close);
         base.OnHide();
+    }
+
+    private class MessageHandler : MessageHandler<AppConfig>
+    {
+        public static AppConfig AppData;
+
+        public override void HandleMessage(AppConfig arg)
+        {
+            AppData = arg;
+        }
     }
 }
 

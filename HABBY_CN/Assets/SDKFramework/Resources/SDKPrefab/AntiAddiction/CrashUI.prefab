@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: -6527123145961704474}
   - component: {fileID: -465884359860732140}
   - component: {fileID: 7086320242969988966}
-  - component: {fileID: -3782596401321250710}
   - component: {fileID: 8611988130992433603}
   m_Layer: 5
   m_Name: CrashUI
@@ -103,19 +102,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &-3782596401321250710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1229903771634658530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bef8d937c7f46940ad31680cfa5e51b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  btnSure: {fileID: 476099224739927258}
 --- !u!114 &8611988130992433603
 MonoBehaviour:
   m_ObjectHideFlags: 0

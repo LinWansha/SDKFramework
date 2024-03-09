@@ -18,7 +18,6 @@ namespace Habby.CNUser
             {
                 AccessToken = response.data.token,
                 // ExpireAt = TimerHelper.ParseToDateTime(response.data.tokenExpireTime).Ticks,
-                LoginState = UserAccount.UserLoginState.Logedin,
 
                 AgeRange = response.data.validateIdentity == 1
                     ? (UserAccount.AgeLevel)response.data.addictLevel

@@ -48,10 +48,8 @@ namespace Habby.CNUser
                         PlayerPrefs.SetString("--deviceid--",randomID);
                         HLogger.LogWarning("NewGuid");
                     }
-                    HLogger.LogWarning(PlayerPrefs.GetString("--deviceid--"));
                     return PlayerPrefs.GetString("--deviceid--");
                 }
-                HLogger.LogWarning(devcieId);
                 return devcieId;
             }
         }

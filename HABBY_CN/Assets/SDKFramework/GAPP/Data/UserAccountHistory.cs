@@ -170,35 +170,5 @@ namespace Habby.CNUser
             FileSaveLoad.DeleteHistory();
             Save();
         }
-        public void CheckAndClean()
-        {
-            if (HasAccountHistory)
-            {
-                List<UserAccount> targets = new List<UserAccount>();
-                foreach (KeyValuePair<string,Dictionary<string,UserAccount>> keyValuePair in channelList)
-                {
-                    foreach (KeyValuePair<string,UserAccount> userAccountInfo in keyValuePair.Value)
-                    {
-                        if (!string.IsNullOrEmpty(userAccountInfo.Value.LoginServerName) &&
-                            userAccountInfo.Value.LoginServerName != "login server url")//Http.URL
-                        {
-                            targets.Add(userAccountInfo.Value);
-                        }
-                    }
-                }
-
-                if (targets.Count > 0)
-                {
-                    foreach (UserAccount userAccount in targets)
-                    {
-                        if (channelList != null  && channelList.ContainsKey(userAccount.LoginChannel) && channelList[userAccount.LoginChannel].ContainsKey(userAccount.UID))
-                        {
-                            channelList[userAccount.LoginChannel].Remove(userAccount.UID);
-                        }
-                    }
-                    Save();
-                }
-            }
-        }
     }
 }

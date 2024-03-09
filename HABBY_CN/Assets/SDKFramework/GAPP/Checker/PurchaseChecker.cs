@@ -64,16 +64,6 @@ namespace Habby.CNUser
 
             return true;
         }
-
-        private static int GachaLeft(UserAccount account, string gacha)
-        {
-            if (account.Gacha == null) return DAILY_GACHA_LIMIT;
-            int used = account.Gacha.Get(gacha);
-            return DAILY_GACHA_LIMIT - used;
-        }
-        public static bool CanGacha(UserAccount account, string gacha)
-        {
-            return GachaLeft(account, gacha) > 0;
-        }
+        
     }
 }

@@ -4,6 +4,7 @@ namespace Habby.CNUser
 {
     public class GAPPListener : MonoBehaviour
     {
+#if USE_ANTIADDICTION
         private void OnEnable()
         {
             HLogger.Log("开始侦听未成年人游戏行为",Color.green);
@@ -30,7 +31,8 @@ namespace Habby.CNUser
 
         private void NoTimeLeft()
         {
-            HabbyFramework.UI.OpenUI(UIViewID.NoTimeLeftUI);
+            HabbyFramework.UI.OpenUISingle(UIViewID.NoTimeLeftUI);
         }
+#endif
     }
 }

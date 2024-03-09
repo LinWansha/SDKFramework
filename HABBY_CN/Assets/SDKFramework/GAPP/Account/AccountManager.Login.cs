@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using SDKFramework.Utils;
-using UnityEngine;
-
 namespace Habby.CNUser
 {
-    public partial class AccountManager : MonoSingleton<AccountManager>
+    public partial class AccountManager
     {
         public void onClearUserCache()
         {
@@ -46,8 +41,8 @@ namespace Habby.CNUser
 
         public void ShowLoginScene()
         {
-            HLogger.Log("showLoginScene");
-            if (OnShowLoginScene != null) OnShowLoginScene();
+            HLogger.Log("ShowLoginScene");
+            OnShowLoginScene?.Invoke();
         }
 
         public void CheckUser()
@@ -55,13 +50,8 @@ namespace Habby.CNUser
             if (HasAccount)
             {
                 UserAccount account = CurrentAccount;
-                HLogger.LogFormat("LoginManager checkUser token={0}, state={1}", account.AccessToken, account.LoginState);
-                switch (account.LoginState)
-                {
-                    case UserAccount.UserLoginState.Logout:
-                        ShowLoginScene();
-                        break;
-                }
+                HLogger.LogFormat("LoginManager checkUser token={0}", account.AccessToken);
+                if (isLogin) ShowLoginScene();
             }
             else
             {

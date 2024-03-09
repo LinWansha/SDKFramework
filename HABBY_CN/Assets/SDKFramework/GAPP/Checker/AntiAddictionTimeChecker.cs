@@ -79,8 +79,8 @@ namespace Habby.CNUser
                 seconds = 0;
             }
 
-            HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today,
-                account.Online.Total);
+            //HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today, account.Online.Total);
+               
             int remain;
             if (account.AgeRange != UserAccount.AgeLevel.Adult)
             {

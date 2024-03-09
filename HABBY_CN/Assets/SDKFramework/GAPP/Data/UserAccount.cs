@@ -22,103 +22,91 @@ namespace Habby.CNUser
         public const string ChannelTraditional = "traditional";
         #endregion
         
-        [SerializeField]
+        
         string accessToken;
-        public string AccessToken { get { return accessToken; } set { accessToken = value; } }
+        public string AccessToken{ get => accessToken; set => accessToken = value; }
 
-        [SerializeField]
+        
         string refreshToken;
-        public string RefreshToken { get { return refreshToken; } set { refreshToken = value; } }
+        public string RefreshToken { get => refreshToken; set => refreshToken = value; }
 
-        // [SerializeField]
+
         // long expireTime;
         // public long ExpireAt { get { return expireTime; } set { expireTime = value; } }
         
-        [SerializeField]
+        
         string unionId;
-        public string UnionId { get { return unionId; } set { unionId = value; } }
+        public string UnionId{ get => unionId; set => unionId = value; }
         
         
-        [SerializeField]
+        
         string uid;
-        public string UID { get { return uid; } set { uid = value; } }
+        public string UID{ get => uid; set => uid = value; }
     
-        [FormerlySerializedAs("offlinetime")] [SerializeField]
+        [FormerlySerializedAs("offlinetime")] 
         long loginTime;
-        public long LoginTime { get { return loginTime; } set { loginTime = value; } }
+        public long LoginTime { get => loginTime; set => loginTime = value; }
         
-        [SerializeField]
+        
         string nickName;
-        public string NickName { get { return nickName; } set { nickName = value; } }
+        public string NickName{ get => nickName; set => nickName = value; }
+        
 
-        [SerializeField]
-        UserLoginState loginState;
-        public UserLoginState LoginState { get { return loginState; } set { loginState = value; } }
-
-        [SerializeField]
+        
         GameLevel level;
-        public GameLevel Level { get { return level; } set { level = value; } }
+        public GameLevel Level { get => level; set => level = value; }
 
-        [SerializeField]
+        
         string phoneNumber;
-        public string PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; } }
-        [SerializeField]
+        public string PhoneNumber  { get => phoneNumber; set => phoneNumber = value; }
+        
         string password;
-        public string Password { get { return password; } set { password = value; } }
+        public string Password { get => password; set => password = value; }
 
-        [SerializeField]
+        
         string realName;
-        public string RealName { get { return realName; } set { realName = value; } }
+        public string RealName { get => realName; set => realName = value; }
 
-        [SerializeField]
+        
         string idcard;
-        public string IdCard { get { return idcard; } set { idcard = value; } }
+        public string IdCard  { get => idcard; set => idcard = value; }
 
-        [SerializeField]
+        
         string channel;
-        public string LoginChannel { get { return channel; } set { channel = value; } }
+        public string LoginChannel { get => channel; set => channel = value; }
         
         /// <summary>
         /// 登陆方式名：例如短信验证，手机一键登录，qq，微信等，
         /// 注：多个登陆方式可能对应一个LoginChannel（ 例如手机短信，手机一键登录）
         /// </summary>
-        [SerializeField]
+        
         string loginMethodName;
 
         /// <summary>
         /// 登陆方式名：例如短信验证，手机一键登录，qq，微信等，
         /// 注：多个登陆方式可能对应一个LoginChannel（ 例如手机短信，手机一键登录）
         /// </summary>
-        public string LoginMethodName
-        {
-            get { return loginMethodName; } 
-            set { loginMethodName = value; }
-        }
-        [SerializeField]
-        string loginServerName;
+        public string LoginMethodName{ get => loginMethodName; set => loginMethodName = value; }
         
+        string loginServerName;
+
         /// <summary>
         /// 登陆方服务器
         /// </summary>
-        public string LoginServerName
-        {
-            get { return loginMethodName; } 
-            set { loginMethodName = value; }
-        }
-        
+        public string LoginServerName { get => loginServerName; set => loginServerName = value; }
+       
+            
 
-        [SerializeField]
         AgeLevel ageLevel;
-        public AgeLevel AgeRange { get { return ageLevel; } set { ageLevel = value; } }
-
-        private UserGachaData userGacha;
-        public UserGachaData Gacha { get { return userGacha; } set { userGacha = value; } }
+        public AgeLevel AgeRange { get => ageLevel; set => ageLevel = value;  }
 
         private UserExpenseData userExpense;
-        public UserExpenseData IAP { get { return userExpense; } set { userExpense = value; } }
+        public UserExpenseData IAP { get => userExpense;  set =>userExpense = value; }
 
         private UserOnlineData userOnlineData;
-        public UserOnlineData Online { get { return userOnlineData; } set { userOnlineData = value; } }
+        public UserOnlineData Online  { get => userOnlineData; set =>userOnlineData = value; }
+      
+           
         public UserAccount() { }
 
         public UserAccount(SerializationInfo info, StreamingContext context)
@@ -144,7 +132,6 @@ namespace Habby.CNUser
             if (expense != null) userExpense = JsonUtility.FromJson<UserExpenseData>(expense);
 
             string gacha = info.GetString("gacha");
-            if (gacha != null) userGacha = JsonUtility.FromJson<UserGachaData>(gacha);
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -167,14 +154,8 @@ namespace Habby.CNUser
 
             if (userOnlineData != null) info.AddValue("online", JsonUtility.ToJson(userOnlineData, true));
             if (userExpense != null) info.AddValue("expense", JsonUtility.ToJson(userExpense, true));
-            if (userGacha != null) info.AddValue("gacha", JsonUtility.ToJson(userGacha, true));
         }
 
-        public void AddGacha(string gacha, int count)
-        {
-            if (userGacha == null) userGacha = new UserGachaData();
-            userGacha.Add(gacha, count);
-        }
         public void AddIap(double money)
         {
             if (userExpense == null) userExpense = new UserExpenseData();
@@ -247,12 +228,7 @@ namespace Habby.CNUser
             Traditional,  // 自建用户名密码形式
             TapTap, // taptap TODO:需要和后端确认
         }
-        public enum UserLoginState : int
-        {
-            Logout = 0,
-            Logedin = 1,
-        }
-
+        
         public enum AgeLevel : int
         {
             Unknown = 0,  // 未实名

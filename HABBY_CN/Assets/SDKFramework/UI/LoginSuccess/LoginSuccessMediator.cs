@@ -11,7 +11,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
     protected override void OnInit()
     {
         base.OnInit();
-        _startPos = view.root.anchoredPosition;
+        _startPos = View.root.anchoredPosition;
     }
 
     protected override void OnShow(object arg)
@@ -34,7 +34,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
         }
 
         SetChannel(account.LoginChannel);
-        view.nameText.text = account.NickName;
+        View.nameText.text = account.NickName;
 
         var topPixel = Screen.currentResolution.height - (Screen.safeArea.y + Screen.safeArea.height);
         Rect safe = Screen.safeArea;
@@ -42,13 +42,13 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
         float frigeHeigh = 0;
 
 
-        var targetPositionY = _startPos.y - view.root.rect.height - frigeHeigh;
+        var targetPositionY = _startPos.y - View.root.rect.height - frigeHeigh;
         _animationCoroutine = CoroutineScheduler.Instance.StartCoroutine(AnimateLoginTip(1f, targetPositionY));
     }
 
     private IEnumerator AnimateLoginTip(float duration, float targetPositionY)
     {
-        CanvasGroup group = view.root.GetComponent<CanvasGroup>();
+        CanvasGroup group = View.root.GetComponent<CanvasGroup>();
 
         float timer = 0f;
 
@@ -58,7 +58,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
 
             float progress = timer / duration;
 
-            view.root.anchoredPosition = new Vector3(view.root.anchoredPosition.x,
+            View.root.anchoredPosition = new Vector3(View.root.anchoredPosition.x,
                 Mathf.Lerp(_startPos.y, targetPositionY, progress),
                 0);
             yield return null;
@@ -74,7 +74,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
 
             float progress = timer / (duration * 2f);
 
-            view.root.anchoredPosition = new Vector3(view.root.anchoredPosition.x,
+            View.root.anchoredPosition = new Vector3(View.root.anchoredPosition.x,
                 Mathf.Lerp(targetPositionY, _startPos.y, progress),
                 0);
 
@@ -89,23 +89,23 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
 
     private void SetChannel(string channelName)
     {
-        view.weixin.SetActive(false);
-        view.apple.SetActive(false);
-        view.phone.SetActive(false);
-        view.qq.SetActive(false);
+        View.weixin.SetActive(false);
+        View.apple.SetActive(false);
+        View.phone.SetActive(false);
+        View.qq.SetActive(false);
         switch (channelName)
         {
             case UserAccount.ChannelWeiXin:
-                view.weixin.SetActive(true);
+                View.weixin.SetActive(true);
                 break;
             case UserAccount.ChannelPhone:
-                view.phone.SetActive(true);
+                View.phone.SetActive(true);
                 break;
             case UserAccount.ChannelAppleId:
-                view.apple.SetActive(true);
+                View.apple.SetActive(true);
                 break;
             case UserAccount.ChannelQQ:
-                view.qq.SetActive(true);
+                View.qq.SetActive(true);
                 break;
             default:
                 break;
@@ -120,7 +120,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
             _animationCoroutine = null;
         }
 
-        view.root.anchoredPosition = new Vector2(_startPos.x, _startPos.y);
+        View.root.anchoredPosition = new Vector2(_startPos.x, _startPos.y);
         Close();
     }
 }

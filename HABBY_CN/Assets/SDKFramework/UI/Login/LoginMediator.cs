@@ -12,8 +12,8 @@ public class LoginMediator : UIMediator<LoginView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        view.btnLogin.onClick.AddListener(Login);
-        view.btnRegister.onClick.AddListener(Register);
+        View.btnLogin.onClick.AddListener(Login);
+        View.btnRegister.onClick.AddListener(Register);
         HabbyFramework.Message.Subscribe<MsgType.ClosePopup>(ClickMaskCallBack);
     }
 
@@ -28,11 +28,11 @@ public class LoginMediator : UIMediator<LoginView>
 
     protected override void OnHide()
     {
-        view.btnLogin.onClick.RemoveListener(Login);
-        view.btnRegister.onClick.RemoveListener(Register);
+        View.btnLogin.onClick.RemoveListener(Login);
+        View.btnRegister.onClick.RemoveListener(Register);
         HabbyFramework.Message.Unsubscribe<MsgType.ClosePopup>(ClickMaskCallBack);
-        view.userIdInput.text = "";
-        view.passwordInput.text = "";
+        View.userIdInput.text = "";
+        View.passwordInput.text = "";
         base.OnHide();
     }
 
@@ -81,10 +81,10 @@ public class LoginMediator : UIMediator<LoginView>
 
     private bool InputFully()
     {
-        if (!string.IsNullOrEmpty(view.passwordInput.text) && !string.IsNullOrEmpty(view.userIdInput.text))
+        if (!string.IsNullOrEmpty(View.passwordInput.text) && !string.IsNullOrEmpty(View.userIdInput.text))
         {
-            userId = view.userIdInput.text;
-            passward = view.passwordInput.text;
+            userId = View.userIdInput.text;
+            passward = View.passwordInput.text;
             return true;
         }
 

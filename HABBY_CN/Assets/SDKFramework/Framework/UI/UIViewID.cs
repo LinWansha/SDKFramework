@@ -10,24 +10,21 @@ public enum UIViewID
 
     RealNameUI = 4,
 
-    NotGameTimeUI = 5,
+    CrashUI = 5,
 
-    NoTimeLeftUI = 6,
+    PurchaseRulesUI = 6,
 
-    NotRightAgeUI = 7,
+    PurchaseLimitUI = 7,
 
-    AntiaddictionRulesUI = 8,
+    CommonTipUI = 8,
 
-    PurchaseRulesUI = 9,
+    LatencyTimeUI = 9,
 
-    PurchaseLimitUI = 10,
+    LoginSuccessUI = 10,
 
-    CommonTipUI = 11,
+    SplashAdviceUI = 11,
+    
+    AntiaddictionRulesUI = 12,
 
-    LatencyTimeUI = 12,
-
-    LoginSuccessUI = 13,
-
-    SplashAdviceUI = 14,
 
 }

@@ -15,9 +15,9 @@ public class RealNameMediator : UIMediator<RealNameView>
         base.OnShow(arg);
         AccountManager.OnIdentityFailed += onError;
         AccountManager.OnIdentitySuccess += onSuccess;
-        view.btConfirm.onClick.AddListener(Confirm);
-        view.nameInput.onEndEdit.AddListener(OnEditEnd);
-        view.idInput.onEndEdit.AddListener(OnEditEnd);
+        View.btConfirm.onClick.AddListener(Confirm);
+        View.nameInput.onEndEdit.AddListener(OnEditEnd);
+        View.idInput.onEndEdit.AddListener(OnEditEnd);
         
         _account=arg as UserAccount;
         if (_account == null)
@@ -27,15 +27,15 @@ public class RealNameMediator : UIMediator<RealNameView>
         }
         else
         {
-            view.nameInput.text = _account.RealName;
-            view.idInput.text = _account.IdCard;
+            View.nameInput.text = _account.RealName;
+            View.idInput.text = _account.IdCard;
         }
     }
     protected override void OnHide()
     {
-        view.btConfirm.onClick.RemoveListener(Confirm);
-        view.idInput.onEndEdit.RemoveListener(OnEditEnd);
-        view.nameInput.onEndEdit.RemoveListener(OnEditEnd);
+        View.btConfirm.onClick.RemoveListener(Confirm);
+        View.idInput.onEndEdit.RemoveListener(OnEditEnd);
+        View.nameInput.onEndEdit.RemoveListener(OnEditEnd);
         AccountManager.OnIdentityFailed -= onError;
         AccountManager.OnIdentitySuccess -= onSuccess;
         base.OnHide();
@@ -44,8 +44,8 @@ public class RealNameMediator : UIMediator<RealNameView>
 
     private void setNotice(string text)
     {
-        view.notice.gameObject.SetActive(true);
-        view.notice.text = text;
+        View.notice.gameObject.SetActive(true);
+        View.notice.text = text;
     }
     
     public void Confirm()
@@ -85,15 +85,15 @@ public class RealNameMediator : UIMediator<RealNameView>
 
     private void OnEditEnd(string arg0)
     {
-        if (view.notice && view.notice.gameObject.activeSelf)
-            view.notice.gameObject.SetActive(false);
+        if (View.notice && View.notice.gameObject.activeSelf)
+            View.notice.gameObject.SetActive(false);
     }
     private bool InputFully()
     {
-        if (!string.IsNullOrEmpty(view.nameInput.text) && !string.IsNullOrEmpty(view.idInput.text))
+        if (!string.IsNullOrEmpty(View.nameInput.text) && !string.IsNullOrEmpty(View.idInput.text))
         {
-            Name = view.nameInput.text;
-            IdCard = view.idInput.text;
+            Name = View.nameInput.text;
+            IdCard = View.idInput.text;
             return true;
         }
 

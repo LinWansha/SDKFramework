@@ -156,12 +156,12 @@ namespace Habby.CNUser
 #if USE_ANTIADDICTION
             if (IsRestrictedTime(account))
             {
-                HabbyFramework.UI.OpenUI(UIViewID.NotGameTimeUI);
+                HabbyFramework.UI.OpenUI(UIViewID.CrashUI,ExitReason.NoGameTime);
                 return false;
             }
             if (!HasTimeLeft(account))
             {
-                HabbyFramework.UI.OpenUI(UIViewID.NoTimeLeftUI);
+                HabbyFramework.UI.OpenUI(UIViewID.CrashUI,ExitReason.NoTimeLeft);
                 return false;
             }
 #endif

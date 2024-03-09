@@ -25,7 +25,7 @@ public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        view.btnSure.onClick.AddListener(Close);
+        View.btnSure.onClick.AddListener(Close);
 
         UserAccount account = AccountManager.Instance.CurrentAccount;
         if (account.AgeRange == UserAccount.AgeLevel.Adult)
@@ -39,12 +39,12 @@ public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
 
     private void SetPurchaseLimitNotice(UserAccount account, LimitType type)
     {
-        view.detail.text = _messageMap[(account.AgeRange, type)];
+        View.detail.text = _messageMap[(account.AgeRange, type)];
     }
     
     protected override void OnHide()
     {
-        view.btnSure.onClick.RemoveListener(Close);
+        View.btnSure.onClick.RemoveListener(Close);
         base.OnHide();
     }
 }

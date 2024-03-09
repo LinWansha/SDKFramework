@@ -10,17 +10,12 @@ namespace Habby.CNUser
         
         public static string NoTimeLeftPopup_Vistor = "<color=#FFFFFF00>缩进</color>系统识别到您使用游客身份的时间超过限制，\n请登陆之后再继续游戏。";
 
-        public static string NoTimeLeftPopup_Minor = "您好:<color=#FFFFFF00>检测到您目前为未成年人账号，已被纳入防沉迷系统，根据国家新闻出版署《关于防止未成年人沉迷网络游戏的通知》，</color>\n" +
-                                                     "<color=#FFFFFF00>缩进</color>本游戏仅在周五、周六、周日和法定节假日每日20时至21时向未成年人提供1小时服务，其他时间未成年人均不能登录本游戏。\n" +
-                                                     "<color=#FFFFFF00>缩进</color>目前游戏体验时间已不足，将强制下线。";
+        public static string NoTimeLeft = "您好：检测到您目前为未成年人账号，已被纳入防沉迷\n系统，根据国家新闻出版署《关于防止未成年人沉迷网\n络游戏的通知》，本游戏仅在周五、周六、周日和法定\n节假日每日20时至21时向未成年人提供1小时服务，其\n他时间未成年人均不能登录本游戏。";
 
-        public static string TenMinutesLeftPopup_Vistor = "<color=#FFFFFF00>缩进</color>您使用游客身份的时间还有10分钟，\n请登陆之后再继续游戏。";
+        public static string NoGameTime = "您目前为未成年人账号，已被纳入防沉迷系统，根据国\n家新闻出版署《关于防止未成年人沉迷网络游戏的通\n知》，本游戏仅在周五、周六、周日和法定节假日每日\n20时至21时向未成年人提供1小时服务，其他时间未成\n年人均不能登录本游戏。\n";
+        
+        public static string NoRightAge = "您属于未满{0}周岁的未成年人，已被纳入防沉迷系统。\n为严格防止未成年人沉迷网络游戏，遵照本游戏的分级\n划分，本游戏将无法为您提供游戏服务。";
 
-
-        public static string TenMinutesLeftPopup_Minor = "您好:<color=#FFFFFF00>检测到您目前为未成年人账号，已被纳入防沉迷系统，</color>\n" +
-                                                        "<color=#FFFFFF00>根据国家新闻出版署《关于防止未成年人沉迷网络游戏的通知》，</color>\n" + 
-                                                        "<color=#FFFFFF00>本游戏仅在周五、周六、周日和法定节假日每日20时至21时向未成年人提供1小时服务，其他时间未成年人均不能登录本游戏。</color>\n" + 
-                                                        "<color=#FFFFFF00>缩进</color>您当前剩余游戏时间已不足10分钟。";
         public static string MonthRemain = "<color=#fd4444>本月剩余充值金额：{0}</color>"; 
         
         public static string PurchaseNotice_NotLogin = "您未登录，无法进行游戏充值。"; 

@@ -8,13 +8,13 @@ public class LatencyTimeMediator : UIMediator<LatencyTimeView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        view.label.text = arg as string;
+        View.label.text = arg as string;
         HLogger.Log("LatencyTimeMediator");
     }
 
     protected override void OnUpdate(float deltaTime)
     {
         base.OnUpdate(deltaTime);
-        view.flower.Rotate(_axis, -1f);
+        View.flower.Rotate(_axis, -1f);
     }
 }

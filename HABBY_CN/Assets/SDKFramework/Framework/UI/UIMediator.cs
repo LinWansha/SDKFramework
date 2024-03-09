@@ -5,17 +5,17 @@ namespace SDKFramework.UI
 {
     public abstract class UIMediator<T> : UIMediator where T : UIView
     {
-        protected T view;
+        protected T View;
 
         protected override void OnShow(object arg)
         {
             base.OnShow(arg);
-            view = ViewObject.GetComponent<T>();
+            View = ViewObject.GetComponent<T>();
         }
         protected override void OnHide()
         {
             base.OnHide();
-            view = default;
+            View = default;
         }
 
         protected void Close()
@@ -26,7 +26,7 @@ namespace SDKFramework.UI
         public override void InitMediator(UIView v)
         {
             base.InitMediator(v);
-            view = v as T;
+            View = v as T;
             OnInit();
         }
 

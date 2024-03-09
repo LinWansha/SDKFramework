@@ -8,7 +8,7 @@ public class AgeTipMediator : UIMediator<AgeTipView>
     {
         base.OnShow(arg);
 
-        view.btnSure.onClick.AddListener(Close);
+        View.btnSure.onClick.AddListener(Close);
         HabbyFramework.Message.Subscribe<AppConfig>(OnRefreshAgetip);
         
         //UI不开bestfit就把这个打开
@@ -22,14 +22,14 @@ public class AgeTipMediator : UIMediator<AgeTipView>
 
     public void SetMsg(string gameName, string gameAgeRuleDesc)
     {
-        view.Tittle.text = string.Format("《{0}》适龄提示", gameName);
-        view.ContentText.text = gameAgeRuleDesc;
+        View.Tittle.text = string.Format("《{0}》适龄提示", gameName);
+        View.ContentText.text = gameAgeRuleDesc;
     }
     
 
     protected override void OnHide()
     {
-        view.btnSure.onClick.RemoveListener(Close); 
+        View.btnSure.onClick.RemoveListener(Close); 
         HabbyFramework.Message.Unsubscribe<AppConfig>(OnRefreshAgetip);
         base.OnHide();
     }

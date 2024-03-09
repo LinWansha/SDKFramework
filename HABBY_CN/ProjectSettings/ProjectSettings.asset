@@ -696,7 +696,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: 
     4: ENABLE_DEBUG
-    7: USE_ANTIADDICTION;ENABLE_DEBUG
+    7: ENABLE_DEBUG;USE_ANTIADDICTION
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

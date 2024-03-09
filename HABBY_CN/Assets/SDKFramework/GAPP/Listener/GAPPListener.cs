@@ -31,7 +31,7 @@ namespace Habby.CNUser
 
         private void NoTimeLeft()
         {
-            HabbyFramework.UI.OpenUISingle(UIViewID.NoTimeLeftUI);
+            HabbyFramework.UI.OpenUISingle(UIViewID.CrashUI,ExitReason.NoTimeLeft);
         }
 #endif
     }

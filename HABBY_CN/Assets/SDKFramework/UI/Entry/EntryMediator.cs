@@ -13,10 +13,10 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnInit();
         if (MessageHandler.AppData.hasLicense)
         {
-            view.argeeToggle.isOn = false;
-            view.licenseObj.SetActive(true);
-            view.btnPrivacy.onClick.AddListener(() => { });//TODO:open webview
-            view.btnPersonalInfo.onClick.AddListener(() => { });
+            View.argeeToggle.isOn = false;
+            View.licenseObj.SetActive(true);
+            View.btnPrivacy.onClick.AddListener(() => { });//TODO:open webView
+            View.btnPersonalInfo.onClick.AddListener(() => { });
         }
     }
 
@@ -24,11 +24,11 @@ public class EntryMediator : UIMediator<EntryView>
     {
         base.OnShow(arg);
 
-        view.ageTip.GetComponent<Image>().sprite =
+        View.ageTip.GetComponent<Image>().sprite =
             HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)MessageHandler.AppData.applicableRange);
 
-        view.btnEnter.onClick.AddListener(EnterGameOrLogin);
-        view.ageTip.onClick.AddListener(ShowAgeTip);
+        View.btnEnter.onClick.AddListener(EnterGameOrLogin);
+        View.ageTip.onClick.AddListener(ShowAgeTip);
     }
 
     private void ShowAgeTip()
@@ -38,7 +38,7 @@ public class EntryMediator : UIMediator<EntryView>
     }
     private void EnterGameOrLogin()
     {
-        if (view.argeeToggle.isOn == false)
+        if (View.argeeToggle.isOn == false)
         {
             HabbyTextHelper.Instance.ShowTip("请勾选用户协议");
             return;
@@ -56,8 +56,8 @@ public class EntryMediator : UIMediator<EntryView>
 
     protected override void OnHide()
     {
-        view.btnEnter.onClick.RemoveListener(EnterGameOrLogin);
-        view.ageTip.onClick.RemoveListener(ShowAgeTip);
+        View.btnEnter.onClick.RemoveListener(EnterGameOrLogin);
+        View.ageTip.onClick.RemoveListener(ShowAgeTip);
         base.OnHide();
     }
 

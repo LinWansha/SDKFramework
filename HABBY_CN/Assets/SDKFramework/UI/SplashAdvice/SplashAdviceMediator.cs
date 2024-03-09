@@ -94,7 +94,7 @@ public class SplashAdviceMediator : UIMediator<SplashAdviceView>
 
     private void UpdateTextsAlpha(float alpha)
     {
-        foreach (Text text in view.texts)
+        foreach (Text text in View.texts)
         {
             var tempColor = text.color;
             tempColor.a = alpha;

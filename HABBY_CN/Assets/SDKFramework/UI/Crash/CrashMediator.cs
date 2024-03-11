@@ -26,7 +26,7 @@ public class CrashMediator : UIMediator<CrashView>
             case ExitReason.NoRightAge:
                 alignment = 1.3f;
                 displayText = string.Format(AntiAddictionDisaplayText.NoRightAge,
-                    (int)MessageHandler.AppData.applicableRange);
+                    (int)AppSource.Data.applicableRange);
                 break;
         }
 
@@ -52,16 +52,6 @@ public class CrashMediator : UIMediator<CrashView>
     {
         View.btnSure.onClick.RemoveListener(Close);
         base.OnHide();
-    }
-
-    private class MessageHandler : MessageHandler<AppConfig>
-    {
-        public static AppConfig AppData;
-
-        public override void HandleMessage(AppConfig arg)
-        {
-            AppData = arg;
-        }
     }
 }
 

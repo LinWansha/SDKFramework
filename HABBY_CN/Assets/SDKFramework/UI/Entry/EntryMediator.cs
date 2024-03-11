@@ -11,7 +11,7 @@ public class EntryMediator : UIMediator<EntryView>
     protected override void OnInit()
     {
         base.OnInit();
-        if (MessageHandler.AppData.hasLicense)
+        if (AppSource.Data.hasLicense)
         {
             View.argeeToggle.isOn = false;
             View.licenseObj.SetActive(true);
@@ -25,7 +25,7 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnShow(arg);
 
         View.ageTip.GetComponent<Image>().sprite =
-            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)MessageHandler.AppData.applicableRange);
+            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)AppSource.Data.applicableRange);
 
         View.btnEnter.onClick.AddListener(EnterGameOrLogin);
         View.ageTip.onClick.AddListener(ShowAgeTip);
@@ -34,7 +34,7 @@ public class EntryMediator : UIMediator<EntryView>
     private void ShowAgeTip()
     {
         HabbyFramework.UI.OpenUI(UIViewID.AgeTipUI);
-        HabbyFramework.Message.Post(MessageHandler.AppData);
+        HabbyFramework.Message.Post(AppSource.Data);
     }
     private void EnterGameOrLogin()
     {
@@ -61,13 +61,5 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnHide();
     }
 
-    private class MessageHandler : MessageHandler<AppConfig>
-    {
-        public static AppConfig AppData;
-
-        public override void HandleMessage(AppConfig arg)
-        {
-            AppData = arg;
-        }
-    }
+    
 }

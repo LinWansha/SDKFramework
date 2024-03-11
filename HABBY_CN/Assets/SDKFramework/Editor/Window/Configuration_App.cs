@@ -33,7 +33,7 @@ namespace SDKFramework.Editor
                 alignment = TextAnchor.MiddleCenter,
                 normal = new GUIStyleState() { textColor = Color.green }
             };
-            HLogger.LogError(FilePath);
+            HLogger.Log(FilePath,Color.cyan);
             _ageTipConfig = LoadConfiguration();
         }
 
@@ -55,8 +55,8 @@ namespace SDKFramework.Editor
                     _ageTipConfig.applicableRange);
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("游戏介绍（适龄提示内容）：");
-            _ageTipConfig.details =
-                EditorGUILayout.TextArea(_ageTipConfig.details, GUILayout.Height(position.height / 2));
+            _ageTipConfig.description =
+                EditorGUILayout.TextArea(_ageTipConfig.description, GUILayout.Height(position.height / 2));
             DrawConfirmButton();
         }
 

@@ -9,7 +9,7 @@ namespace SDKFramework.Config
         public bool hasLicense;
         public string gameName;
         public ApplicableRange applicableRange;
-        public string details;
+        public string description;
 
         public enum ApplicableRange
         {

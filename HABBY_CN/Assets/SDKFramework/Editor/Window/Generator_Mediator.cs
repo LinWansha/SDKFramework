@@ -35,6 +35,7 @@ namespace SDKFramework.Editor
                 alignment = TextAnchor.MiddleCenter,
                 normal = new GUIStyleState { textColor = Color.green }
             };
+            HLogger.Log(FilePath,Color.cyan);
         }
 
         void OnGUI()
@@ -109,7 +110,7 @@ namespace SDKFramework.Editor
                 {
                     ID = viewId,
                     Description = viewName,
-                    Asset = AssetDatabase.GetAssetPath(UIPrefab),
+                    Asset = GetRelativePath(UIPrefab),
                     Mode = UILayer
                 };
 
@@ -136,6 +137,29 @@ namespace SDKFramework.Editor
             Debug.Log($"Generating {viewName}View and {viewName}Mediator scripts.");
         }
 
+        private string GetRelativePath(GameObject prefab)
+        {
+            // 假设 'UIPrefab' 是一个已存在的 GameObject 变量
+            string path = AssetDatabase.GetAssetPath(prefab);
+
+            // 移除文件扩展名
+            string pathWithoutExtension = Path.ChangeExtension(path, null);
+
+            // 检查路径中是否包含 "SDKConfig"
+            int index = pathWithoutExtension.IndexOf("SDKPrefab");
+            if (index != -1)
+            {
+                // 如果包含 "SDKConfig"，从该子字符串开始截取直到字符串结尾
+                pathWithoutExtension = pathWithoutExtension.Substring(index);
+            }
+            else
+            {
+                Debug.LogError("预制体所在路径中不包含‘SDKPrefab’目录，请规范使用");
+            }
+
+            Debug.Log(pathWithoutExtension);
+            return pathWithoutExtension;
+        }
         private void AddEnumItemToUIViewID(string newItem, Action<int> callback)
         {
             // Replace this with the path to your UIViewID.cs file

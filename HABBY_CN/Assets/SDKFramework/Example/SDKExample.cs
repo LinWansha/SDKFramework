@@ -1,4 +1,5 @@
 using SDKFramework.Config;
+using SDKFramework.Message;
 using UnityEngine;
 
 public class SDKExample : MonoBehaviour
@@ -11,5 +12,15 @@ public class SDKExample : MonoBehaviour
         AppData = JsonUtility.FromJson<AppConfig>(jsonStr);
         HabbyFramework.Message.Post(AppData);
         HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+    }
+}
+
+public class AppSource : MessageHandler<AppConfig>
+{
+    public static AppConfig Data;
+
+    public override void HandleMessage(AppConfig arg)
+    {
+        Data = arg;
     }
 }

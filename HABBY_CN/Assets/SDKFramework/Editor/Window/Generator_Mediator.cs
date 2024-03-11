@@ -139,7 +139,6 @@ namespace SDKFramework.Editor
 
         private string GetRelativePath(GameObject prefab)
         {
-            // 假设 'UIPrefab' 是一个已存在的 GameObject 变量
             string path = AssetDatabase.GetAssetPath(prefab);
 
             // 移除文件扩展名

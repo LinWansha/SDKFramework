@@ -57,7 +57,7 @@ public class RealNameMediator : UIMediator<RealNameView>
             return;
         }
 
-        if (IdCard.Length != 15 && IdCard.Length != 18)
+        if (!LocalIdentityUtil.IsValidIDCard(IdCard))
         {
             setNotice(WrongId);
             return;

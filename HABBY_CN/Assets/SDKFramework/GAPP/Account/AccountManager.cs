@@ -94,6 +94,7 @@ namespace Habby.CNUser
             account.IAP?.Refresh();
             account.Online?.Refresh();
             timeManager.StartTimeCounter();
+            _ = (CurrentAccount.AgeRange != AgeLevel.Adult) ? gameObject.AddComponent<GAPPListener>() : null;
 #endif
             isLogin = true;
             OnUserLogin?.Invoke();

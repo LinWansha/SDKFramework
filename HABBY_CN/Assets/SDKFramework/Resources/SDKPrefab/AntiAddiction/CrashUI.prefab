@@ -151,7 +151,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 332, y: -14.102898}
+  m_AnchoredPosition: {x: 332, y: -2.7128983}
   m_SizeDelta: {x: 597.21, y: 48.6116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4658140687290260691
@@ -481,10 +481,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: -25
+    m_Top: -40
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: -45.56
+  m_Spacing: -45
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -606,7 +606,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 594.8066, y: 215.27}
+  m_SizeDelta: {x: 600, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8714462526460206077
 CanvasRenderer:
@@ -649,7 +649,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u60A8\u597D\uFF1A\u68C0\u6D4B\u5230\u60A8\u76EE\u524D\u4E3A\u672A\u6210\u5E74\u4EBA\u8D26\u53F7\uFF0C\u5DF2\u88AB\u7EB3\u5165\u9632\u6C89\u8FF7\n\u7CFB\u7EDF\uFF0C\u6839\u636E\u56FD\u5BB6\u65B0\u95FB\u51FA\u7248\u7F72\u300A\u5173\u4E8E\u9632\u6B62\u672A\u6210\u5E74\u4EBA\u6C89\u8FF7\u7F51\n\u7EDC\u6E38\u620F\u7684\u901A\u77E5\u300B\uFF0C\u672C\u6E38\u620F\u4EC5\u5728\u5468\u4E94\u3001\u5468\u516D\u3001\u5468\u65E5\u548C\u6CD5\u5B9A\n\u8282\u5047\u65E5\u6BCF\u65E520\u65F6\u81F321\u65F6\u5411\u672A\u6210\u5E74\u4EBA\u63D0\u4F9B1\u5C0F\u65F6\u670D\u52A1\uFF0C\u5176\n\u4ED6\u65F6\u95F4\u672A\u6210\u5E74\u4EBA\u5747\u4E0D\u80FD\u767B\u5F55\u672C\u6E38\u620F\u3002"
+  m_Text: "\u60A8\u597D\uFF1A\u68C0\u6D4B\u5230\u60A8\u76EE\u524D\u4E3A\u672A\u6210\u5E74\u4EBA\u8D26\u53F7\uFF0C\u5DF2\u88AB\u7EB3\u5165\u9632\u6C89\u8FF7\n\u7CFB\u7EDF\uFF0C\u6839\u636E\u56FD\u5BB6\u65B0\u95FB\u51FA\u7248\u7F72\u300A\u5173\u4E8E\u9632\u6B62\u672A\u6210\u5E74\u4EBA\u6C89\u8FF7\u7F51\n\u7EDC\u6E38\u620F\u7684\u901A\u77E5\u300B\u300A\u5173\u4E8E\u8FDB\u4E00\u6B65\u4E25\u683C\u7BA1\u7406\u5207\u5B9E\u9632\u6B62\u672A\u6210\u5E74\n\u4EBA\u6C89\u8FF7\u7F51\u7EDC\u6E38\u620F\u7684\u901A\u77E5\u300B\u8981\u6C42\uFF0C\u672C\u6E38\u620F\u4EC5\u5728\u5468\u4E94\u3001\u5468\u516D\u3001\n\u5468\u65E5\u548C\u6CD5\u5B9A\u8282\u5047\u65E5\u6BCF\u65E520\u65F6\u81F321\u65F6\u5411\u672A\u6210\u5E74\u4EBA\u63D0\u4F9B1\u5C0F\n\u65F6\u670D\u52A1\uFF0C\u5176\u4ED6\u65F6\u95F4\u672A\u6210\u5E74\u4EBA\u5747\u4E0D\u80FD\u767B\u5F55\u672C\u6E38\u620F\u3002"
 --- !u!1 &7969019845771312253
 GameObject:
   m_ObjectHideFlags: 0

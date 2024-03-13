@@ -8,7 +8,7 @@ public class RealNameMediator : UIMediator<RealNameView>
     public const string WrongId = "您输入的身份证号码有误,请重新输入";
 
     private string Name, IdCard;
-    private UserAccount _account;
+    private UserAccount m_Account;
 
     protected override void OnShow(object arg)
     {
@@ -19,16 +19,16 @@ public class RealNameMediator : UIMediator<RealNameView>
         View.nameInput.onEndEdit.AddListener(OnEditEnd);
         View.idInput.onEndEdit.AddListener(OnEditEnd);
         
-        _account=arg as UserAccount;
-        if (_account == null)
+        m_Account=arg as UserAccount;
+        if (m_Account == null)
         {
             Close();
             AccountManager.Instance.CheckUser();
         }
         else
         {
-            View.nameInput.text = _account.RealName;
-            View.idInput.text = _account.IdCard;
+            View.nameInput.text = m_Account.RealName;
+            View.idInput.text = m_Account.IdCard;
         }
     }
     protected override void OnHide()
@@ -63,13 +63,13 @@ public class RealNameMediator : UIMediator<RealNameView>
             return;
         }
 
-        if (_account == null)
+        if (m_Account == null)
         {
             AccountManager.Instance.CheckUser();
             return;
         }
 
-        _account.RealName =Name;
+        m_Account.RealName =Name;
 
         string id = IdCard.Trim();
         if (id.Contains("x"))
@@ -77,10 +77,14 @@ public class RealNameMediator : UIMediator<RealNameView>
             id = id.ToUpper();
         }
 
-        _account.IdCard = id;
-
-        AccountManager.Instance.ValidateIdentity(_account);
-        //AccountManager.Instance.LocalValidateIdentity(_account);
+        m_Account.IdCard = id;
+        
+        BirthdayAgeSex entity = LocalIdentityUtil.GetBirthdayAgeSex(m_Account.IdCard);
+        m_Account.AgeRange = LocalIdentityUtil.ParseAgeLevel(entity.Age);
+        m_Account.Age = entity.Age;
+        
+        AccountManager.Instance.ValidateIdentity(m_Account);
+        //AccountManager.Instance.LocalValidateIdentity(m_Account);
     }
 
     private void OnEditEnd(string arg0)

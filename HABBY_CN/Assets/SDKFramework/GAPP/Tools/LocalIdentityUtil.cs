@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using AgeLevel=Habby.CNUser.UserAccount.AgeLevel;
 
 namespace Habby.CNUser
 {
@@ -78,7 +79,13 @@ namespace Habby.CNUser
 
             return isValid;
         }
-        
+        public static AgeLevel ParseAgeLevel(int age)
+        {
+            if (age < 8) return AgeLevel.Under8;
+            if (age < 16) return AgeLevel.Under16;
+            if (age < 18) return AgeLevel.Under18;
+            return AgeLevel.Adult;
+        }
         public static BirthdayAgeSex GetBirthdayAgeSex(string idCard)
         {
             if (string.IsNullOrEmpty(idCard)||idCard.Length != 15 && idCard.Length != 18)

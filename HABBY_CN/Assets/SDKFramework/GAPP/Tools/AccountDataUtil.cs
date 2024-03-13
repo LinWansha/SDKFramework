@@ -7,25 +7,18 @@ namespace Habby.CNUser
         public static UserAccount ParseLoginAccountInfo(LoginResponse response)
         {
             HLogger.LogFormat("ParseLoginAccountInfo token={0}, age={1}", response.token, response.data.age);
-            // int applicableRange = (int)SDKExample.AppData.applicableRange;
-            // if (response.data.age < applicableRange)
-            // {
-            //     HabbyFramework.UI.OpenUI(UIViewID.NotGameTimeUI,
-            //         string.Format(AntiAddictionDisaplayText.UnderAgeRangeNotice, applicableRange));
-            // }        //TODO:逻辑梳理和整改
 
             UserAccount account = new UserAccount()
             {
                 AccessToken = response.data.token,
-                // ExpireAt = TimerHelper.ParseToDateTime(response.data.tokenExpireTime).Ticks,
 
                 AgeRange = response.data.validateIdentity == 1
                     ? (UserAccount.AgeLevel)response.data.addictLevel
                     : UserAccount.AgeLevel.Unknown,
 
                 NickName = string.IsNullOrEmpty(response.data.nickname) ? "" : response.data.nickname,
-                // Debug.Log("STEP 200: DefenseLog Init：" + UserAccoutManager.Instance.CurrentAccount.LastHeartBeatAt);
-                // LastHeartBeatAt = response.data.lastHeartBeatAt
+                
+                Age = response.data.age
             };
 
             HLogger.LogWarning("--- AgeRange:" + account.AgeRange.ToString() + ",age=" + response.data.age +

@@ -29,15 +29,10 @@ namespace Habby.CNUser
         
         string refreshToken;
         public string RefreshToken { get => refreshToken; set => refreshToken = value; }
-
-
-        // long expireTime;
-        // public long ExpireAt { get { return expireTime; } set { expireTime = value; } }
         
         
         string unionId;
         public string UnionId{ get => unionId; set => unionId = value; }
-        
         
         
         string uid;
@@ -81,7 +76,6 @@ namespace Habby.CNUser
         /// </summary>
         
         string loginMethodName;
-
         /// <summary>
         /// 登陆方式名：例如短信验证，手机一键登录，qq，微信等，
         /// 注：多个登陆方式可能对应一个LoginChannel（ 例如手机短信，手机一键登录）
@@ -89,14 +83,11 @@ namespace Habby.CNUser
         public string LoginMethodName{ get => loginMethodName; set => loginMethodName = value; }
         
         string loginServerName;
-
         /// <summary>
         /// 登陆方服务器
         /// </summary>
         public string LoginServerName { get => loginServerName; set => loginServerName = value; }
        
-            
-
         AgeLevel ageLevel;
         public AgeLevel AgeRange { get => ageLevel; set => ageLevel = value;  }
 
@@ -105,8 +96,12 @@ namespace Habby.CNUser
 
         private UserOnlineData userOnlineData;
         public UserOnlineData Online  { get => userOnlineData; set =>userOnlineData = value; }
-      
-           
+
+        private int age;
+
+        public int Age { get => age; set => age = value; }
+
+
         public UserAccount() { }
 
         public UserAccount(SerializationInfo info, StreamingContext context)
@@ -191,19 +186,7 @@ namespace Habby.CNUser
             userExpense.Refresh();
             userExpense.monthlyExpense.value = value;
         }
-
-        // public bool IsExpired
-        // {
-        //     get
-        //     {
-        //         HLogger.LogWarnFormat("--- IsExpired isExpire: ExpireAt" + ExpireAt + " nowTick=" +  TimerHelper.GetNowTime().Ticks );
-        //         if (ExpireAt > 0)
-        //         {
-        //             return TimerHelper.GetNowTime().Ticks >= ExpireAt;
-        //         }
-        //         return true;
-        //     }
-        // }
+        
 
         public enum GameLevel : int
         {
@@ -236,14 +219,6 @@ namespace Habby.CNUser
             Under16 = 2,  // 8 - 16岁以下
             Under18 = 3,   // 16 - 18岁
             Adult = 4    // 成年
-        }
-
-        public static AgeLevel ParseAgeLevel(int age)
-        {
-            if (age < 8) return AgeLevel.Under8;
-            if (age < 16) return AgeLevel.Under16;
-            if (age < 18) return AgeLevel.Under18;
-            return AgeLevel.Adult;
         }
 
         public void SaveLoginTime()

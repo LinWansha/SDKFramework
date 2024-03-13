@@ -64,27 +64,6 @@ namespace Habby.CNUser
         {
             OnIdentitySuccess?.Invoke();
 
-            BirthdayAgeSex entity = LocalIdentityUtil.GetBirthdayAgeSex(account.IdCard);
-    
-            // ÉèÖÃÄêÁä·¶Î§
-            if (entity.Age >= 18)
-            {
-                account.AgeRange = UserAccount.AgeLevel.Adult;
-            }
-            else if (entity.Age >= 16)
-            {
-                account.AgeRange = UserAccount.AgeLevel.Under18;
-            }
-            else if (entity.Age >= 8)
-            {
-                account.AgeRange = UserAccount.AgeLevel.Under16;
-            }
-            else
-            {
-                account.AgeRange = UserAccount.AgeLevel.Under8;
-            }
-
-            // µÇÂ¼Âß¼­
             if (CanLogin(account))
             {
                 if (account.AgeRange != UserAccount.AgeLevel.Adult)
@@ -151,21 +130,23 @@ namespace Habby.CNUser
             
         }
 
-        public bool CanLogin(UserAccount account)
+        public bool CanLogin(UserAccount account) 
         {
 #if USE_ANTIADDICTION
-            if (IsRestrictedTime(account))
+            ExitReason? reason = 
+                NoRightAge(account) ? ExitReason.NoRightAge :
+                NoGameTime(account) ? ExitReason.NoGameTime :
+                NoTimeLeft(account) ? ExitReason.NoTimeLeft :
+                (ExitReason?)null;
+
+            if (reason != null)
             {
-                HabbyFramework.UI.OpenUI(UIViewID.CrashUI,ExitReason.NoGameTime);
-                return false;
+                HabbyFramework.UI.OpenUI(UIViewID.CrashUI, reason.Value);
             }
-            if (!HasTimeLeft(account))
-            {
-                HabbyFramework.UI.OpenUI(UIViewID.CrashUI,ExitReason.NoTimeLeft);
-                return false;
-            }
+            return reason == null;
+#else
+    return true;
 #endif
-            return true;
         }
 
     }

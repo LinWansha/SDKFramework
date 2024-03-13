@@ -162,7 +162,11 @@ namespace Habby.CNUser
             HLogger.LogWarnFormat("--- Purchase add amount complete! nowMonth=" + CurrentAccount.IAP.Monthly);
         }
 
-        public bool IsRestrictedTime(UserAccount account)
+        public bool NoRightAge(UserAccount account)
+        {
+            return account.Age < (int)AppSource.Data.applicableRange;
+        }
+        public bool NoGameTime(UserAccount account)
         {
             HLogger.LogFormat("ShouldForbidLogin age={0}, time={1}", account?.AgeRange,
                 account?.Online != null ? account.Online.Today / 60 : 0);
@@ -170,12 +174,12 @@ namespace Habby.CNUser
             return timeManager.IsBadTime(account);
         }
 
-        public bool HasTimeLeft(UserAccount account)
+        public bool NoTimeLeft(UserAccount account)
         {
             HLogger.LogFormat("HasTimeLeft age={0}, time={1}", account?.AgeRange,
                 account?.Online != null ? account.Online.Today / 60 : 0);
-            if (account == null) return true;
-            return timeManager.HasTimeLeft(account);
+            if (account == null) return false;
+            return !timeManager.HasTimeLeft(account);
         }
 #endif
 

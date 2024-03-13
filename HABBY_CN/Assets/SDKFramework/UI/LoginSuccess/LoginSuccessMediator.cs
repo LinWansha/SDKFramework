@@ -34,7 +34,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
         }
 
         SetChannel(account.LoginChannel);
-        View.nameText.text = account.NickName;
+        View.nameText.text = account.UID;
 
         var topPixel = Screen.currentResolution.height - (Screen.safeArea.y + Screen.safeArea.height);
         Rect safe = Screen.safeArea;

@@ -16,7 +16,7 @@ namespace Habby.CNUser
         public const int GAME_SERVER_ERROR = 40000; // 游戏服务器故障
         
         
-        public int code;
+        public new int code;
         public bool validated;
 
         public IdentityData data;

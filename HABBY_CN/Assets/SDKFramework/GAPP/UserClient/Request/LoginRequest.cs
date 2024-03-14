@@ -13,7 +13,7 @@ namespace Habby.CNUser
         public string password;
         public string gcGameId;
         public string gcTeamId;
-        public string token;
+        public new string token;
         public string accountType;
         public string thirdpartyCode;// 第三方 code
         // for qq

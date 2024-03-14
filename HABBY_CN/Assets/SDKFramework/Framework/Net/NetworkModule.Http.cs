@@ -14,13 +14,13 @@ namespace SDKFramework.Network
 #if ENABLE_DEBUG || LOGIN_TEST
         private const string URL_USER_SERVER = "https://ncac-pq.lezuan9.com/api/v1/{0}"; //测试
 #else
-         private const string URL_USER_SERVER = "https://ncac-pq.lezuan9.com/api/v1/{0}";// 正式
+        private const string URL_USER_SERVER = "https://ncac-pq.lezuan9.com/api/v1/{0}";// 正式
 #endif
 
         public static string URL => URL_USER_SERVER;
 
-        private const string MESG_HTTP_ERROR = "Invlid response code";
         private static int mPendingMarks = 0;
+        
         private static Dictionary<int, float> mPending = new Dictionary<int, float>(2);
 
         public void Get<TResponse>(string url, Action<TResponse> callback, Action<string> onError)

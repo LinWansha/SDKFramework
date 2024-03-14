@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using Habby.Log;
-using Color= UnityEngine.Color;
+using Color = UnityEngine.Color;
 using Debug = UnityEngine.Debug;
 
 /// <summary>
@@ -13,63 +13,94 @@ using Debug = UnityEngine.Debug;
 public class HLogger
 {
     [Conditional("ENABLE_DEBUG")]
-    public static void Log(string context ,Color color)
+    public static void Log(string context, Color color)
     {
-        Debug.Log(string.Format("<color="+ ToHexColor(color) + ">{0}</color>", context));
-    }
-        
-    [Conditional("ENABLE_DEBUG")]
-    public static void LogException(Exception exception)
-    {
-        Debug.LogException(exception);
+#if USE_NATIVE_LOG
+        Console.WriteLine("<color=" + ToHexColor(color) + ">{0}</color>", context);
+#else
+        Debug.Log(string.Format("<color=" + ToHexColor(color) + ">{0}</color>", context));
+#endif
     }
 
     [Conditional("ENABLE_DEBUG")]
     public static void LogFormat(string format, params object[] args)
     {
         HabbyLogOutput.Init();
-        UnityEngine.Debug.LogFormat(format, args);
+#if USE_NATIVE_LOG
+        Console.WriteLine(format,args);
+#else
+        Debug.LogFormat(format, args);
+#endif
     }
 
     [Conditional("ENABLE_DEBUG")]
     public static void LogErrorFormat(string format, params object[] args)
     {
         HabbyLogOutput.Init();
-        UnityEngine.Debug.LogErrorFormat(format, args);
+#if USE_NATIVE_LOG
+        Console.WriteLine(format,args);
+#else
+        Debug.LogErrorFormat(format, args);
+#endif
     }
 
     [Conditional("ENABLE_DEBUG")]
     public static void Log(object message)
     {
         HabbyLogOutput.Init();
-        UnityEngine.Debug.Log(message);
+#if USE_NATIVE_LOG
+        Console.WriteLine(message);
+#else
+        Debug.Log(message);
+#endif
     }
 
     [Conditional("ENABLE_DEBUG")]
     public static void LogWarning(object message)
     {
         HabbyLogOutput.Init();
-        UnityEngine.Debug.LogWarning(message);
+#if USE_NATIVE_LOG
+        Console.WriteLine(message);
+#else
+        Debug.LogWarning(message);
+#endif
     }
 
     [Conditional("ENABLE_DEBUG")]
     public static void LogError(object message)
     {
         HabbyLogOutput.Init();
-        UnityEngine.Debug.LogError(message);
+#if USE_NATIVE_LOG
+        Console.WriteLine(message);
+#else
+        Debug.LogError(message);
+#endif
     }
 
+
+
+    [Conditional("ENABLE_DEBUG")]
+    public static void LogWarnFormat(string format, params object[] args)
+    {
+#if USE_NATIVE_LOG
+        Console.WriteLine(format, args);
+#else
+        Debug.LogWarningFormat(format, args);
+#endif
+    }
+    
     [Conditional("ENABLE_DEBUG")]
     public static void Assert(bool condition, string info)
     {
         HabbyLogOutput.Init();
         if (condition) return;
-        UnityEngine.Debug.LogError(info);
+        Debug.LogError(info);
     }
     
     [Conditional("ENABLE_DEBUG")]
-    public static void LogWarnFormat(string format, params object[] args) {
-        UnityEngine.Debug.LogWarningFormat(format, args);
+    public static void LogException(Exception exception)
+    {
+        Debug.LogException(exception);
     }
 
     private static string ToHexColor(Color color)
@@ -88,5 +119,4 @@ public class HLogger
         string HexColor = "#" + R + G + B;
         return HexColor.ToUpper();
     }
-
 }

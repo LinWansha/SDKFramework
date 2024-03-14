@@ -1,6 +1,7 @@
 using System.Collections;
 using Habby.CNUser;
 using SDKFramework.UI;
+using SDKFramework.Utils;
 using UnityEngine;
 
 public class LoginSuccessMediator : UIMediator<LoginSuccessView>

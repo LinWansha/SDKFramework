@@ -48,7 +48,6 @@ namespace SDKFramework.Asset
             // 先将所有Request加载完毕
             while (requests.Count > 0)
             {
-                //HabbyFramework.Asset.UpdateLoader();
                 UpdateLoadRequests();
             }
 
@@ -84,7 +83,6 @@ namespace SDKFramework.Asset
         /// <summary>
         /// 卸载(SetActive(false))单个对象
         /// </summary>
-        /// <param name="go"></param>
         public void UnloadGameObject(GameObject go)
         {
             if (go == null)

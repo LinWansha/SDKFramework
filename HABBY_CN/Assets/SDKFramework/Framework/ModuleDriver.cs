@@ -26,9 +26,9 @@ using UnityEngine;
 namespace SDKFramework
 {
     /// <summary>
-    /// 作者: mrq
-    /// 时间: 2024/01/02
-    /// 功能: 架构驱动层
+    /// Author  : mrq
+    /// Time    : 2024/01/02
+    /// Feature : Frame driver layer, technical support contact Meng Ruiqing
     /// </summary>
     public sealed class ModuleDriver
     {

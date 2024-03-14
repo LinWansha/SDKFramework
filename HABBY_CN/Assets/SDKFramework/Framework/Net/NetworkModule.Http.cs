@@ -71,9 +71,10 @@ namespace SDKFramework.Network
             float maxDelay = 45 * mPending.Count;
             while (mPending.ContainsKey(index - 1) && Time.time - mPending[index] < maxDelay)
             {
+                HabbyFramework.UI.OpenUISingle(UIViewID.LatencyTimeUI);
                 yield return new WaitForSeconds(2);
+                HabbyFramework.UI.CloseUI(UIViewID.LatencyTimeUI);
             }
-
             string url = string.Format(URL_USER_SERVER, path);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(requestStr);
 

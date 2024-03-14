@@ -45,7 +45,7 @@ public class LoginMediator : UIMediator<LoginView>
             if (response.code == 0)
             {
                 HabbyTextHelper.Instance.ShowTip("注册成功！");
-                Login();
+                //Login();
             }
             else
             {

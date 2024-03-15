@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536602885029db84db95776f3e3a284d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  versionName: {fileID: 6739236328078471557}
   licenseObj: {fileID: 5192868022272875441}
   ageTip: {fileID: 4791606317077424109}
   btnEnter: {fileID: 4791606315721131485}

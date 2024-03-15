@@ -11,6 +11,7 @@ public class EntryMediator : UIMediator<EntryView>
     protected override void OnInit()
     {
         base.OnInit();
+        View.versionName.text = $"版本号：{Application.version}";
         if (AppSource.Data.hasLicense)
         {
             View.argeeToggle.isOn = false;

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 [UIView(typeof(EntryMediator), UIViewID.EntryUI)]
 public class EntryView :  UIView
 {
+    public Text versionName;
     public GameObject licenseObj;
     public Button ageTip;
 

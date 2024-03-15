@@ -4,45 +4,52 @@ using System.Collections;
 using System.Collections.Generic;
 using SDKFramework.Utils;
 
-/// <summary>
-/// 项目中没有Addressable情况下，
-/// 平替Addressable异步加载的扩展方法
-/// </summary>
-public static class ResourceRequestExt
+namespace UnityEngine
 {
-
-    private static readonly Dictionary<ResourceRequest, Action<GameObject>> callbacks = new Dictionary<ResourceRequest, Action<GameObject>>();
     
-    public static void Completed(this ResourceRequest request, Action<GameObject> successCallback)
+
+    /// <summary>
+    /// 项目中没有Addressable情况下，
+    /// 平替Addressable异步加载的扩展方法
+    /// </summary>
+    public static class ResourceRequestExt
     {
-        if (request == null) return;
 
-        if (successCallback != null)
-        {
-            callbacks.Add(request, ( asset) => {
-                try
-                {
-                    if (asset != null) successCallback(asset);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"[ResourceRequestExt.LoadCompleted] Exception : {ex.Message}\n{ex.StackTrace}");
-                }
-            });
-        }
+        private static readonly Dictionary<ResourceRequest, Action<GameObject>> callbacks =
+            new Dictionary<ResourceRequest, Action<GameObject>>();
 
-        // 异步加载完成时执行的回调函数
-        IEnumerator LoadAssetAsync(ResourceRequest req)
+        public static void Completed(this ResourceRequest request, Action<GameObject> successCallback)
         {
-            yield return req;
-            if (callbacks.ContainsKey(req))
+            if (request == null) return;
+
+            if (successCallback != null)
             {
-                callbacks[req](req.asset as GameObject);
-                callbacks.Remove(req);
+                callbacks.Add(request, (asset) =>
+                {
+                    try
+                    {
+                        if (asset != null) successCallback(asset);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"[ResourceRequestExt.LoadCompleted] Exception : {ex.Message}\n{ex.StackTrace}");
+                    }
+                });
             }
+
+            // 异步加载完成时执行的回调函数
+            IEnumerator LoadAssetAsync(ResourceRequest req)
+            {
+                yield return req;
+                if (callbacks.ContainsKey(req))
+                {
+                    callbacks[req](req.asset as GameObject);
+                    callbacks.Remove(req);
+                }
+            }
+
+            CoroutineScheduler.Instance.StartCoroutine(LoadAssetAsync(request));
         }
 
-        CoroutineScheduler.Instance.StartCoroutine(LoadAssetAsync(request));
     }
-    
 }

@@ -158,10 +158,11 @@ namespace SDKFramework.Asset
 
         private void OnGameObjectLoaded(T asset)
         {
-            asset.gameObject.SetActive(true);
-            asset.transform.SetParent(ModuleDriver.Instance.GetModule<AssetModule>().usingObjectRoot);
-            int id = asset.gameObject.GetInstanceID();
-            usingObjects.Add(id, asset.gameObject);
+            GameObject loadedObj = asset.gameObject;
+            loadedObj.SetActive(true);
+            loadedObj.transform.SetParent(ModuleDriver.Instance.GetModule<AssetModule>().usingObjectRoot);
+            int id = loadedObj.GetInstanceID();
+            usingObjects.Add(id, loadedObj);
         }
     }
 }

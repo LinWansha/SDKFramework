@@ -1,6 +1,5 @@
-using SDKFramework.Config;
+using SDKFramework;
 using SDKFramework.UI;
-using UnityEngine;
 
 public class AgeTipMediator : UIMediator<AgeTipView>
 {

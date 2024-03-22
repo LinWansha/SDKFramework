@@ -53,9 +53,9 @@ namespace Habby.CNUser
             dailyExpense.value += value;
         }
 
-        public double Total { get { return totalExpense.value; } set { totalExpense.value = value; } }
-        public double Monthly { get { return monthlyExpense.value; } set { monthlyExpense.value = value; } }
-        public double Daily { get { return dailyExpense.value; } set { dailyExpense.value = value; } }
+        public double Total => totalExpense.value;
+        public double Monthly => monthlyExpense.value;
+        public double Daily => dailyExpense.value;
 
         private static UserDoubleDataEntry createTotal()
         {

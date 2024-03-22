@@ -1,9 +1,8 @@
 using Habby.CNUser;
+using SDKFramework;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
-using SDKFramework.Config;
-using SDKFramework.Message;
 using SDKFramework.Utils;
 
 public class EntryMediator : UIMediator<EntryView>
@@ -35,7 +34,6 @@ public class EntryMediator : UIMediator<EntryView>
     private void ShowAgeTip()
     {
         HabbyFramework.UI.OpenUI(UIViewID.AgeTipUI);
-        HabbyFramework.Message.Post(AppSource.Data);
     }
     private void EnterGameOrLogin()
     {

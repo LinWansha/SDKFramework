@@ -1,3 +1,5 @@
+using SDKFramework;
+
 namespace Habby.CNUser
 {
     public partial class AccountManager
@@ -14,12 +16,14 @@ namespace Habby.CNUser
         {
             AccountManager.OnUserLogin += onUserLogin;
             AccountManager.OnUserLogout += onUserLogout;
+            AccountManager.OnShowLoginScene += ShowLoginScene;
         }
 
         public void OnDisable()
         {
             AccountManager.OnUserLogin -= onUserLogin;
             AccountManager.OnUserLogout -= onUserLogout;
+            AccountManager.OnShowLoginScene -= ShowLoginScene;
         }
 
         private void onUserLogout()
@@ -32,17 +36,21 @@ namespace Habby.CNUser
 #endif
         }
 
-        public void onUserLogin()
+        private void onUserLogin()
         {
-            HLogger.Log("onUserLogin登录成功");
-            HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
+#if MRQ
+            HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
+#endif
+            SDK.EnterGame?.Invoke();
+            
+            HLogger.Log("onUserLogin登录成功");
         }
 
-        public void ShowLoginScene()
+        private void ShowLoginScene()
         {
+            HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
             HLogger.Log("ShowLoginScene");
-            OnShowLoginScene?.Invoke();
         }
 
         public void CheckUser()

@@ -1,6 +1,5 @@
 using Habby.CNUser;
-using SDKFramework.Config;
-using SDKFramework.Message;
+using SDKFramework;
 using SDKFramework.UI;
 
 public class CrashMediator : UIMediator<CrashView>

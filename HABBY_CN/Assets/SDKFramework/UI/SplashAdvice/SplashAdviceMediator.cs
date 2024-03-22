@@ -1,3 +1,4 @@
+using SDKFramework;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -75,8 +76,10 @@ public class SplashAdviceMediator : UIMediator<SplashAdviceView>
                 if (panelData.timer >= fadeOutDuration)
                 {
                     panelData.state = State.None;
+#if MRQ
+                    SDK.Login?.Invoke();
+#endif
                     Close();
-                    HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
                 }
                 else
                 {

@@ -1,26 +1,31 @@
-using SDKFramework.Config;
-using SDKFramework.Message;
+using Habby.CNUser;
+using SDKFramework;
 using UnityEngine;
 
 public class SDKExample : MonoBehaviour
 {
-    private static AppConfig AppData;
-
-    void Awake()
+    void Start()
     {
-        string jsonStr = Resources.Load<TextAsset>("SDKConfig/App").text;
-        AppData = JsonUtility.FromJson<AppConfig>(jsonStr);
-        HabbyFramework.Message.Post(AppData);
-        HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
-    }
-}
-
-public class AppSource : MessageHandler<AppConfig>
-{
-    public static AppConfig Data;
-
-    public override void HandleMessage(AppConfig arg)
-    {
-        Data = arg;
+        SDK MRQ = SDK.New();
+        MRQ.Run(new SDK.ProcedureOption()
+        {
+            Splash = () =>
+            {
+                HabbyFramework.UI.OpenUI(UIViewID.SplashAdviceUI);
+            },
+            Login = () =>
+            {
+                HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+            },
+            EnterGame = () =>
+            {
+                //Write your logic for entering the game
+                HLogger.Log("宿主程序进入成功!!!");
+            },
+            Logout = () =>
+            {
+                AccountManager.Instance.Logout(1);
+            }
+        });
     }
 }

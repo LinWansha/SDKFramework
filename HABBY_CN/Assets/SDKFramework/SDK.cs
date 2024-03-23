@@ -8,13 +8,9 @@ namespace SDKFramework
     public class SDK : MonoBehaviour
     {
         private static readonly GameObject TheChosenOne;
-        
-        public static Action Login;
 
-        public static Action EnterGame;
-        
-        public static Action Logout;
-        
+        public static ProcedureOption Procedure;
+
         static SDK()
         {
             TheChosenOne = GameObject.Find("SDK");
@@ -38,10 +34,8 @@ namespace SDKFramework
 
         public void Run(ProcedureOption option)
         {
+            Procedure = option;
             option.Splash?.Invoke();
-            Login = option.Login;
-            EnterGame = option.EnterGame;
-            Logout = option.Logout;
         }
 
         public class ProcedureOption
@@ -51,13 +45,11 @@ namespace SDKFramework
             public Action Login;
 
             public Action EnterGame;
-
-            public Action Logout;
         }
 
         private void Update()
         {
-            //TODO:性能监测工具...
+            //TODO:Anything...
         }
     }
 

@@ -189,7 +189,7 @@ namespace Habby.CNUser
         #region Event
 
         public void FireCloseNoTime() => Logout();
-        public void FireCloseUnderAgePipPop() => OnReadedUnderAgeTip?.Invoke();
+        public void FireJuvenileEnterGame() => OnReadedAntiaddtionRules?.Invoke();
         public void FireExpenseOverRange() => OnSingleExpenseOverRange?.Invoke(LimitType.Single);
         public void FireMonthlyExpenseOverRange() => OnMonthlyExpenseOverRange?.Invoke(LimitType.Monthly);
 

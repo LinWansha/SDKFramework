@@ -77,7 +77,7 @@ public class SplashAdviceMediator : UIMediator<SplashAdviceView>
                 {
                     panelData.state = State.None;
 #if MRQ
-                    SDK.Login?.Invoke();
+                    SDK.Procedure?.Login();
 #endif
                     Close();
                 }

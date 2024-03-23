@@ -24,7 +24,7 @@ namespace Habby.CNUser
         internal delegate void UserAction(UserAccount account);
         
 
-        internal static event Action OnReadedUnderAgeTip;         //已阅读未成年协议（阅读确定后与才能进游戏）
+        internal static event Action OnReadedAntiaddtionRules;         //已阅读未成年协议（阅读确定后与才能进游戏）
 
         internal static event Action<LimitType> OnSingleExpenseOverRange;          //单次支付金额超过限制
 

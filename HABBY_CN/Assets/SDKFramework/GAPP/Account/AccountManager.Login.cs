@@ -42,8 +42,11 @@ namespace Habby.CNUser
 #if MRQ
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
 #endif
-            SDK.EnterGame?.Invoke();
-            
+            if (CurrentAccount?.AgeRange == UserAccount.AgeLevel.Adult)
+            {
+                SDK.Procedure?.EnterGame();
+            }
+
             HLogger.Log("onUserLoginµÇÂ¼³É¹¦");
         }
 

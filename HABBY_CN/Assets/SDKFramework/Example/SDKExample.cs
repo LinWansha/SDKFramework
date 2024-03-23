@@ -22,10 +22,6 @@ public class SDKExample : MonoBehaviour
                 //Write your logic for entering the game
                 HLogger.Log("宿主程序进入成功!!!");
             },
-            Logout = () =>
-            {
-                AccountManager.Instance.Logout(1);
-            }
         });
     }
 }

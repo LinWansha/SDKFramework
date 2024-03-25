@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Habby.CNUser;
 using Newtonsoft.Json;
+using SDKFramework.Account.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 

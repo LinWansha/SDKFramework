@@ -1,5 +1,7 @@
 using System.Collections;
-using Habby.CNUser;
+
+using SDKFramework.Account;
+using SDKFramework.Account.DataSrc;
 using SDKFramework.UI;
 using SDKFramework.Utils;
 using UnityEngine;
@@ -25,7 +27,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
     {
         if (account == null)
         {
-            account = AccountManager.Instance.CurrentAccount;
+            account = HabbyFramework.Account.CurrentAccount;
             if (account == null)
             {
                 account = new UserAccount();

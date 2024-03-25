@@ -1,5 +1,6 @@
-using Habby.CNUser;
+
 using SDKFramework;
+using SDKFramework.Account;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,9 +44,9 @@ public class EntryMediator : UIMediator<EntryView>
             return;
         }
         
-        if (AccountManager.Instance.HasAccount)
+        if (HabbyFramework.Account.HasAccount)
         {
-            AccountManager.Instance.LoginOrIdentify(AccountManager.Instance.CurrentAccount);
+            HabbyFramework.Account.LoginOrIdentify(HabbyFramework.Account.CurrentAccount);
         }
         else
         {

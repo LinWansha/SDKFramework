@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SDKFramework;
+using SDKFramework.Account;
 using SDKFramework.Asset;
 using SDKFramework.Message;
 using SDKFramework.Network;
@@ -23,6 +24,9 @@ public class HabbyFramework : MonoBehaviour
 
     [Module(4)] 
     public static MessageModule Message => ModuleDriver.Instance.GetModule<MessageModule>();
+    
+    [Module(5)] 
+    public static AccountModule Account => ModuleDriver.Instance.GetModule<AccountModule>();
     
 
     private bool activing;

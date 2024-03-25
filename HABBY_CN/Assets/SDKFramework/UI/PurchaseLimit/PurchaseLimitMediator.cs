@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Habby.CNUser;
+using SDKFramework.Account.DataSrc;
+using SDKFramework.Account.Utils;
 using SDKFramework.UI;
 
 public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
@@ -27,7 +28,7 @@ public class PurchaseLimitMediator : UIMediator<PurchaseLimitView>
         base.OnShow(arg);
         View.btnSure.onClick.AddListener(Close);
 
-        UserAccount account = AccountManager.Instance.CurrentAccount;
+        UserAccount account = HabbyFramework.Account.CurrentAccount;
         if (account.AgeRange == UserAccount.AgeLevel.Adult)
         {
             Close();

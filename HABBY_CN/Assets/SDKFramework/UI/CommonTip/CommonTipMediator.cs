@@ -1,4 +1,4 @@
-using Habby.CNUser;
+
 using SDKFramework.UI;
 
 public class CommonTipMediator : UIMediator<CommonTipView>

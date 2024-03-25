@@ -1,4 +1,7 @@
-using Habby.CNUser;
+using SDKFramework.Account;
+using SDKFramework.Account.DataSrc;
+using SDKFramework.Account.Net;
+using SDKFramework.Account.Utils;
 using SDKFramework.UI;
 using SDKFramework.Utils;
 
@@ -13,8 +16,8 @@ public class RealNameMediator : UIMediator<RealNameView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        AccountManager.OnIdentityFailed += onError;
-        AccountManager.OnIdentitySuccess += onSuccess;
+        AccountModule.OnIdentityFailed += onError;
+        AccountModule.OnIdentitySuccess += onSuccess;
         View.btConfirm.onClick.AddListener(Confirm);
         View.nameInput.onEndEdit.AddListener(OnEditEnd);
         View.idInput.onEndEdit.AddListener(OnEditEnd);
@@ -23,7 +26,7 @@ public class RealNameMediator : UIMediator<RealNameView>
         if (m_Account == null)
         {
             Close();
-            AccountManager.Instance.CheckUser();
+            HabbyFramework.Account.CheckUser();
         }
         else
         {
@@ -36,8 +39,8 @@ public class RealNameMediator : UIMediator<RealNameView>
         View.btConfirm.onClick.RemoveListener(Confirm);
         View.idInput.onEndEdit.RemoveListener(OnEditEnd);
         View.nameInput.onEndEdit.RemoveListener(OnEditEnd);
-        AccountManager.OnIdentityFailed -= onError;
-        AccountManager.OnIdentitySuccess -= onSuccess;
+        AccountModule.OnIdentityFailed -= onError;
+        AccountModule.OnIdentitySuccess -= onSuccess;
         base.OnHide();
     }
     
@@ -65,7 +68,7 @@ public class RealNameMediator : UIMediator<RealNameView>
 
         if (m_Account == null)
         {
-            AccountManager.Instance.CheckUser();
+            HabbyFramework.Account.CheckUser();
             return;
         }
 
@@ -83,8 +86,8 @@ public class RealNameMediator : UIMediator<RealNameView>
         m_Account.AgeRange = LocalIdentityUtil.ParseAgeLevel(entity.Age);
         m_Account.Age = entity.Age;
         
-        AccountManager.Instance.ValidateIdentity(m_Account);
-        //AccountManager.Instance.LocalValidateIdentity(m_Account);
+        HabbyFramework.Account.ValidateIdentity(m_Account);
+        //HabbyFramework.Account.LocalValidateIdentity(m_Account);
     }
 
     private void OnEditEnd(string arg0)

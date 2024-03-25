@@ -1,5 +1,5 @@
-using Habby.CNUser;
 using SDKFramework;
+using SDKFramework.Account.Utils;
 using SDKFramework.UI;
 
 public class CrashMediator : UIMediator<CrashView>
@@ -32,7 +32,7 @@ public class CrashMediator : UIMediator<CrashView>
         aligning(alignment);
         UpdateDetailView(displayText);
 
-        OnMediatorHide += AccountManager.Instance.FireCloseNoTime;
+        OnMediatorHide += HabbyFramework.Account.FireCloseNoTime;
         View.btnSure.onClick.AddListener(Close);
     }
 

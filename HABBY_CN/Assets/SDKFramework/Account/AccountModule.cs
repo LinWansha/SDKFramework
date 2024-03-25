@@ -156,6 +156,7 @@ namespace SDKFramework.Account
 
 #if USE_ANTIADDICTION
         public bool CanPurchase(double amount) => PurchaseChecker.CanPurchase(CurrentAccount, amount);
+        public void RefreshMonthlyExpense(double amount) => CurrentAccount?.RefreshMonthlyExpense(amount);
 
         public void Purchase(int amount)
         {

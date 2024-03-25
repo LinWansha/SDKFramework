@@ -53,7 +53,7 @@ namespace SDKFramework.Account
 
         private void ShowLoginScene()
         {
-            HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+            HabbyFramework.UI.OpenUISingle(UIViewID.EntryUI);
             HLogger.Log("ShowLoginScene");
         }
 

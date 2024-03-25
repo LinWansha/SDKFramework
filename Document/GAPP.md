@@ -4,7 +4,8 @@
 
 #### 拖入PureCN.unitypackage之后打开编辑器菜单 SDKFramework/Configuration Application
 
-![](C:\Users\WIN11\Desktop\57386a5672cdafd3fad95c3025738b9.png)
+![ConfigurationApp](https://raw.githubusercontent.com/LinWansha/SDKFramework/main/DocImg/ConfigurationApp.png)
+
 
 ### 二、国内申请版号版本所需的功能接口：
 
@@ -56,8 +57,8 @@ HabbyFramework.Account.Logout(1);//调用该接口传入1，会退出当前账�
 
 
 
-### 如果需要从lua层调用需要注册 typeof(SDK)，typeof(HabbyFramework)
-
+### 如果需要从lua层调用，请按需注册以上类型到lua虚拟栈
 -------------------------------------------------------------------
 
 ### 使用过程中有任何问题，联系孟瑞卿，wx：mrq617470300
+### 期待您的意见与反馈！！！

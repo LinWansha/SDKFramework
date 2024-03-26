@@ -1,6 +1,4 @@
-
 using SDKFramework;
-using SDKFramework.Account;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,14 +42,7 @@ public class EntryMediator : UIMediator<EntryView>
             return;
         }
         
-        if (HabbyFramework.Account.HasAccount)
-        {
-            HabbyFramework.Account.LoginOrIdentify(HabbyFramework.Account.CurrentAccount);
-        }
-        else
-        {
-            HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
-        }
+        HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
     }
 
     protected override void OnHide()
@@ -61,5 +52,4 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnHide();
     }
 
-    
 }

@@ -47,15 +47,12 @@ namespace SDKFramework.Account.DataSrc
         string nickName;
         public string NickName{ get => nickName; set => nickName = value; }
         
-
-        
-        GameLevel level;
-        public GameLevel Level { get => level; set => level = value; }
-
-        
         string phoneNumber;
         public string PhoneNumber  { get => phoneNumber; set => phoneNumber = value; }
-        
+
+        private string userId;
+        public string UserId{ get => userId; set => userId = value; }
+
         string password;
         public string Password { get => password; set => password = value; }
 
@@ -99,7 +96,6 @@ namespace SDKFramework.Account.DataSrc
         public UserOnlineData Online  { get => userOnlineData; set =>userOnlineData = value; }
 
         private int age;
-
         public int Age { get => age; set => age = value; }
 
 
@@ -186,18 +182,6 @@ namespace SDKFramework.Account.DataSrc
             if (userExpense == null) userExpense = new UserExpenseData();
             userExpense.Refresh();
             userExpense.monthlyExpense.value = value;
-        }
-        
-
-        public enum GameLevel : int
-        {
-            Starter = 0, // 新手
-            Low_Level = 1,//低等级
-            Middle_Level = 2,//中级
-            High_Level = 3,//高级
-            Master = 4,//大师
-            Almighty = 5,//全能的
-            God = 6//神
         }
 
         public enum UserLoginChannel : int

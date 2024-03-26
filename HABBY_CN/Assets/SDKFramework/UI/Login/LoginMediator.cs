@@ -8,7 +8,18 @@ using SDKFramework.Utils;
 public class LoginMediator : UIMediator<LoginView>
 {
     private string userId;
-    private string passward;
+    private string password;
+    
+    protected override void OnInit()
+    {
+        base.OnInit();
+        if (HabbyFramework.Account.HasAccount)
+        {
+            var account = HabbyFramework.Account.CurrentAccount;
+            View.userIdInput.text = account.UserId;
+            View.passwordInput.text = account.Password;
+        }
+    }
 
     protected override void OnShow(object arg)
     {
@@ -40,7 +51,7 @@ public class LoginMediator : UIMediator<LoginView>
     private void Register()
     {
         if (!InputFully()) return;
-        HabbyUserClient.Instance.RegisterWithAccount(userId, passward, (response) =>
+        HabbyUserClient.Instance.RegisterWithAccount(userId, password, (response) =>
         {
             HLogger.Log($"Register Response Code：{response.code}");
             if (response.code == 0)
@@ -58,12 +69,14 @@ public class LoginMediator : UIMediator<LoginView>
     private void Login()
     {
         if (!InputFully()) return;
-        HabbyUserClient.Instance.LoginWithAccount(userId, passward, (response) =>
+        HabbyUserClient.Instance.LoginWithAccount(userId, password, (response) =>
         {
             HLogger.Log($"Login Response Code：{response.code}");
             if (response.code == LoginResponse.CODE_SUCCESS)
             {
                 UserAccount account = AccountDataUtil.ParseLoginAccountInfo(response);
+                account.UserId = userId;
+                account.Password = password;
                 account.LoginChannel = UserAccount.ChannelAccount;
                 HabbyFramework.Account.LoginOrIdentify(account);
                 Close();
@@ -85,7 +98,7 @@ public class LoginMediator : UIMediator<LoginView>
         if (!string.IsNullOrEmpty(View.passwordInput.text) && !string.IsNullOrEmpty(View.userIdInput.text))
         {
             userId = View.userIdInput.text;
-            passward = View.passwordInput.text;
+            password = View.passwordInput.text;
             return true;
         }
 

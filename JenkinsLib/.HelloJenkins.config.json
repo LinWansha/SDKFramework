@@ -1,0 +1,10 @@
+{
+    "name": "HelloJenkins",
+    "params": {
+        "BRANCH_NAME": "main",
+        "ENABLE_DEBUG": true,
+        "DEV_BUILD": "",
+        "VERSION_NAME": "1.0.0",
+        "VERSION_CODE": "10"
+    }
+}

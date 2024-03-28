@@ -12,6 +12,10 @@ public class EntryMediator : UIMediator<EntryView>
         View.versionName.text = $"版本号：{Application.version}";
         if (AppSource.Config.hasLicense)
         {
+            if (AppSource.Platform==RuntimePlatform.IPhonePlayer)
+            {
+                View.privacyLine.SetActive(false);
+            }
             View.argeeToggle.isOn = false;
             View.licenseObj.SetActive(true);
             View.btnPrivacy.onClick.AddListener(() => { });//TODO:open webView

@@ -7,6 +7,7 @@ public class EntryView :  UIView
 {
     public Text versionName;
     public GameObject licenseObj;
+    public GameObject privacyLine;
     public Button ageTip;
 
     public Button btnEnter;

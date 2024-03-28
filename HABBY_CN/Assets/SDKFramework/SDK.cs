@@ -57,13 +57,12 @@ namespace SDKFramework
     {
         public static AppConfig Config;
 
-        public static RuntimePlatform Platform;
+        public static readonly RuntimePlatform Platform;
 
         static AppSource()
         {
-            Platform = Application.platform;
+            Platform= Application.platform;
         }
-        
         public override void HandleMessage(AppConfig arg)
         {
             Config = arg;

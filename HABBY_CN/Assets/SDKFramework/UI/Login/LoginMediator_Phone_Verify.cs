@@ -6,8 +6,8 @@ public partial class LoginMediator : UIMediator<LoginView>
 {
     private void SendSMSVerificationCode()
     {
-        //string phoneNum = "15610937070";
         View.waitObj.SetActive(true);
+        View.btnNext.interactable = false;
         View.btnSend.gameObject.SetActive(false);
         View.showNumText.text = $"    已发送至\n{m_PhoneNum}";
         View.StartCoroutine(StartCountdown(60));

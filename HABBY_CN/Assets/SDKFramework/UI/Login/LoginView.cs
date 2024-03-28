@@ -91,6 +91,7 @@ public class LoginView : UIView
         {
             Debug.LogWarning($"Invalid window ID: {id}. No window will be activated.");
         }
+        StopAllCoroutines();
     }
 
     public void OnCloseAllWindow()

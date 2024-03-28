@@ -11,7 +11,7 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.btnPhoneLogin.onClick.AddListener(PhoneLogin);
         View.btnWxLogin.onClick.AddListener(WxLogin);
         View.btnQQLogin.onClick.AddListener(QQLogin);
-       
+
         View.btnUserPrivacy.onClick.AddListener(OnShowPrivacyWebView);
         View.btnPersonInfo.onClick.AddListener(OnShowPersonInfoWebView);
         View.btnCallQQGroup.onClick.AddListener(OnCallQQGroup);
@@ -33,13 +33,6 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.inputHandle.onClick.AddListener(View.hideInput.ActivateInputField);
 
         View.hideInput.onValueChanged.AddListener(HandleCodeInput);
-        
-    }
-    
-    protected override void OnShow(object arg)
-    {
-        base.OnShow(arg);
-        View.ActivateWindow(1);
     }
 
     private void OnCallQQGroup()
@@ -56,7 +49,7 @@ public partial class LoginMediator : UIMediator<LoginView>
     {
         HLogger.Log("open web view privacy agreement");
     }
-    
+
 
     private void QQLogin()
     {
@@ -102,5 +95,10 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.noticeText.SetActive(true);
         CoroutineScheduler.Instance.DrivingBehavior(() => View.noticeText.SetActive(false), 2.5f);
     }
-    
+
+    protected override void OnHide()
+    {
+        View.ActivateWindow(1);
+        base.OnHide();
+    }
 }

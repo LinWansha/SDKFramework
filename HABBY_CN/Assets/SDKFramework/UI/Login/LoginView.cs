@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using SDKFramework.UI;
 using UnityEngine;
@@ -28,7 +27,7 @@ public class LoginView : UIView
     public Button btnPersonInfo;
 
     public Button btnCallQQGroup;
-    
+
     public Button btnClose;
 
     #endregion
@@ -38,17 +37,16 @@ public class LoginView : UIView
     public InputField phoneNumInput;
 
     public Button btnNext;
-    
+
     public Button btnAppleLogin2;
-    
+
     public Button btnWxLogin2;
 
     public Button btnQQLogin2;
-    
+
     public Button btnClose2;
 
     public Button btnBack2;
-
 
     #endregion
 
@@ -73,7 +71,7 @@ public class LoginView : UIView
     public Button btnBack3;
 
     #endregion
-    
+
     /// <summary>
     /// 三个window完全互斥
     /// </summary>
@@ -91,17 +89,14 @@ public class LoginView : UIView
         {
             Debug.LogWarning($"Invalid window ID: {id}. No window will be activated.");
         }
+
         StopAllCoroutines();
+        hideInput.text = "";
+        phoneNumInput.text = "";
     }
 
     public void OnCloseAllWindow()
     {
         HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
     }
-
-    public void ClearInputField()
-    {
-        phoneNumInput.text = "";
-    }
-    
 }

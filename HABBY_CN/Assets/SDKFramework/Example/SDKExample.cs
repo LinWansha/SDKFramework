@@ -10,7 +10,8 @@ public class SDKExample : MonoBehaviour
         {
             Splash = () =>
             {
-                HabbyFramework.UI.OpenUI(UIViewID.SplashAdviceUI);
+                //HabbyFramework.UI.OpenUI(UIViewID.SplashAdviceUI);
+                HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
             },
             Login = () =>
             {

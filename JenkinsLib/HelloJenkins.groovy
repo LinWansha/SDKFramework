@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Export from Unity') {
             steps {
-                catchError(buildResult: null, stageResult: 'FAILURE') {
+                catchError {  //buildResult: null, stageResult: 'FAILURE'
                     bat "\"${UNITY_PATH}\" -batchmode -nographics -quit -projectPath \"${PROJECT_PATH}\" -executeMethod ${EXPORT_METHOD} -enableDebug=${params.ENABLE_DEBUG} -dev=${params.DEV_BUILD} -VersionName=${params.VERSION_NAME} -VersionCode=${params.VERSION_CODE} -logFile"
                 }
             }

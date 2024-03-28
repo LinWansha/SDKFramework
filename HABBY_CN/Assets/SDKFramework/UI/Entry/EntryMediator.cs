@@ -10,7 +10,7 @@ public class EntryMediator : UIMediator<EntryView>
     {
         base.OnInit();
         View.versionName.text = $"版本号：{Application.version}";
-        if (AppSource.Data.hasLicense)
+        if (AppSource.Config.hasLicense)
         {
             View.argeeToggle.isOn = false;
             View.licenseObj.SetActive(true);
@@ -24,7 +24,7 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnShow(arg);
 
         View.ageTip.GetComponent<Image>().sprite =
-            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)AppSource.Data.applicableRange);
+            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)AppSource.Config.applicableRange);
 
         View.btnEnter.onClick.AddListener(EnterGameOrLogin);
         View.ageTip.onClick.AddListener(ShowAgeTip);

@@ -25,7 +25,7 @@ public class CrashMediator : UIMediator<CrashView>
             case ExitReason.NoRightAge:
                 alignment = 1.3f;
                 displayText = string.Format(AntiAddictionDisaplayText.NoRightAge,
-                    (int)AppSource.Data.applicableRange);
+                    (int)AppSource.Config.applicableRange);
                 break;
         }
 

@@ -11,7 +11,6 @@ public class SDKExample : MonoBehaviour
             Splash = () =>
             {
                 //HabbyFramework.UI.OpenUI(UIViewID.SplashAdviceUI);
-                HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
             },
             Login = () =>
             {
@@ -23,5 +22,7 @@ public class SDKExample : MonoBehaviour
                 HLogger.Log("宿主程序进入成功!!!");
             },
         });
+
+        SDK.Procedure.Login();
     }
 }

@@ -4218,6 +4218,7 @@ MonoBehaviour:
   btnWxLogin: {fileID: 2661019304460604105}
   btnQQLogin: {fileID: 2172586760896408257}
   noticeText: {fileID: 9208665247477010039}
+  privacyObj: {fileID: 9208665248279524704}
   privacyToggle: {fileID: 9208665246375613146}
   btnUserPrivacy: {fileID: 9014613345996589534}
   btnPersonInfo: {fileID: 7697215578215558311}

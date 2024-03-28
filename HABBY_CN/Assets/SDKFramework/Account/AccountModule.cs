@@ -167,7 +167,7 @@ namespace SDKFramework.Account
 
         public bool NoRightAge(UserAccount account)
         {
-            return account.Age < (int)AppSource.Data.applicableRange;
+            return account.Age < (int)AppSource.Config.applicableRange;
         }
         public bool NoGameTime(UserAccount account)
         {

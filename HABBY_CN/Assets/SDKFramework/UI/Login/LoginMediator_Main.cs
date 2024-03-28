@@ -1,12 +1,14 @@
+using SDKFramework;
 using SDKFramework.UI;
 using SDKFramework.Utils;
+using UnityEngine;
 
 public partial class LoginMediator : UIMediator<LoginView>
 {
     protected override void OnInit()
     {
         base.OnInit();
-
+        
         View.btnAppleLogin.onClick.AddListener(AppleLogin);
         View.btnPhoneLogin.onClick.AddListener(PhoneLogin);
         View.btnWxLogin.onClick.AddListener(WxLogin);
@@ -78,6 +80,8 @@ public partial class LoginMediator : UIMediator<LoginView>
 
     private bool IsAgreePrivacy()
     {
+        //TODO: 和运营或项目组沟通，不同平台下，隐私勾选能不能都放在一个UI上
+        if (AppSource.Platform == RuntimePlatform.Android) return true; 
         if (View.privacyToggle.isOn)
         {
             return true;

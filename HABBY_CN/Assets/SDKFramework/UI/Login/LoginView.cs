@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using SDKFramework;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +21,8 @@ public class LoginView : UIView
     public Button btnQQLogin;
 
     public GameObject noticeText;
+    
+    public GameObject privacyObj;
 
     public Toggle privacyToggle;
 
@@ -71,6 +75,17 @@ public class LoginView : UIView
     public Button btnBack3;
 
     #endregion
+
+    private void Awake()
+    {
+        if (AppSource.Platform == RuntimePlatform.Android)
+        {
+            privacyObj.SetActive(false);
+            btnAppleLogin.gameObject.SetActive(false);
+            btnAppleLogin2.gameObject.SetActive(false);
+            btnAppleLogin.GetComponentInParent<HorizontalLayoutGroup>().padding.left = 100;
+        }
+    }
 
     /// <summary>
     /// 三个window完全互斥

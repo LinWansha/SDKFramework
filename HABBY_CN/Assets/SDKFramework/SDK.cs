@@ -55,11 +55,17 @@ namespace SDKFramework
 
     public class AppSource : MessageHandler<AppConfig>
     {
-        public static AppConfig Data;
+        public static AppConfig Config;
 
+        public static readonly RuntimePlatform Platform;
+
+        static AppSource()
+        {
+            Platform= Application.platform;
+        }
         public override void HandleMessage(AppConfig arg)
         {
-            Data = arg;
+            Config = arg;
         }
     }
 }

@@ -22,6 +22,12 @@ public class LoginView : UIView
     public GameObject noticeText;
 
     public Toggle privacyToggle;
+
+    public Button btnUserPrivacy;
+
+    public Button btnPersonInfo;
+
+    public Button btnCallQQGroup;
     
     public Button btnClose;
 
@@ -87,5 +93,14 @@ public class LoginView : UIView
         }
     }
 
+    public void OnCloseAllWindow()
+    {
+        HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
+    }
+
+    public void ClearInputField()
+    {
+        phoneNumInput.text = "";
+    }
     
 }

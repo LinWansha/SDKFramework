@@ -3,6 +3,7 @@ using SDKFramework.UI;
 
 public partial class LoginMediator : UIMediator<LoginView>
 {
+    public string m_PhoneNum;
     private void InputPhoneNum(string phoneNum)
     {
         bool IsValidPhoneNumber(string phoneNumber)
@@ -28,5 +29,12 @@ public partial class LoginMediator : UIMediator<LoginView>
         }
 
         View.btnNext.interactable = IsValidPhoneNumber(modifiedStr);
+        m_PhoneNum = View.btnNext.interactable ? phoneNum : "";
+    }
+
+    protected override void OnHide()
+    {
+        View.ClearInputField();
+        base.OnHide();
     }
 }

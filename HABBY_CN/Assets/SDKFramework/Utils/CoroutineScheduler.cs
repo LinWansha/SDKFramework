@@ -1,56 +1,45 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace SDKFramework.Utils
 {
-    public class CoroutineScheduler : MonoBehaviour
+    public class CoroutineScheduler : MonoSingleton<CoroutineScheduler>
     {
-    
-        private static CoroutineScheduler _instance;
-
-        public static CoroutineScheduler Instance
+        // if u want wait a coroutine,can use this
+        public static Task Yield(IEnumerator enumerator)
         {
-            get
+            return new CoroutineAwaiter(enumerator).Task;
+        }
+
+        public void DelayedInvoke(Action action, float sec)
+        {
+            IEnumerator WaitAndExecute(Action a, float seconds)
             {
-                if (_instance == null)
-                {
-                    GameObject timeManagerObj = new GameObject("CoroutineScheduler");
-                    _instance = timeManagerObj.AddComponent<CoroutineScheduler>();
-
-                    DontDestroyOnLoad(timeManagerObj);
-                }
-
-                return _instance;
+                yield return new WaitForSeconds(seconds);
+                a?.Invoke();
             }
-        }
 
-        public Coroutine StartCoroutineCustom(IEnumerator enumerator)
-        {
-            return StartCoroutine(enumerator);
-        }
-
-        public void DrivingBehavior(Action action, float sec)
-        {
             StartCoroutine(WaitAndExecute(action, sec));
         }
+    }
 
-        private IEnumerator WaitAndExecute(Action action, float seconds)
+    internal class CoroutineAwaiter
+    {
+        readonly TaskCompletionSource<object> TCS = new TaskCompletionSource<object>();
+
+        public CoroutineAwaiter(IEnumerator enumerator)
         {
-            yield return new WaitForSeconds(seconds);
-            action?.Invoke();
+            CoroutineScheduler.Instance.StartCoroutine(WaitCoroutine(TCS, enumerator));
         }
 
-        public void DrivingBehavior<T>(Action<T> action, float sec)
-        {
-        }
+        public Task Task => TCS.Task;
 
-        public void DrivingBehavior<T, K>(Action<T, K> action, float sec)
+        private IEnumerator WaitCoroutine(TaskCompletionSource<object> tcs, IEnumerator enumerator)
         {
-        }
-
-        public void DrivingBehavior<T, K, U>(Action<T, K, U> action, float sec)
-        {
+            yield return enumerator;
+            tcs.SetResult(null);
         }
     }
 }

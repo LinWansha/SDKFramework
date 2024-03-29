@@ -4,22 +4,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SDKFramework.Account.DataSrc
 {
     public static class FileSaveLoad
     {
-        public static readonly string kUserAccount = Application.persistentDataPath + "/user";
-        public static readonly string kUserAccountHistory = Application.persistentDataPath + "/userHistory";
+        private static readonly string kUserAccount = Application.persistentDataPath + "/user";
+        private static readonly string kUserAccountHistory = Application.persistentDataPath + "/userHistory";
 
 
-        public static bool HasAccountHistory
-        {
-            get
-            {
-                return File.Exists(kUserAccountHistory);
-            } 
-        }
+        public static bool HasAccountHistory => File.Exists(kUserAccountHistory);
+
         public static void SaveHistory(UserAccountHistory accountHistory)
         {
             if (accountHistory == null) {
@@ -30,14 +26,11 @@ namespace SDKFramework.Account.DataSrc
             BinaryFormatter bf = new BinaryFormatter();
             try
             {
-                using (FileStream file = File.Create(kUserAccountHistory))
-                {
-                    bf.Serialize(file, accountHistory);
-                }
+                using FileStream file = File.Create(kUserAccountHistory);
+                bf.Serialize(file, accountHistory);
             }
             catch (Exception e)
             {
-                //TrackAdapter.Instance.trace_account_list_result("save","FAIL");
                 HLogger.LogError(e);
                 DeleteHistory();
             }
@@ -55,15 +48,12 @@ namespace SDKFramework.Account.DataSrc
                 BinaryFormatter bf = new BinaryFormatter();
                 try
                 {
-                    using (FileStream file = File.Open(kUserAccountHistory, FileMode.Open))
-                    {
-                        user = (UserAccountHistory) bf.Deserialize(file);
-                    }
+                    using FileStream file = File.Open(kUserAccountHistory, FileMode.Open);
+                    user = (UserAccountHistory) bf.Deserialize(file);
                 }
                 catch (Exception e)
                 {
                     HLogger.LogError(e);
-                    //TrackAdapter.Instance.trace_account_list_result("load","FAIL");
                 }
             }
 
@@ -82,17 +72,14 @@ namespace SDKFramework.Account.DataSrc
            
             try
             {
-                using (FileStream file = File.Create(kUserAccount))
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    bf.Serialize(file, account);
-                }
+                using FileStream file = File.Create(kUserAccount);
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(file, account);
             }
             catch
             {
                 Delete(kUserAccount);
                 DeleteHistory();
-                //TrackAdapter.Instance.trace_account_result("save","FAIL");
             }
         }
 
@@ -103,10 +90,8 @@ namespace SDKFramework.Account.DataSrc
                 BinaryFormatter bf = new BinaryFormatter();
                 try
                 {
-                    using (FileStream file = File.Open(kUserAccount, FileMode.Open))
-                    {
-                       user = (UserAccount) bf.Deserialize(file);
-                    }
+                    using FileStream file = File.Open(kUserAccount, FileMode.Open);
+                    user = (UserAccount) bf.Deserialize(file);
                 }
                 catch (Exception e)
                 {
@@ -114,7 +99,6 @@ namespace SDKFramework.Account.DataSrc
                     DeleteHistory();
                     HLogger.LogError(e);
 
-                    //TrackAdapter.Instance.trace_account_result("load","FAIL");
                 }
             }
 
@@ -131,23 +115,20 @@ namespace SDKFramework.Account.DataSrc
             File.WriteAllText(path, json, Encoding.UTF8);
         }
 
-        private static string LoadJsonFromFile(string path)
+        private static async Task<string> LoadJsonFromFile(string path)
         {
             if (!File.Exists(path)) return null;
 
-            string json;
-            using (StreamReader sr = new StreamReader(path)) {
-                json = sr.ReadToEnd();
-            }
-            return json;
+            using StreamReader sr = new StreamReader(path);
+            return await sr.ReadToEndAsync();
         }
 
-        public static bool HasSave(string filepath)
+        private static bool HasSave(string filepath)
         {
             return File.Exists(filepath);
         }
 
-        public static void Delete(string filepath)
+        private static void Delete(string filepath)
         {
             if (File.Exists(filepath)) {
                 File.Delete(filepath);

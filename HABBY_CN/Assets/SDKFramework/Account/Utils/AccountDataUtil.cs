@@ -1,6 +1,7 @@
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Utils;
+using UnityEngine;
 
 namespace SDKFramework.Account.Utils
 {
@@ -8,7 +9,8 @@ namespace SDKFramework.Account.Utils
     {
         public static UserAccount ParseLoginAccountInfo(LoginResponse response)
         {
-            HLogger.LogFormat("ParseLoginAccountInfo token={0}, age={1}", response.token, response.data.age);
+            HLogger.Log($"[Account] ParseLoginAccountInfo token={response.token}, age={response.data.age}",
+                Color.magenta);
 
             UserAccount account = new UserAccount()
             {
@@ -19,12 +21,13 @@ namespace SDKFramework.Account.Utils
                     : UserAccount.AgeLevel.Unknown,
 
                 NickName = string.IsNullOrEmpty(response.data.nickname) ? "" : response.data.nickname,
-                
+
                 Age = response.data.age
             };
 
-            HLogger.LogWarning("--- AgeRange:" + account.AgeRange.ToString() + ",age=" + response.data.age +
-                               ",validateIdentity=" + response.data.validateIdentity);
+            HLogger.Log(
+                $"[Account] --- AgeRange: {account.AgeRange.ToString()} ,age={response.data.age} validateIdentity= {response.data.validateIdentity}",
+                Color.magenta);
 
             if (!string.IsNullOrEmpty(response.data.serverTime))
             {
@@ -32,7 +35,7 @@ namespace SDKFramework.Account.Utils
             }
 
 
-            HLogger.LogWarning("--- unionId:" + response.data.unionId);
+            HLogger.Log($"[Account] --- unionId: {response.data.unionId}", Color.magenta);
 
             if (!string.IsNullOrEmpty(response.data.phone))
             {
@@ -62,9 +65,9 @@ namespace SDKFramework.Account.Utils
             account.ResetOnline(response.data.totalOnlineTime, response.data.todayOnlineTime);
             account.ResetExpense(response.data.totalPaymentAmount, response.data.monthlyPaymentAmount,
                 response.data.todayPaymentAmount);
-            HLogger.LogWarning("--- totalPaymentAmount:" + response.data.totalPaymentAmount + ",monthlyPaymentAmount=" +
-                               response.data.monthlyPaymentAmount + ",todayPaymentAmoun=" +
-                               response.data.todayPaymentAmount);
+            HLogger.Log(
+                $"[Account] --- totalPaymentAmount: {response.data.totalPaymentAmount} ,monthlyPaymentAmount={response.data.monthlyPaymentAmount} ,todayPaymentAmoun={response.data.todayPaymentAmount}",
+                Color.magenta);
             return account;
         }
     }

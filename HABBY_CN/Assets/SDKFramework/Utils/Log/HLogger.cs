@@ -4,16 +4,11 @@ using SDKFramework.Utils.Log;
 using Color = UnityEngine.Color;
 using Debug = UnityEngine.Debug;
 
-/// <summary>
-/// 编辑器模式下要开启 ENABLE_DEBUG 才能正常使用，
-/// 这次封装目的是为了，不需要在调试完之后删掉之前的日志，
-/// 并且后续如果出问题可以直接开启 ENABLE_DEBUG 看日志
-/// 有其余扩展需求后续加入
-/// </summary>
+
 public class HLogger
 {
     [Conditional("ENABLE_DEBUG")]
-    public static void Log(string context, Color color)
+    public static void Log(object context, Color color)
     {
 #if USE_NATIVE_LOG
         Console.WriteLine("<color=" + ToHexColor(color) + ">{0}</color>", context);

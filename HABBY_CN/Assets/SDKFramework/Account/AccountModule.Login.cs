@@ -1,77 +1,50 @@
+using System;
+using SDKFramework.Account.AntiAddiction;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
+using UnityEngine;
+using static SDKFramework.Account.DataSrc.UserAccount;
 
 namespace SDKFramework.Account
 {
     public partial class AccountModule
     {
-        public void onClearUserCache()
+        public void Login(UserAccount account)
         {
-            HLogger.LogWarning("--- onClearUserCache");
-            AccountHistory.DeleteHistory();
-            ClearCurrent();
-        }
-
-
-        void OnEnable()
-        {
-            AccountModule.OnUserLogin += onUserLogin;
-            AccountModule.OnUserLogout += onUserLogout;
-            AccountModule.OnShowLoginScene += ShowLoginScene;
-        }
-
-        public void OnDisable()
-        {
-            AccountModule.OnUserLogin -= onUserLogin;
-            AccountModule.OnUserLogout -= onUserLogout;
-            AccountModule.OnShowLoginScene -= ShowLoginScene;
-        }
-
-        private void onUserLogout()
-        {
-            HLogger.LogWarnFormat("--- onUserLogout try crash!");
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            UnityEngine.Application.Quit();
+            HLogger.Log($"{TAG} Login,account={account?.AccessToken}, age={account?.AgeRange}",Color.cyan);
+            if (account == null) return;
+            account.SaveLoginTime();
+            CurrentAccount = account;
+            FileSaveLoad.SaveAccount(account);
+            AccountHistory.SaveAccount(account);
+#if USE_ANTIADDICTION
+            account.IAP?.Refresh();
+            account.Online?.Refresh();
+            timeManager.StartTimeCounter();
+            _ = (CurrentAccount.AgeRange != AgeLevel.Adult) ? gameObject.AddComponent<GAPPListener>() : null;
 #endif
+            IsLogin = true;
+            OnUserLogin?.Invoke();
         }
 
-        private void onUserLogin()
+        public void Logout(int actionCode = 0)
         {
-            HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
-#if MRQ
-            HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
+            HLogger.Log($"{TAG} Logout, account={CurrentAccount}");
+            if (CurrentAccount != null)
+            {
+#if USE_ANTIADDICTION
+                timeManager.StopTimeCounter(CurrentAccount);
 #endif
-            if (CurrentAccount?.AgeRange == UserAccount.AgeLevel.Adult)
-            {
-                SDK.Procedure?.EnterGame();
+                //TODO：这部分逻辑应该重新整理，版署可以这样做，线上切换账号时登出，不会在本地清掉当前账号数据存档
+                (actionCode == 0 ? (Action)Save : ClearCurrent)();
             }
 
-            HLogger.Log("onUserLogin登录成功");
+            IsLogin = false;
+
+            (actionCode == 0 ? OnUserLogout : OnShowLoginScene)?.Invoke();
+            HLogger.Log($"{TAG} Logout ActionCode={actionCode}",Color.red);
         }
 
-        private void ShowLoginScene()
-        {
-            HabbyFramework.UI.OpenUISingle(UIViewID.EntryUI);
-            HLogger.Log("ShowLoginScene");
-        }
-
-        public void CheckUser()
-        {
-            if (HasAccount)
-            {
-                UserAccount account = CurrentAccount;
-                HLogger.LogFormat("LoginManager checkUser token={0}", account.AccessToken);
-                if (isLogin) ShowLoginScene();
-            }
-            else
-            {
-                HLogger.Log("LoginManager checkUser has no account info");
-                ShowLoginScene();
-            }
-        }
-        
         public void LocalValidateIdentity(UserAccount account)
         {
             OnIdentitySuccess?.Invoke();
@@ -88,8 +61,8 @@ namespace SDKFramework.Account
         {
             HabbyUserClient.Instance.ValidateIdentity(account, (response) =>
             {
-                HLogger.LogFormat("ValidateIdentity code={0}", response.code);
-                if (IdentityResponse.CODE_SUCCESS==response.code)
+                HLogger.Log($"{TAG} ValidateIdentity, code={response.code}",Color.cyan);
+                if (IdentityResponse.CODE_SUCCESS == response.code)
                 {
                     account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
                     OnIdentitySuccess?.Invoke();
@@ -104,21 +77,20 @@ namespace SDKFramework.Account
                     {
                         HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
                     }
-                
+
                     Login(account);
-                
+
                     OnAntiAddictionResultLogin?.Invoke(true);
                     return;
                 }
+
                 OnIdentityFailed(response.code);
             });
         }
 
         public void LoginOrIdentify(UserAccount account)
         {
-            HLogger.LogFormat("LoginOrIdentify token={0}, channel={1}, age={2}", account.AccessToken, account.LoginChannel,
-                account.AgeRange);
-            // 不允许匿名登陆
+            HLogger.Log($"{TAG} LoginOrIdentify, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}",Color.cyan);
             if (string.IsNullOrEmpty(account.LoginChannel))
             {
                 ShowLoginScene();
@@ -139,13 +111,12 @@ namespace SDKFramework.Account
                     Login(account);
                 }
             }
-            
         }
 
-        public bool CanLogin(UserAccount account) 
+        public bool CanLogin(UserAccount account)
         {
 #if USE_ANTIADDICTION
-            ExitReason? reason = 
+            ExitReason? reason =
                 NoRightAge(account) ? ExitReason.NoRightAge :
                 NoGameTime(account) ? ExitReason.NoGameTime :
                 NoTimeLeft(account) ? ExitReason.NoTimeLeft :
@@ -155,11 +126,11 @@ namespace SDKFramework.Account
             {
                 HabbyFramework.UI.OpenUI(UIViewID.CrashUI, reason.Value);
             }
+
             return reason == null;
 #else
             return true;
 #endif
         }
-
     }
 }

@@ -97,7 +97,7 @@ public partial class LoginMediator : UIMediator<LoginView>
     private void ShowNotice()
     {
         View.noticeText.SetActive(true);
-        CoroutineScheduler.Instance.DrivingBehavior(() => View.noticeText.SetActive(false), 2.5f);
+        CoroutineScheduler.Instance.DelayedInvoke(() => View.noticeText.SetActive(false), 2.5f);
     }
 
     protected override void OnHide()

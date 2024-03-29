@@ -2,12 +2,6 @@ using UnityEngine;
 
 namespace SDKFramework.Utils
 {
-    
-
-    /// <summary>
-    /// 此单例继承于Mono，绝大多情况下，都不需要使用此单例类型。请使用Singleton
-    /// 不需要手动挂载
-    /// </summary>
     public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;

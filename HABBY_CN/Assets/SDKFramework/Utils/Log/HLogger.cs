@@ -7,6 +7,11 @@ using Debug = UnityEngine.Debug;
 
 public class HLogger
 {
+    static HLogger()
+    {
+        //HabbyLogOutput.Init(/* userid */);
+    }
+    
     [Conditional("ENABLE_DEBUG")]
     public static void Log(object context, Color color)
     {
@@ -20,7 +25,6 @@ public class HLogger
     [Conditional("ENABLE_DEBUG")]
     public static void LogFormat(string format, params object[] args)
     {
-        HabbyLogOutput.Init();
 #if USE_NATIVE_LOG
         Console.WriteLine(format,args);
 #else
@@ -31,7 +35,6 @@ public class HLogger
     [Conditional("ENABLE_DEBUG")]
     public static void LogErrorFormat(string format, params object[] args)
     {
-        HabbyLogOutput.Init();
 #if USE_NATIVE_LOG
         Console.WriteLine(format,args);
 #else
@@ -42,7 +45,6 @@ public class HLogger
     [Conditional("ENABLE_DEBUG")]
     public static void Log(object message)
     {
-        HabbyLogOutput.Init();
 #if USE_NATIVE_LOG
         Console.WriteLine(message);
 #else
@@ -53,7 +55,6 @@ public class HLogger
     [Conditional("ENABLE_DEBUG")]
     public static void LogWarning(object message)
     {
-        HabbyLogOutput.Init();
 #if USE_NATIVE_LOG
         Console.WriteLine(message);
 #else
@@ -64,7 +65,6 @@ public class HLogger
     [Conditional("ENABLE_DEBUG")]
     public static void LogError(object message)
     {
-        HabbyLogOutput.Init();
 #if USE_NATIVE_LOG
         Console.WriteLine(message);
 #else
@@ -87,7 +87,6 @@ public class HLogger
     [Conditional("ENABLE_DEBUG")]
     public static void Assert(bool condition, string info)
     {
-        HabbyLogOutput.Init();
         if (condition) return;
         Debug.LogError(info);
     }

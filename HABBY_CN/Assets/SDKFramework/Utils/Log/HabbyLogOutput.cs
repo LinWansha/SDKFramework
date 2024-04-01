@@ -149,9 +149,7 @@ namespace SDKFramework.Utils.Log
             this.mWritingLogQueue = new Queue<HabbyLogData>();
             this.mWaitingLogQueue = new Queue<HabbyLogData>();
             this.mLogLock = new object();
-
-           // string logName = HabbyLogUpload.CreateLogFileName();
-           string logName = "can,t use";
+            string logName = HabbyLogUpload.CreateLogFileName();
             string logPath = string.Format("{0}/{1}/{2}.txt", devicePersistentPath, logFloderPath, logName);
             if (File.Exists(logPath))
                 File.Delete(logPath);

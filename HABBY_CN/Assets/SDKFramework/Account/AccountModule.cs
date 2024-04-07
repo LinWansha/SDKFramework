@@ -17,7 +17,7 @@ namespace SDKFramework.Account
         
         private UserAccountHistory _AccountHistory;
 
-        private UserAccountHistory AccountHistory
+        public UserAccountHistory AccountHistory
         {
             get
             {
@@ -45,7 +45,7 @@ namespace SDKFramework.Account
         private void Reload()
         {
             CurrentAccount = FileSaveLoad.LoadAccount();
-            HLogger.Log($"{TAG} Reload data UID={CurrentAccount?.UID} TotalIAP={CurrentAccount?.IAP.Total}, TodayOnline={CurrentAccount?.Online.Today}");
+            HLogger.Log($"{TAG} Reload data UID={CurrentAccount?.UID} TotalIAP={CurrentAccount?.IAP?.Total}, TodayOnline={CurrentAccount?.Online?.Today}");
         }
         
         public void CheckUser()

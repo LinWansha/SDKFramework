@@ -41,19 +41,11 @@ namespace SDKFramework.Account.DataSrc
             return null;
         }
 
-        public bool HasAccountHistory
-        {
-            get
-            {
-                return channelList.Count > 0;
-            }
-        }
+        public bool HasAccountHistory => channelList.Count > 0;
+
         public Dictionary<string,UserAccount> GetChannelHistory(string channelName)
         {
-            if (channelList == null)
-            {
-                channelList = new Dictionary<string, Dictionary<string,UserAccount>>();
-            }
+            channelList ??= new Dictionary<string, Dictionary<string, UserAccount>>();
 
             if (!channelList.ContainsKey(channelName))
             {
@@ -120,10 +112,7 @@ namespace SDKFramework.Account.DataSrc
             {
                 return;
             }
-            if (channelList == null)
-            {
-                channelList = new Dictionary<string, Dictionary<string,UserAccount>>();
-            }
+            channelList ??= new Dictionary<string, Dictionary<string, UserAccount>>();
 
             if (!channelList.ContainsKey(account.LoginChannel))
             {
@@ -144,13 +133,13 @@ namespace SDKFramework.Account.DataSrc
             Save();
         }
         
-        public void DeleteById(string id,string channel)
+        public void DeleteById(string uid,string channel)
         {
-            if (channelList == null  || !channelList.ContainsKey(channel) || !channelList[channel].ContainsKey(id))
+            if (channelList == null  || !channelList.ContainsKey(channel) || !channelList[channel].ContainsKey(uid))
             {
                 return;
             }
-            channelList[channel].Remove(id);
+            channelList[channel].Remove(uid);
             Save();
         }
         

@@ -103,6 +103,7 @@ public partial class LoginMediator : UIMediator<LoginView>
     protected override void OnHide()
     {
         View.ActivateWindow(1);
+        HabbyFramework.UI.CloseUI(UIViewID.OnClickLoginUI);
         base.OnHide();
     }
 }

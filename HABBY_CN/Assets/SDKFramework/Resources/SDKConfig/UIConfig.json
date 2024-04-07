@@ -70,5 +70,11 @@
     "Description": "AntiaddictionRulesUI",
     "Asset": "SDKPrefab/AntiAddiction/AntiaddictionRulesUI",
     "Mode": 1
+  },
+  {
+    "ID": 13,
+    "Description": "OnClickLogin",
+    "Asset": "SDKPrefab/Login/OnClickLoginUI",
+    "Mode": 0
   }
 ]

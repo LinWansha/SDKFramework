@@ -27,4 +27,6 @@ public enum UIViewID
     AntiaddictionRulesUI = 12,
 
 
+    OnClickLoginUI = 13,
+
 }

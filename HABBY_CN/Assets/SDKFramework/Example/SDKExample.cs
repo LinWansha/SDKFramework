@@ -1,4 +1,5 @@
 using SDKFramework;
+using SDKFramework.Account.DataSrc;
 using UnityEngine;
 
 public class SDKExample : MonoBehaviour
@@ -15,6 +16,13 @@ public class SDKExample : MonoBehaviour
             Login = () =>
             {
                 HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+                // HabbyFramework.Account.LoginOrIdentify(new UserAccount()
+                // {
+                //     LoginChannel = UserAccount.ChannelQQ,
+                //     AgeRange = UserAccount.AgeLevel.Adult,
+                //     UID = "林万厦",
+                //     Age = 21
+                // });
             },
             EnterGame = () =>
             {
@@ -24,5 +32,7 @@ public class SDKExample : MonoBehaviour
         });
 
         SDK.Procedure.Login();
+        
+        
     }
 }

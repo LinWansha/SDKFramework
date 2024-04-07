@@ -45,8 +45,15 @@ public class EntryMediator : UIMediator<EntryView>
             HabbyTextHelper.Instance.ShowTip("请勾选用户协议");
             return;
         }
-        
-        HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+
+        if (HabbyFramework.Account.HasAccount)
+        {
+            HabbyFramework.UI.OpenUI(UIViewID.OnClickLoginUI);
+        }
+        else
+        {
+            HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+        }
     }
 
     protected override void OnHide()

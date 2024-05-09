@@ -48,6 +48,12 @@ namespace SDKFramework.Account
             HLogger.Log($"{TAG} Reload data UID={CurrentAccount?.UID} TotalIAP={CurrentAccount?.IAP?.Total}, TodayOnline={CurrentAccount?.Online?.Today}");
         }
         
+        public void SetPrivacyStatus(bool isAgree)
+        {
+            CurrentAccount.IsAgreePrivacy = isAgree;
+            HLogger.Log($"Privacy Status Change === {isAgree}",UnityEngine.Color.green);
+        }
+        
         public void CheckUser()
         {
             if (HasAccount)

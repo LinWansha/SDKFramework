@@ -16,10 +16,13 @@ public class EntryMediator : UIMediator<EntryView>
             {
                 View.privacyLine.SetActive(false);
             }
-            View.argeeToggle.isOn = false;
-            View.licenseObj.SetActive(true);
-            View.btnPrivacy.onClick.AddListener(() => { });//TODO:open webView
-            View.btnPersonalInfo.onClick.AddListener(() => { });
+            else
+            {
+                View.argeeToggle.isOn = false;//todo: 从本地持久化数据拿取
+                View.licenseObj.SetActive(true);
+                View.btnPrivacy.onClick.AddListener(() => { });//TODO:open webView
+                View.btnPersonalInfo.onClick.AddListener(() => { });
+            }
         }
     }
 

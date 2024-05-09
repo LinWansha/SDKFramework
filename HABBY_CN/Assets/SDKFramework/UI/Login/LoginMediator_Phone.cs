@@ -3,7 +3,7 @@ using SDKFramework.UI;
 
 public partial class LoginMediator : UIMediator<LoginView>
 {
-    public string m_PhoneNum;
+    private string m_PhoneNum;
 
     private void InputPhoneNum(string phoneNum)
     {

@@ -1,4 +1,6 @@
 using System.Collections;
+using SDKFramework.LoginDesign;
+using SDKFramework.Message;
 using SDKFramework.UI;
 using UnityEngine;
 
@@ -56,6 +58,11 @@ public partial class LoginMediator : UIMediator<LoginView>
             {
                 View.verifyCodeInput[i].text = "";
             }
+        }
+
+        if (str.Length==4)
+        {
+            HabbyFramework.Message.Post(new MsgType.PhoneLogin(){phoneNumber = m_PhoneNum,phoneVerifyCode = str});
         }
     }
 }

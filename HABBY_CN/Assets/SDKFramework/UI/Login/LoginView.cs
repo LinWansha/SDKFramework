@@ -91,7 +91,7 @@ public class LoginView : UIView
     /// 三个window完全互斥
     /// </summary>
     /// <param name="id">1:main || 2:phone || 3:phone verify</param>
-    public void ActivateWindow(int id)
+    public override void ActivateWindow(int id)
     {
         if (id >= 1 && id <= 3)
         {

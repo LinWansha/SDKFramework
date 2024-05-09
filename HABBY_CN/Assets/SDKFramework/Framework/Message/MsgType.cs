@@ -23,5 +23,13 @@ namespace SDKFramework.Message
                 AccountItemUis = accountItemUis;
             }
         }
+        
+        public struct ShowNoAgreePrivacyNotice { }
+
+        public struct PhoneLogin
+        {
+            public string phoneNumber;
+            public string phoneVerifyCode;
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace SDKFramework.Account.DataSrc
         public const string ChannelTraditional = "traditional";
         #endregion
         
+        bool isAgreePrivacy;
+        public bool IsAgreePrivacy{ get => isAgreePrivacy; set => isAgreePrivacy = value; }
         
         string accessToken;
         public string AccessToken{ get => accessToken; set => accessToken = value; }

@@ -12,14 +12,15 @@ public class SDKExample : MonoBehaviour
             {
                 HabbyFramework.UI.OpenUI(UIViewID.SplashAdviceUI);
             },
-            Login = () =>
+            Login = (token) =>
             {
-                HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+                //use this token to login game server
+                Debug.Log($"版署服务器登录成功,Persistent token: {token}");
             },
             EnterGame = () =>
             {
                 //Write your logic for entering the game
-                HLogger.Log("宿主程序进入成功!!!");
+                Debug.Log("宿主程序进入成功!!!");
             },
         });
     }

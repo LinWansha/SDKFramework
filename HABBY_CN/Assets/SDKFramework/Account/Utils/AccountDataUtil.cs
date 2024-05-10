@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Utils;
@@ -69,6 +71,20 @@ namespace SDKFramework.Account.Utils
                 $"[Account] --- totalPaymentAmount: {response.data.totalPaymentAmount} ,monthlyPaymentAmount={response.data.monthlyPaymentAmount} ,todayPaymentAmoun={response.data.todayPaymentAmount}",
                 Color.magenta);
             return account;
+        }
+        public static string Encode(string userId, string password)
+        {
+            string combined = userId + "|" + password;
+            byte[] combinedBytes = Encoding.UTF8.GetBytes(combined);
+            return Convert.ToBase64String(combinedBytes);
+        }
+
+        public static Tuple<string, string> Decode(string base64Encoded)
+        {
+            byte[] decodedBytes = Convert.FromBase64String(base64Encoded);
+            string decoded = Encoding.UTF8.GetString(decodedBytes);
+            string[] result = decoded.Split('|');
+            return Tuple.Create(result[0], result[1]);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SDKFramework
 
         public static SDK New()
         {
-            var jsonStr = Resources.Load<TextAsset>("SDKConfig/App").text;
+            var jsonStr = Resources.Load<TextAsset>($"SDKConfig/App").text;
             var AppData = JsonUtility.FromJson<AppConfig>(jsonStr);
             HabbyFramework.Message.Post(AppData);
             // ReSharper disable once Unity.NoNullPropagation
@@ -42,7 +42,7 @@ namespace SDKFramework
         {
             public Action Splash;
 
-            public Action Login;
+            public Action<string> Login;
 
             public Action EnterGame;
         }

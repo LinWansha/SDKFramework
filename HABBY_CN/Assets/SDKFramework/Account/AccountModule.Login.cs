@@ -9,7 +9,7 @@ namespace SDKFramework.Account
 {
     public partial class AccountModule
     {
-        public void Login(UserAccount account)
+        private void Login(UserAccount account)
         {
             HLogger.Log($"{TAG} Login,account={account?.AccessToken}, age={account?.AgeRange}",Color.cyan);
             if (account == null) return;
@@ -113,7 +113,7 @@ namespace SDKFramework.Account
             }
         }
 
-        public bool CanLogin(UserAccount account)
+        private bool CanLogin(UserAccount account)
         {
 #if USE_ANTIADDICTION
             ExitReason? reason =
@@ -131,6 +131,34 @@ namespace SDKFramework.Account
 #else
             return true;
 #endif
+        }
+        
+        public void CheckUser()
+        {
+            if (HasAccount)
+            {
+                UserAccount account = CurrentAccount;
+                HLogger.Log($"{TAG} checkUser token={account.AccessToken}");
+                if (IsLogin) ShowLoginScene();
+            }
+            else
+            {
+                HLogger.Log($"{TAG} checkUser has no account info");
+                ShowLoginScene();
+            }
+        }
+        
+        internal string GetUserGuid()
+        {
+            if (HasAccount && !string.IsNullOrEmpty(CurrentAccount?.UID)) 
+            {
+                return CurrentAccount.UID;
+            }
+            else
+            {
+                HLogger.LogError($"{TAG} Invalid UserId !!!");
+                return default;
+            }
         }
     }
 }

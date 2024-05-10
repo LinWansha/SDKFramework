@@ -1,13 +1,19 @@
 ## 版署SDK接入流程
 
-### 一、根据游戏类型从EditorWindow配置：
+### 一、引入、下载SDK：
 
-#### 拖入PureCN.unitypackage之后打开编辑器菜单 SDKFramework/Configuration Application
+##### 1. [下载unitypackage](https://raw.githubusercontent.com/LinWansha/SDKFramework/main/Product/PureCN_GAPP.unitypackage)
+<!-- ##### 2. 通过 UPM (Unity Package Manager) 引入：com.habby.sdkframework -->
+
+
+### 二、根据游戏内容填充配置：
+
+#### 引入SDK之后打开编辑器菜单 SDKFramework/Configuration Application
 
 ![ConfigurationApp](https://raw.githubusercontent.com/LinWansha/SDKFramework/main/DocImg/ConfigurationApp.png)
 
 
-### 二、国内申请版号版本所需的功能接口：
+### 三、国内申请版号版本所需的功能接口：
 
 #### 1、初始化，运行SDK（在下方代码注释位置填写进入游戏的逻辑）（可以在入口脚本的Start方法中调用）
  ```cs
@@ -18,21 +24,22 @@ MRQ.Run(new SDK.ProcedureOption()
     {
         HabbyFramework.UI.OpenUI(UIViewID.SplashAdviceUI);
     },
-    Login = () =>
+    Login = (token) =>
     {
-        HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
+        //use this token to login game server
+        Debug.Log($"版署服务器登录成功,Persistent token: {token}");
     },
     EnterGame = () =>
     {
         //Write your logic for entering the game
-        HLogger.Log("宿主程序进入成功!!!");
+        Debug.Log("宿主程序进入成功!!!");
     },
 });
 ```
 
-#### 2、开始登录版署服务器流程（当游戏启动Loading结束后调用）
+#### 2、打开登录界面UI（当游戏启动Loading结束后调用）
 ```cs
-SDK.Procedure?.Login();
+HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
 ```
 
 #### 3、在商店界面中添加一个按钮，点击按钮调用如下接口
@@ -40,17 +47,17 @@ SDK.Procedure?.Login();
 HabbyFramework.UI.OpenUI(UIViewID.PurchaseRulesUI);
 ```
 
-#### 4、刷新玩家当前月消费额度（从游戏服拿取数据，传入以下接口中）（可以在游戏服登录成功之后调用）
+#### 4、刷新玩家当前月消费额度（可以在游戏服登录成功之后调用）
 ```cs
 HabbyFramework.Account.RefreshMonthlyExpense(/*传入商品金额,以分为单位*/);
 ```
 
-#### 5、每次商品支付成功之后调用
+#### 5、用户点击商品拉起订单之前调用
 ```cs
 HabbyFramework.Account.CanPurchase(/*传入商品金额,以分为单位*/);
 ```
 
-#### 6、切换账号（注意调用之前客户端清除游戏服数据）
+#### 6、切换账号（退出登录，回到登录界面）
 ```cs
 HabbyFramework.Account.Logout(1);//调用该接口传入1，会退出当前账号并打开登录界面
 ```

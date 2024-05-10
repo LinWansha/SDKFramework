@@ -126,7 +126,7 @@ namespace SDKFramework.Account.Net
                 countryCode = RegionInfo.CurrentRegion.EnglishName??"China",
 
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
-                    os =  1,
+                os =  1,
 #else
                 os =  2
 #endif

@@ -5,19 +5,6 @@ using System.Reflection;
 
 namespace SDKFramework.Message
 {
-    public class MsgType
-    {
-        public struct  ClosePopup
-        {
-            public UIViewID ViewID;
-
-            public ClosePopup(UIViewID viewId)
-            {
-                ViewID = viewId;
-            }
-        }
-    }
-
     /// <summary>
     /// 消息中心，后面如果用的多，可以考虑异步，并引入对象池
     /// </summary>

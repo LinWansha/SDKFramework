@@ -1,12 +1,13 @@
 ﻿using SDKFramework.Account.AntiAddiction;
 using SDKFramework.Account.DataSrc;
+using SDKFramework.Account.Utils;
 using static SDKFramework.Account.DataSrc.UserAccount;
 
 namespace SDKFramework.Account
 {
     public partial class AccountModule : BaseModule
     {
-        internal string TAG = "[Account]";
+        private string TAG = "[Account]";
         public bool IsLogin { get; private set; }
 
         private readonly AntiAddictionTimeChecker timeManager = new AntiAddictionTimeChecker();
@@ -45,22 +46,15 @@ namespace SDKFramework.Account
         private void Reload()
         {
             CurrentAccount = FileSaveLoad.LoadAccount();
-            HLogger.Log($"{TAG} Reload data UID={CurrentAccount?.UID} TotalIAP={CurrentAccount?.IAP.Total}, TodayOnline={CurrentAccount?.Online.Today}");
-        }
-        
-        public void CheckUser()
-        {
-            if (HasAccount)
-            {
-                UserAccount account = CurrentAccount;
-                HLogger.Log($"{TAG} checkUser token={account.AccessToken}");
-                if (IsLogin) ShowLoginScene();
-            }
-            else
-            {
-                HLogger.Log($"{TAG} checkUser has no account info");
-                ShowLoginScene();
-            }
+            if (!HasAccount) return;
+            var userTuple = AccountDataUtil.Decode(CurrentAccount?.UID);
+            HLogger.Log(context:
+                $"{TAG} Reload data UID={CurrentAccount?.UID}" +
+                $" TotalIAP={CurrentAccount?.IAP?.Total}" +
+                $" TodayOnline={CurrentAccount?.Online?.Today}" +
+                $" UserId:{userTuple.Item1}" +
+                $" Password:{userTuple.Item2}",
+                color: UnityEngine.Color.green);
         }
 
         public void Save()
@@ -127,7 +121,7 @@ namespace SDKFramework.Account
             }
         }
         //刷新间隔（帧为单位）
-        private int _update_interval = 100;
+        private readonly int _update_interval = 100;
 
         private int _update_count = 0;
         protected internal override void OnModuleUpdate(float deltaTime)
@@ -167,6 +161,6 @@ namespace SDKFramework.Account
         public void FireExpenseOverRange() => OnSingleExpenseOverRange?.Invoke(LimitType.Single);
         public void FireMonthlyExpenseOverRange() => OnMonthlyExpenseOverRange?.Invoke(LimitType.Monthly);
 
- #endregion
+#endregion
     }
 }

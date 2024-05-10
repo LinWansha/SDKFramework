@@ -27,7 +27,7 @@ namespace SDKFramework
 {
     /// <summary>
     /// Author  : mrq
-    /// Time    : 2024/01/02
+    /// Time    : 2023/12/22
     /// Feature : Frame driver layer, technical support contact Meng Ruiqing
     /// </summary>
     public sealed class ModuleDriver

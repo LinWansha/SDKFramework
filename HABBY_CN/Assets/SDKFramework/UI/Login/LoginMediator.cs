@@ -1,3 +1,4 @@
+using SDKFramework;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Account.Utils;
@@ -75,10 +76,12 @@ public class LoginMediator : UIMediator<LoginView>
             if (response.code == LoginResponse.CODE_SUCCESS)
             {
                 UserAccount account = AccountDataUtil.ParseLoginAccountInfo(response);
+                account.UID = AccountDataUtil.Encode(userId, password);
                 account.UserId = userId;
                 account.Password = password;
                 account.LoginChannel = UserAccount.ChannelAccount;
                 HabbyFramework.Account.LoginOrIdentify(account);
+                SDK.Procedure.Login(HabbyFramework.Account.GetUserGuid());
                 Close();
             }
             else if (response.code == LoginResponse.CODE_USER_NOT_FOUND)

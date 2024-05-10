@@ -1,13 +1,19 @@
 ## 版署SDK接入流程
 
-### 一、根据游戏类型从EditorWindow配置：
+### 一、引入、下载SDK：
+
+##### 1. [下载unitypackage](https://github.com/LinWansha/SDKFramework/tree/main/PureCN.unitypackage)
+##### 2. 通过 UPM (Unity Package Manager) 引入：com.habby.sdkframework
+
+
+### 二、根据游戏内容填充配置：
 
 #### 引入SDK之后打开编辑器菜单 SDKFramework/Configuration Application
 
 ![ConfigurationApp](https://raw.githubusercontent.com/LinWansha/SDKFramework/main/DocImg/ConfigurationApp.png)
 
 
-### 二、国内申请版号版本所需的功能接口：
+### 三、国内申请版号版本所需的功能接口：
 
 #### 1、初始化，运行SDK（在下方代码注释位置填写进入游戏的逻辑）（可以在入口脚本的Start方法中调用）
  ```cs

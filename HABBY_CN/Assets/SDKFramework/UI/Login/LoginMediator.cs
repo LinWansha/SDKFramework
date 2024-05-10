@@ -44,8 +44,6 @@ public class LoginMediator : UIMediator<LoginView>
         View.btnLogin.onClick.RemoveListener(Login);
         View.btnRegister.onClick.RemoveListener(Register);
         HabbyFramework.Message.Unsubscribe<MsgType.ClosePopup>(ClickMaskCallBack);
-        View.userIdInput.text = "";
-        View.passwordInput.text = "";
         base.OnHide();
     }
 

@@ -3,7 +3,7 @@
 ### 一、引入、下载SDK：
 
 ##### 1. [下载unitypackage](https://raw.githubusercontent.com/LinWansha/SDKFramework/main/Product/PureCN_GAPP.unitypackage)
-##### 2. 通过 UPM (Unity Package Manager) 引入：com.habby.sdkframework
+<!-- ##### 2. 通过 UPM (Unity Package Manager) 引入：com.habby.sdkframework -->
 
 
 ### 二、根据游戏内容填充配置：

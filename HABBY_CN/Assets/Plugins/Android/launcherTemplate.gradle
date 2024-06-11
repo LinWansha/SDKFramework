@@ -35,6 +35,23 @@ android {
         abortOnError false
     }
 
+    signingConfigs{
+        release {
+            keyAlias 'mrq'
+            keyPassword '00000000'
+            storeFile file('../../secret/mrq.keystore')
+            storePassword '00000000'
+            println(file('../../secret/mrq.keystore').absolutePath)
+        }
+        debug {
+            keyAlias 'mrq'
+            keyPassword '00000000'
+            storeFile file('../../secret/mrq.keystore')
+            storePassword '00000000'
+            println(file('../../secret/mrq.keystore').absolutePath)
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled **MINIFY_DEBUG**

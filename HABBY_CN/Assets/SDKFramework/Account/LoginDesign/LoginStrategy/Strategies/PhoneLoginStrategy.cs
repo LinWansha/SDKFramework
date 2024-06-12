@@ -1,4 +1,5 @@
 using SDKFramework.Message;
+using SDKFramework.UI;
 
 namespace SDKFramework.LoginDesign
 {
@@ -7,7 +8,8 @@ namespace SDKFramework.LoginDesign
         public override void Login()
         {
             HLogger.Log("PhoneLogin");
-            HabbyFramework.UI.OpenUI(UIViewID.LoginUI, 2);
+            UIMediator loginMediator = HabbyFramework.UI.OpenUISingle(UIViewID.LoginUI);
+            loginMediator.ViewObject.GetComponent<LoginView>().ActivateWindow(2);
             HabbyFramework.Message.Subscribe<MsgType.PhoneLogin>(_PhoneLogin);            
         }
 

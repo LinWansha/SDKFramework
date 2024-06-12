@@ -10,6 +10,11 @@ using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.Profiling;
 
+/// <summary>
+/// Author  : Meng Ruiqing
+/// Time    : 2023/12/23
+/// Feature : Framework facade , technical support contact Meng Ruiqing
+/// </summary>
 public class HabbyFramework : MonoBehaviour
 {
     

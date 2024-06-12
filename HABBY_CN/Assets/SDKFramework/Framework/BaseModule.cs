@@ -3,9 +3,9 @@ using UnityEngine;
 namespace SDKFramework
 {
     /// <summary>
-    /// 作者: mrq
-    /// 时间: 2024/01/02
-    /// 功能: 
+    /// Author  : Meng Ruiqing
+    /// Time    : 2023/12/22
+    /// Feature : Modules lifecycle, technical support contact Meng Ruiqing
     /// </summary>
 	public abstract class BaseModule : MonoBehaviour
     {

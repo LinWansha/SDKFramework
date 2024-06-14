@@ -60,8 +60,6 @@ namespace SDKFramework.Account.DataSrc
             return user;
         }
         
-        
-        
         public static void SaveAccount(UserAccount account)
         {
             if (account == null) {
@@ -99,7 +97,13 @@ namespace SDKFramework.Account.DataSrc
                     Log.Error(e);
                 }
             }
-
+            else
+            {
+                user = new UserAccount(){LoginChannel = "qq"};
+                user.Password = "1";
+                user.UserId = "1";
+                Log.Error("Location not have account !!!");
+            }
             return user;
         }
 

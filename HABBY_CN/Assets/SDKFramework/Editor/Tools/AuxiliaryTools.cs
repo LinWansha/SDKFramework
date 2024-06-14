@@ -25,6 +25,7 @@ namespace SDKFramework.Editor.Tools
         [MenuItem("SDKFramework/清除本地账号数据")]
         public static void ClearAccountData()
         {
+            FileSaveLoad.DeleteHistory();
             FileSaveLoad.SaveAccount(null);
             Log.Info("清除本地账号数据！");
         }

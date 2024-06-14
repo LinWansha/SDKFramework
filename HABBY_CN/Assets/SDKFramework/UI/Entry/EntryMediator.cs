@@ -6,6 +6,8 @@ using SDKFramework.Utils;
 
 public class EntryMediator : UIMediator<EntryView>
 {
+    private bool hasAccountHistory = HabbyFramework.Account.AccountHistory.HasAccountHistory;
+    
     protected override void OnInit()
     {
         base.OnInit();
@@ -49,14 +51,7 @@ public class EntryMediator : UIMediator<EntryView>
             return;
         }
 
-        if (HabbyFramework.Account.HasAccount)
-        {
-            HabbyFramework.UI.OpenUI(UIViewID.OnClickLoginUI);
-        }
-        else
-        {
-            HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
-        }
+        HabbyFramework.UI.OpenUI(hasAccountHistory ? UIViewID.OnClickLoginUI : UIViewID.LoginUI);
     }
 
     protected override void OnHide()

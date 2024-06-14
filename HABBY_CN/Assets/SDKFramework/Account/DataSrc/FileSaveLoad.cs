@@ -69,7 +69,6 @@ namespace SDKFramework.Account.DataSrc
                 return;
             }
 
-           
             try
             {
                 using FileStream file = File.Create(kUserAccount);
@@ -98,7 +97,6 @@ namespace SDKFramework.Account.DataSrc
                     Delete(kUserAccount);
                     DeleteHistory();
                     Log.Error(e);
-
                 }
             }
 

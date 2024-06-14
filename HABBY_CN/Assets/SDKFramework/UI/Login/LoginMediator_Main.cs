@@ -63,8 +63,9 @@ public partial class LoginMediator : UIMediator<LoginView>
 
     private void ShowNotice(MsgType.ShowNoAgreePrivacyNotice arg)
     {
-        View.noticeText.SetActive(true);
-        CoroutineScheduler.Instance.DelayedInvoke(() => View.noticeText.SetActive(false), 2.5f);
+        GameObject noticeTextObj = View.noticeText;
+        noticeTextObj.SetActive(true);
+        CoroutineScheduler.Instance.DelayedInvoke(() => noticeTextObj.SetActive(false), 2.5f);
     }
 
     protected override void OnShow(object arg)

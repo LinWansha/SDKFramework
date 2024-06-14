@@ -11,7 +11,7 @@ namespace SDKFramework.Account
     {
         public void Login(UserAccount account)
         {
-            HLogger.Log($"{TAG} Login,account={account?.AccessToken}, age={account?.AgeRange}",Color.cyan);
+            AccountLog.Info($"Login,account={account?.AccessToken}, age={account?.AgeRange}");
             if (account == null) return;
             account.SaveLoginTime();
             CurrentAccount = account;
@@ -29,7 +29,7 @@ namespace SDKFramework.Account
 
         public void Logout(int actionCode = 0)
         {
-            HLogger.Log($"{TAG} Logout, account={CurrentAccount}");
+            AccountLog.Info($"Logout, account={CurrentAccount}");
             if (CurrentAccount != null)
             {
 #if USE_ANTIADDICTION
@@ -42,7 +42,7 @@ namespace SDKFramework.Account
             IsLogin = false;
 
             (actionCode == 0 ? OnUserLogout : OnShowLoginScene)?.Invoke();
-            HLogger.Log($"{TAG} Logout ActionCode={actionCode}",Color.red);
+            AccountLog.Info($"Logout ActionCode={actionCode}");
         }
 
         public void LocalValidateIdentity(UserAccount account)
@@ -61,7 +61,7 @@ namespace SDKFramework.Account
         {
             HabbyUserClient.Instance.ValidateIdentity(account, (response) =>
             {
-                HLogger.Log($"{TAG} ValidateIdentity, code={response.code}",Color.cyan);
+                AccountLog.Info($"ValidateIdentity, code={response.code}");
                 if (IdentityResponse.CODE_SUCCESS == response.code)
                 {
                     account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
@@ -90,7 +90,7 @@ namespace SDKFramework.Account
 
         public void LoginOrIdentify(UserAccount account)
         {
-            HLogger.Log($"{TAG} LoginOrIdentify, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}",Color.cyan);
+            AccountLog.Info($"LoginOrIdentify, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}");
             if (string.IsNullOrEmpty(account.LoginChannel))
             {
                 ShowLoginScene();

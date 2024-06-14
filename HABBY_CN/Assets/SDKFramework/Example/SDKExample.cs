@@ -27,7 +27,7 @@ public class SDKExample : MonoBehaviour
             EnterGame = () =>
             {
                 //Write your logic for entering the game
-                HLogger.Log("宿主程序进入成功!!!");
+                Log.Info("宿主程序进入成功!!!");
             },
         });
 

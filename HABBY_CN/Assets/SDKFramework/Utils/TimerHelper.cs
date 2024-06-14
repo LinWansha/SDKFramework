@@ -147,7 +147,7 @@ namespace SDKFramework.Utils
                 }
                 catch (Exception e)
                 {
-                    HLogger.LogError(e);
+                    Log.Error(e);
                 }
             }
 

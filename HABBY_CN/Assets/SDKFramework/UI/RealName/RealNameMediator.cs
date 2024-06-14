@@ -116,8 +116,8 @@ public class RealNameMediator : UIMediator<RealNameView>
 
     private void onError(int code)
     {
-        HLogger.LogWarnFormat(string.Format("----- UserIdentifyPopup rps error:code={0}",code));
-         HabbyTextHelper.Instance.ShowTip("实名认证失败!错误代码：" + code);
+        Log.Warn($"----- UserIdentifyPopup rps error:code={code}");
+        HabbyTextHelper.Instance.ShowTip("实名认证失败!错误代码：" + code);
         switch (code)
         {
             case IdentityResponse.PARAM_ERROR:

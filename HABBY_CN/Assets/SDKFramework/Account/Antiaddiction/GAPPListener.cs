@@ -8,7 +8,7 @@ namespace SDKFramework.Account.AntiAddiction
 #if USE_ANTIADDICTION
         private void OnEnable()
         {
-            HLogger.Log("开始侦听未成年人游戏行为",Color.green);
+            AccountLog.Info("开始侦听未成年人游戏行为");
             AccountModule.OnNoTimeLeft += NoTimeLeft;
 
             AccountModule.OnSingleExpenseOverRange += ExpenseOverRange;
@@ -21,7 +21,7 @@ namespace SDKFramework.Account.AntiAddiction
 
             AccountModule.OnSingleExpenseOverRange -= ExpenseOverRange;
             AccountModule.OnMonthlyExpenseOverRange -= ExpenseOverRange;
-            HLogger.Log("取消侦听未成年人游戏行为",Color.red);
+            AccountLog.Info("取消侦听未成年人游戏行为");
         }
         
         private void ExpenseOverRange(LimitType limitType)

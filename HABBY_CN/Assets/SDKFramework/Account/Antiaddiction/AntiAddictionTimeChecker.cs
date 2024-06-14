@@ -40,7 +40,7 @@ namespace SDKFramework.Account.AntiAddiction
         /// </summary>
         public void StopTimeCounter(UserAccount account)
         {
-            HLogger.LogFormat("AntiAddictionTimeChecker StopTimeCounter ticking={0}", _ticking);
+            AccountLog.Info($"AntiAddictionTimeChecker StopTimeCounter ticking={_ticking}");
             if (!_ticking) return;
             _ticking = false;
 
@@ -56,8 +56,7 @@ namespace SDKFramework.Account.AntiAddiction
 
             if (account != null && account.Online != null)
             {
-                HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Total,
-                    account.Online.Today);
+                AccountLog.Info($"AntiAddictionTimeChecker today={account.Online.Total},total={account.Online.Today}");
             }
         }
 
@@ -83,8 +82,6 @@ namespace SDKFramework.Account.AntiAddiction
                 seconds = 0;
             }
 
-            //HLogger.LogFormat("AntiAddictionTimeChecker today={0},total={1}", account.Online.Today, account.Online.Total);
-               
             int remain;
             if (account.AgeRange != UserAccount.AgeLevel.Adult)
             {
@@ -123,7 +120,7 @@ namespace SDKFramework.Account.AntiAddiction
 
         public bool HasTimeLeft(UserAccount account)
         {
-            HLogger.Log("##### HasTimeLeft _last_time : " + _last_time);
+            AccountLog.Info("##### HasTimeLeft _last_time : " + _last_time);
             //尝试在登录判定时清除久的时间数据
             _last_time = 0;
             if (account == null || account.Online == null) return true;
@@ -181,8 +178,7 @@ namespace SDKFramework.Account.AntiAddiction
 
             if (data.segments.Count < 2) return;
 
-            HLogger.LogFormat("AntiTimeChecker startAt={0}, endAt={1}", data.segments[0].startAt,
-                data.segments[0].endAt);
+            AccountLog.Info($"AntiTimeChecker startAt={data.segments[0].startAt}, endAt={data.segments[0].endAt}");
             HabbyUserClient.Instance.UpdateUserOnlineData(HabbyFramework.Account.CurrentAccount, data.segments,
                 (response) =>
                 {

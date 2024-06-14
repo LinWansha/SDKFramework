@@ -36,12 +36,12 @@ namespace SDKFramework.Network
                 webRequest.SetRequestHeader("Content-Type", "application/json");
                 yield return webRequest.SendWebRequest();
 
-                HLogger.Log("=== habby status code " + webRequest.responseCode);
+                Log.Info("=== habby status code " + webRequest.responseCode);
 
                 if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
                     webRequest.result == UnityWebRequest.Result.DataProcessingError || !webRequest.isDone)
                 {
-                    HLogger.Log(webRequest.error);
+                    Log.Info(webRequest.error);
                     if (onError != null) onError(webRequest.error);
                 }
                 else
@@ -60,7 +60,7 @@ namespace SDKFramework.Network
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                     NullValueHandling = NullValueHandling.Ignore
                 });
-            HLogger.Log("--- Post=" + url + ",requestStr:" + requestStr);
+            Log.Info("--- Post=" + url + ",requestStr:" + requestStr);
             StartCoroutine(_Post(url, requestStr, callback));
         }
 
@@ -86,28 +86,26 @@ namespace SDKFramework.Network
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
                 
-                HLogger.LogFormat("Request url={0} : index={1}, data={2}", url, index, requestStr);
+                Log.Info($"Request url={url} : index={index}, data={requestStr}");
                 yield return request.SendWebRequest();
 
                 if (request.result == UnityWebRequest.Result.ConnectionError ||
                     request.result == UnityWebRequest.Result.DataProcessingError || !request.isDone)
                 {
-                    string errMesg = request.error;
+                    string errMsg = request.error;
 
-                    HLogger.LogErrorFormat("NetWork Error !!! index={0}, url={1}, msg={2}", index, url, errMesg);
+                    Log.Error($"NetWork Error !!! index={index}, url={url}, msg={errMsg}");
                 }
                 else
                 {
-                    HLogger.LogFormat("Response index={0}, url={1}, msg={2}, content-length={3}", index, url,
-                        request.responseCode, request.downloadedBytes);
+                    Log.Info($"Response index={index}, url={url}, msg={request.responseCode}, content-length={request.downloadedBytes}");
                     try
                     {
                         onRetrieveData(request, callback);
                     }
                     catch (Exception e)
                     {
-                        HLogger.LogErrorFormat("Response Parse Exception url={0}, index={1}, msg={2}", url, index,
-                            e.StackTrace);
+                        Log.Error($"Response Parse Exception url={url}, index={index}, msg={e.StackTrace}");
                     }
                 }
 
@@ -119,14 +117,14 @@ namespace SDKFramework.Network
         private void onRetrieveData<TResponse>(UnityWebRequest webRequest, Action<TResponse> callback)
         {
             string result = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
-            HLogger.LogFormat("response data = {0}", result);
+            Log.Info($"response data = {result}");
             TResponse response = JsonConvert.DeserializeObject<TResponse>(result);
             if (callback != null) callback(response);
         }
 
         public void ClearHttpQueue()
         {
-            HLogger.LogFormat("Waiting Http Request Queue {0}", mPending.Count);
+            Log.Info($"Waiting Http Request Queue { mPending.Count}");
             mPendingMarks = 0;
             mPending.Clear();
         }

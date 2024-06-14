@@ -1,10 +1,10 @@
-namespace SDKFramework.LoginDesign
+namespace SDKFramework.Account
 {
     public class AppleLoginStrategy : LoginTemplate
     {
         public override void Login()
         {
-            HLogger.Log("AppleLogin");
+            AccountLog.Info("AppleLogin");
             // ...
         }
     }

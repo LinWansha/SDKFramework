@@ -31,7 +31,7 @@ namespace SDKFramework.Account.DataSrc
             }
             catch (Exception e)
             {
-                HLogger.LogError(e);
+                Log.Error(e);
                 DeleteHistory();
             }
         }
@@ -53,7 +53,7 @@ namespace SDKFramework.Account.DataSrc
                 }
                 catch (Exception e)
                 {
-                    HLogger.LogError(e);
+                    Log.Error(e);
                 }
             }
 
@@ -97,7 +97,7 @@ namespace SDKFramework.Account.DataSrc
                 {
                     Delete(kUserAccount);
                     DeleteHistory();
-                    HLogger.LogError(e);
+                    Log.Error(e);
 
                 }
             }

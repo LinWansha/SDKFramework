@@ -1,10 +1,10 @@
-namespace SDKFramework.LoginDesign
+namespace SDKFramework.Account
 {
     public class WxLoginStrategy : LoginTemplate
     {
         public override void Login()
         {
-            HLogger.Log("WxLogin");
+            AccountLog.Info("WxLogin");
             // ...
         }
     }

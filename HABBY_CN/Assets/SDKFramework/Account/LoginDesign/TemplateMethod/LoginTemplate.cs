@@ -1,4 +1,4 @@
-namespace SDKFramework.LoginDesign
+namespace SDKFramework.Account
 {
     public abstract class LoginTemplate:ILoginStrategy
     {

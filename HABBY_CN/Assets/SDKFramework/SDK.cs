@@ -17,7 +17,7 @@ namespace SDKFramework
 
             if (TheChosenOne == null)
             {
-                HLogger.LogError(
+                Log.Error(
                     "接入之前请先在Hierarchy中放入SDK预制体 [You need to add SDK prefabrication to the Hierarchy before integration SDK]");
             }
         }

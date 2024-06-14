@@ -46,7 +46,7 @@ namespace SDKFramework.Account.Net
                     {
                         string randomID = System.Guid.NewGuid().ToString("N");
                         PlayerPrefs.SetString("--deviceid--",randomID);
-                        HLogger.LogWarning("NewGuid");
+                        Log.Warn("NewGuid");
                     }
                     return PlayerPrefs.GetString("--deviceid--");
                 }

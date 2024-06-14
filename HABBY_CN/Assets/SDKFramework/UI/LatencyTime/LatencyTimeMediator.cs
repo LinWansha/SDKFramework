@@ -9,7 +9,7 @@ public class LatencyTimeMediator : UIMediator<LatencyTimeView>
     {
         base.OnShow(arg);
         View.label.text = arg as string;
-        HLogger.Log("LatencyTimeMediator");
+        Log.Info("LatencyTimeMediator");
     }
 
     protected override void OnUpdate(float deltaTime)

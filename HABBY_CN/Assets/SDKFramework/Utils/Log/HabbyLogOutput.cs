@@ -11,7 +11,7 @@ using UnityEngine;
  * to xcode's Custom IOS Target Properties , and set them value to YES.
  * Then you can check Log files in "Files" App (Need IOS 11 Or later)
  */
-namespace SDKFramework.Utils.Log
+namespace SDKFramework.Utils.LogPro
 {
     public class HabbyLogOutput
     {

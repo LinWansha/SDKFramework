@@ -34,7 +34,7 @@ namespace SDKFramework.Utils
                 {
                     if (Debug.isDebugBuild)
                     {
-                        HLogger.Log("[Singleton] " + typeof(T) +
+                        Log.Info("[Singleton] " + typeof(T) +
                                     " already destroyed on application quit." +
                                     " Won't create again - returning null.");
                     }
@@ -53,7 +53,7 @@ namespace SDKFramework.Utils
                         {
                             if (Debug.isDebugBuild)
                             {
-                                HLogger.Log("[Singleton] " + typeof(T).Name + " should never be more than 1 in scene!");
+                                Log.Info("[Singleton] " + typeof(T).Name + " should never be more than 1 in scene!");
                             }
 
                             return _instance;

@@ -35,7 +35,7 @@ namespace SDKFramework.Editor
                 alignment = TextAnchor.MiddleCenter,
                 normal = new GUIStyleState() { textColor = Color.green }
             };
-            HLogger.Log(FilePath,Color.cyan);
+            Log.Info(FilePath);
             // 从配置文件中加载已有链接
             LoadExistingLinks();
         }

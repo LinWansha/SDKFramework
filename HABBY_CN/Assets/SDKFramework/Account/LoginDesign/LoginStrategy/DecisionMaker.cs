@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using SDKFramework.Message;
 using UnityEngine;
 
-namespace SDKFramework.LoginDesign
+namespace SDKFramework.Account
 {
     /// <summary>
     /// Decision maker, choose specific login strategies
@@ -33,7 +33,7 @@ namespace SDKFramework.LoginDesign
             }
             else
             {
-                HLogger.Log($"User no agree privacy,can not to login with {channel}",Color.yellow);
+                AccountLog.Info($"User no agree privacy,can not to login with {channel}");
                 HabbyFramework.Message.Post(new MsgType.ShowNoAgreePrivacyNotice());
             }
         }

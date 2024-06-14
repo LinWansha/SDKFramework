@@ -53,7 +53,7 @@ namespace SDKFramework.Account
 
         private void onUserLogout()
         {
-            HLogger.Log($"{TAG} --- onUserLogout try crash!",Color.yellow);
+            AccountLog.Info($"--- onUserLogout try crash!");
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -72,18 +72,18 @@ namespace SDKFramework.Account
                 SDK.Procedure?.EnterGame();
             }
 
-            HLogger.Log($"{TAG} onUserLogin登录成功",Color.green);
+            AccountLog.Info($"onUserLogin登录成功");
         }
 
         private void ShowLoginScene()
         {
             HabbyFramework.UI.OpenUISingle(UIViewID.EntryUI);
-            HLogger.Log($"{TAG} ShowLoginScene");
+            AccountLog.Info($"ShowLoginScene");
         }
 
         private void onClearUserCache()
         {
-            HLogger.Log($"{TAG} --- onClearUserCache");
+            AccountLog.Info($"--- onClearUserCache");
             AccountHistory.DeleteHistory();
             ClearCurrent();
         }

@@ -1,7 +1,6 @@
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Utils;
-using UnityEngine;
 
 namespace SDKFramework.Account.Utils
 {
@@ -9,8 +8,7 @@ namespace SDKFramework.Account.Utils
     {
         public static UserAccount ParseLoginAccountInfo(LoginResponse response)
         {
-            HLogger.Log($"[Account] ParseLoginAccountInfo token={response.token}, age={response.data.age}",
-                Color.magenta);
+            AccountLog.Info($"[Account] ParseLoginAccountInfo token={response.token}, age={response.data.age}");
 
             UserAccount account = new UserAccount()
             {
@@ -25,9 +23,8 @@ namespace SDKFramework.Account.Utils
                 Age = response.data.age
             };
 
-            HLogger.Log(
-                $"[Account] --- AgeRange: {account.AgeRange.ToString()} ,age={response.data.age} validateIdentity= {response.data.validateIdentity}",
-                Color.magenta);
+            AccountLog.Info(
+                $"--- AgeRange: {account.AgeRange.ToString()} ,age={response.data.age} validateIdentity= {response.data.validateIdentity}");
 
             if (!string.IsNullOrEmpty(response.data.serverTime))
             {
@@ -35,7 +32,7 @@ namespace SDKFramework.Account.Utils
             }
 
 
-            HLogger.Log($"[Account] --- unionId: {response.data.unionId}", Color.magenta);
+            AccountLog.Info($"--- unionId: {response.data.unionId}");
 
             if (!string.IsNullOrEmpty(response.data.phone))
             {
@@ -65,9 +62,8 @@ namespace SDKFramework.Account.Utils
             account.ResetOnline(response.data.totalOnlineTime, response.data.todayOnlineTime);
             account.ResetExpense(response.data.totalPaymentAmount, response.data.monthlyPaymentAmount,
                 response.data.todayPaymentAmount);
-            HLogger.Log(
-                $"[Account] --- totalPaymentAmount: {response.data.totalPaymentAmount} ,monthlyPaymentAmount={response.data.monthlyPaymentAmount} ,todayPaymentAmoun={response.data.todayPaymentAmount}",
-                Color.magenta);
+            AccountLog.Info(
+                $"--- totalPaymentAmount: {response.data.totalPaymentAmount} ,monthlyPaymentAmount={response.data.monthlyPaymentAmount} ,todayPaymentAmoun={response.data.todayPaymentAmount}");
             return account;
         }
     }

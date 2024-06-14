@@ -1,5 +1,5 @@
 using SDKFramework;
-using SDKFramework.LoginDesign;
+using SDKFramework.Account;
 using SDKFramework.Message;
 using SDKFramework.UI;
 using SDKFramework.Utils;
@@ -48,17 +48,17 @@ public partial class LoginMediator : UIMediator<LoginView>
 
     private void OnCallQQGroup()
     {
-        HLogger.Log("jump to qq group");
+        Log.Info("jump to qq group");
     }
 
     private void OnShowPersonInfoWebView()
     {
-        HLogger.Log("open web view person info");
+        Log.Info("open web view person info");
     }
 
     private void OnShowPrivacyWebView()
     {
-        HLogger.Log("open web view privacy agreement");
+        Log.Info("open web view privacy agreement");
     }
 
     private void ShowNotice(MsgType.ShowNoAgreePrivacyNotice arg)

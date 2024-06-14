@@ -1,8 +1,13 @@
-public interface ILoginStrategy
+namespace SDKFramework.Account
 {
-    bool CheckPrivacyStatus();
-    void Login();
+    public interface ILoginStrategy
+    {
+        bool CheckPrivacyStatus();
+        void Login();
+    }
+
 }
+
 
 
 

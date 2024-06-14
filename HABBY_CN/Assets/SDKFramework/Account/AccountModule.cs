@@ -6,7 +6,6 @@ namespace SDKFramework.Account
 {
     public partial class AccountModule : BaseModule
     {
-        internal string TAG = "[Account]";
         public bool IsLogin { get; private set; }
 
         private readonly AntiAddictionTimeChecker timeManager = new AntiAddictionTimeChecker();
@@ -45,13 +44,13 @@ namespace SDKFramework.Account
         private void Reload()
         {
             CurrentAccount = FileSaveLoad.LoadAccount();
-            HLogger.Log($"{TAG} Reload data UID={CurrentAccount?.UID} TotalIAP={CurrentAccount?.IAP?.Total}, TodayOnline={CurrentAccount?.Online?.Today}");
+            AccountLog.Info($"Reload data UID={CurrentAccount?.UID} TotalIAP={CurrentAccount?.IAP?.Total}, TodayOnline={CurrentAccount?.Online?.Today}");
         }
         
         public void SetPrivacyStatus(bool isAgree)
         {
             CurrentAccount.IsAgreePrivacy = isAgree;
-            HLogger.Log($"Privacy Status Change === {isAgree}",UnityEngine.Color.green);
+            AccountLog.Info($"Privacy Status Change === {isAgree}");
         }
         
         public void CheckUser()
@@ -59,12 +58,12 @@ namespace SDKFramework.Account
             if (HasAccount)
             {
                 UserAccount account = CurrentAccount;
-                HLogger.Log($"{TAG} checkUser token={account.AccessToken}");
+                AccountLog.Info($"checkUser token={account.AccessToken}");
                 if (IsLogin) ShowLoginScene();
             }
             else
             {
-                HLogger.Log($"{TAG} checkUser has no account info");
+                AccountLog.Info($"checkUser has no account info");
                 ShowLoginScene();
             }
         }
@@ -95,9 +94,9 @@ namespace SDKFramework.Account
 
         public void Purchase(int amount)
         {
-            HLogger.Log($"{TAG} --- Purchase add amount = {amount},nowMonth= {CurrentAccount.IAP.Monthly}" );
+            AccountLog.Info($"--- Purchase add amount = {amount},nowMonth= {CurrentAccount.IAP.Monthly}" );
             CurrentAccount.AddIap(amount);
-            HLogger.Log($"{TAG} --- Purchase add amount complete! nowMonth= {CurrentAccount.IAP.Monthly}");
+            AccountLog.Info($"--- Purchase add amount complete! nowMonth= {CurrentAccount.IAP.Monthly}");
         }
 
         public bool NoRightAge(UserAccount account)
@@ -106,14 +105,14 @@ namespace SDKFramework.Account
         }
         public bool NoGameTime(UserAccount account)
         {
-            HLogger.Log($"{TAG} ShouldForbidLogin age={account?.AgeRange}, time={(account?.Online != null ? account.Online.Today / 60 : 0)}");
+            AccountLog.Info($"ShouldForbidLogin age={account?.AgeRange}, time={(account?.Online != null ? account.Online.Today / 60 : 0)}");
             if (account == null) return true;
             return timeManager.IsBadTime(account);
         }
 
         public bool NoTimeLeft(UserAccount account)
         {
-            HLogger.Log($"{TAG} HasTimeLeft age={account?.AgeRange} time = {(account?.Online != null ? account.Online.Today / 60 : 0)}");
+            AccountLog.Info($"HasTimeLeft age={account?.AgeRange} time = {(account?.Online != null ? account.Online.Today / 60 : 0)}");
             if (account == null) return false;
             return !timeManager.HasTimeLeft(account);
         }

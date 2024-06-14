@@ -26,7 +26,7 @@ namespace SDKFramework.Editor.Tools
         public static void ClearAccountData()
         {
             FileSaveLoad.SaveAccount(null);
-            HLogger.Log("清除本地账号数据！");
+            Log.Info("清除本地账号数据！");
         }
     }
 }

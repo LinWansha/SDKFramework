@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 //using Aliyun.OSS.Common;
 
-namespace SDKFramework.Utils.Log
+namespace SDKFramework.Utils.LogPro
 {
     public class HabbyLogUpload
     {

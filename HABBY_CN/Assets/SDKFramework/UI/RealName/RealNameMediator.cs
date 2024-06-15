@@ -112,6 +112,7 @@ public class RealNameMediator : UIMediator<RealNameView>
     private void onSuccess()
     {
         Close();
+        Log.Info($"实名认证成功 || channel: {m_Account.LoginChannel} token: {m_Account.AccessToken}");
     }
 
     private void onError(int code)

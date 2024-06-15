@@ -82,13 +82,14 @@ namespace SDKFramework.Account.DataSrc
 
         public static UserAccount LoadAccount()
         {
-            UserAccount user = null;
-            if (HasSave(kUserAccount)) {
+            UserAccount user = new UserAccount();
+            if (HasSave(kUserAccount))
+            {
                 BinaryFormatter bf = new BinaryFormatter();
                 try
                 {
                     using FileStream file = File.Open(kUserAccount, FileMode.Open);
-                    user = (UserAccount) bf.Deserialize(file);
+                    user = (UserAccount)bf.Deserialize(file);
                 }
                 catch (Exception e)
                 {
@@ -98,12 +99,8 @@ namespace SDKFramework.Account.DataSrc
                 }
             }
             else
-            {
-                user = new UserAccount(){LoginChannel = "qq"};
-                user.Password = "1";
-                user.UserId = "1";
-                Log.Error("Location not have account !!!");
-            }
+                Log.Info("Location not have account !!!",Color.red);
+
             return user;
         }
 

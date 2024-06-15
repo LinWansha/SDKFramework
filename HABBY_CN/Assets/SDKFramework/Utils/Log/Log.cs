@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using SDKFramework.Utils.LogPro;
 using Color = UnityEngine.Color;
 using Debug = UnityEngine.Debug;
 
@@ -16,6 +15,11 @@ public class Log
     public static void Info(object message, string tag = null)
     {
         Debug.Log(tag == null ? message : $"{tag} {message}");
+    }
+    
+    public static void Info(object message,Color color)
+    {
+        Info($"<color={color.ToHexColor()}>{message}</color>");
     }
 
     [Conditional("ENABLE_DEBUG")]
@@ -43,20 +47,4 @@ public class Log
         Debug.LogException(exception);
     }
 
-    internal static string ToHexColor(Color color)
-    {
-        if (color == Color.white)
-            return "#000000";
-        string R = Convert.ToString((int)color.r * 255, 16);
-        if (R == "0")
-            R = "00";
-        string G = Convert.ToString((int)color.g * 255, 16);
-        if (G == "0")
-            G = "00";
-        string B = Convert.ToString((int)color.b * 255, 16);
-        if (B == "0")
-            B = "00";
-        string HexColor = "#" + R + G + B;
-        return HexColor.ToUpper();
-    }
 }

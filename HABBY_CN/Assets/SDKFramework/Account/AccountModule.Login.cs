@@ -9,7 +9,7 @@ namespace SDKFramework.Account
 {
     public partial class AccountModule
     {
-        public void Login(UserAccount account)
+        private void Login(UserAccount account)
         {
             AccountLog.Info($"Login,account={account?.AccessToken}, age={account?.AgeRange}");
             if (account == null) return;
@@ -94,26 +94,27 @@ namespace SDKFramework.Account
             if (string.IsNullOrEmpty(account.LoginChannel))
             {
                 ShowLoginScene();
+                return;
             }
-            else
+
+            if (account.AgeRange == UserAccount.AgeLevel.Unknown)
             {
-                if (account.AgeRange == UserAccount.AgeLevel.Unknown)
-                {
-                    HabbyFramework.UI.OpenUI(UIViewID.RealNameUI, account);
-                }
-                else
-                {
-                    if (!CanLogin(account)) return;
-#if USE_ANTIADDICTION
-                    if (account.AgeRange != UserAccount.AgeLevel.Adult)
-                        HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
-#endif
-                    Login(account);
-                }
+                HabbyFramework.UI.OpenUI(UIViewID.RealNameUI, account);
+                return;
             }
+
+            if (!CanLogin(account)) 
+                return;
+
+#if USE_ANTIADDICTION
+            if (account.AgeRange != UserAccount.AgeLevel.Adult)
+                HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
+#endif
+
+            Login(account);
         }
 
-        public bool CanLogin(UserAccount account)
+        private bool CanLogin(UserAccount account)
         {
 #if USE_ANTIADDICTION
             ExitReason? reason =

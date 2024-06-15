@@ -10,17 +10,17 @@ namespace SDKFramework.Account
 
         public static void Info(object message)
         {
-            Log.Info(message, $"<color={Log.ToHexColor(Color)}>{TAG}</color>");
+            Log.Info(message, TAG.DoMagic(Color));
         }
 
         public static void Warn(object message)
         {
-            Log.Info(message, $"<color={Log.ToHexColor(Color)}>{TAG}</color>");
+            Log.Info(message, TAG.DoMagic(Color));
         }
 
         public static void Error(object message)
         {
-            Log.Info(message, $"<color={Log.ToHexColor(Color)}>{TAG}</color>");
+            Log.Info(message, TAG.DoMagic(Color));
         }
     }
 }

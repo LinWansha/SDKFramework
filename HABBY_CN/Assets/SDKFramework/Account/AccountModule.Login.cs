@@ -1,14 +1,36 @@
 using System;
-using SDKFramework.Account.AntiAddiction;
-using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
-using UnityEngine;
+using SDKFramework.Account.DataSrc;
+using SDKFramework.Account.AntiAddiction;
 using static SDKFramework.Account.DataSrc.UserAccount;
 
 namespace SDKFramework.Account
 {
     public partial class AccountModule
     {
+        protected internal override void OnModuleInit()
+        {
+            base.OnModuleInit();
+            Reload();
+        }
+
+        private void Reload()
+        {
+            if (HasAccount) return;
+            CurrentAccount = FileSaveLoad.LoadAccount();
+            Log.Info(message:
+                $" Reload data UID={CurrentAccount?.UID}" +
+                $" TotalIAP={CurrentAccount?.IAP?.Total}" +
+                $" TodayOnline={CurrentAccount?.Online?.Today}"+
+                $" AccessToken={CurrentAccount?.AccessToken}");
+        }
+        
+        public void SetPrivacyStatus(bool isAgree)
+        {
+            CurrentAccount.IsAgreePrivacy = isAgree;
+            AccountLog.Info($"Privacy Status Change === {isAgree}");
+        }
+        
         private void Login(UserAccount account)
         {
             AccountLog.Info($"Login,account={account?.AccessToken}, age={account?.AgeRange}");
@@ -27,7 +49,7 @@ namespace SDKFramework.Account
             OnUserLogin?.Invoke();
         }
 
-        public void Logout(int actionCode = 0)
+        private void Logout(int actionCode = 0)
         {
             AccountLog.Info($"Logout, account={CurrentAccount}");
             if (CurrentAccount != null)
@@ -103,35 +125,30 @@ namespace SDKFramework.Account
                 return;
             }
 
+#if USE_ANTIADDICTION
             if (!CanLogin(account)) 
                 return;
-
-#if USE_ANTIADDICTION
             if (account.AgeRange != UserAccount.AgeLevel.Adult)
                 HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
 #endif
 
             Login(account);
         }
-
-        private bool CanLogin(UserAccount account)
+        
+        public void CheckUser()
         {
-#if USE_ANTIADDICTION
-            ExitReason? reason =
-                NoRightAge(account) ? ExitReason.NoRightAge :
-                NoGameTime(account) ? ExitReason.NoGameTime :
-                NoTimeLeft(account) ? ExitReason.NoTimeLeft :
-                (ExitReason?)null;
-
-            if (reason != null)
+            if (HasAccount)
             {
-                HabbyFramework.UI.OpenUI(UIViewID.CrashUI, reason.Value);
+                UserAccount account = CurrentAccount;
+                AccountLog.Info($"checkUser token={account.AccessToken}");
+                if (!IsLogin) ShowLoginScene();
             }
-
-            return reason == null;
-#else
-            return true;
-#endif
+            else
+            {
+                AccountLog.Info($"checkUser has no account info");
+                ShowLoginScene();
+            }
         }
+
     }
 }

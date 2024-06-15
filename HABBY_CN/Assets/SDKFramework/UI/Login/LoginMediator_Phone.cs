@@ -3,7 +3,7 @@ using SDKFramework.UI;
 
 public partial class LoginMediator : UIMediator<LoginView>
 {
-    private string m_PhoneNum;
+    private string m_PhoneNum = "";
 
     private void InputPhoneNum(string phoneNum)
     {
@@ -28,8 +28,8 @@ public partial class LoginMediator : UIMediator<LoginView>
             View.phoneNumInput.text = modifiedStr;
             View.phoneNumInput.caretPosition = modifiedStr.Length; // 设置光标位置
         }
-
         View.btnNext.interactable = IsValidPhoneNumber(modifiedStr);
+        if (m_PhoneNum != "") return;
         m_PhoneNum = View.btnNext.interactable ? phoneNum : "";
     }
 }

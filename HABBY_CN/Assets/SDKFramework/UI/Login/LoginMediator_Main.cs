@@ -34,9 +34,7 @@ public partial class LoginMediator : UIMediator<LoginView>
 
         View.btnSend.onClick.AddListener(SendSMSVerificationCode);
 
-        View.inputHandle.onClick.AddListener(View.hideInput.ActivateInputField);
-
-        View.hideInput.onValueChanged.AddListener(HandleCodeInput);
+        View.verifyCodeInput.OnInputValueChangedEvent += HandleCodeInput;
 
         View.privacyToggle.onValueChanged.AddListener((@agree) =>
         {

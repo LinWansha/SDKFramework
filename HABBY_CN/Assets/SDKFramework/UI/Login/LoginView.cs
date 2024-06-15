@@ -64,12 +64,8 @@ public class LoginView : UIView
 
     public Button btnSend;
 
-    public Button inputHandle;
-
-    public List<Text> verifyCodeInput;
-
-    public InputField hideInput;
-
+    public VerifyCodeTool verifyCodeInput;
+    
     public Button btnClose3;
 
     public Button btnBack3;
@@ -106,7 +102,6 @@ public class LoginView : UIView
         }
 
         StopAllCoroutines();
-        hideInput.text = "";
         phoneNumInput.text = "";
     }
 

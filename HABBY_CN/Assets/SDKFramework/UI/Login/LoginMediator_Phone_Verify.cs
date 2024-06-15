@@ -30,39 +30,24 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.btnSend.gameObject.SetActive(true);
         View.showNumText.text = "请输入手机验证码";
     }
-
+    
+    private int lastLength = 0;
     private void HandleCodeInput(string str)
     {
-        string inputText = "";
-        foreach (char c in str)
+        var thisLength = str.Length;
+        if (lastLength != thisLength)
         {
-            if (char.IsDigit(c))
+            if (thisLength == 1 && lastLength == 0)
             {
-                inputText += c;
+            }
+            lastLength = thisLength;
+            if (thisLength == 4)
+            {
+                HabbyFramework.Message.Post(new MsgType.PhoneLogin(){phoneNumber = m_PhoneNum,phoneVerifyCode = str});
             }
         }
 
-        if (!str.Equals(inputText))
-        {
-            View.hideInput.text = inputText;
-            View.hideInput.caretPosition = inputText.Length; // 设置光标位置
-        }
-
-        for (int i = 0; i < View.verifyCodeInput.Count; i++)
-        {
-            if (i < inputText.Length)
-            {
-                View.verifyCodeInput[i].text = inputText[i].ToString();
-            }
-            else
-            {
-                View.verifyCodeInput[i].text = "";
-            }
-        }
-
-        if (str.Length==4)
-        {
-            HabbyFramework.Message.Post(new MsgType.PhoneLogin(){phoneNumber = m_PhoneNum,phoneVerifyCode = str});
-        }
+        View.btnSend.interactable = str.Length == 4;
     }
+
 }

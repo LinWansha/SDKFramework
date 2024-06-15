@@ -1,10 +1,11 @@
-﻿using SDKFramework.Account.AntiAddiction;
+using System;
+using SDKFramework.Account.AntiAddiction;
 using SDKFramework.Account.DataSrc;
-using static SDKFramework.Account.DataSrc.UserAccount;
+
 
 namespace SDKFramework.Account
 {
-    public partial class AccountModule : BaseModule
+    public partial class AccountModule
     {
         public bool IsLogin { get; private set; }
 
@@ -34,41 +35,90 @@ namespace SDKFramework.Account
                 return _AccountHistory;
             }
         }
+        
+        /*=================== Login Or Register ====================*/
+        internal static event Action OnUserLogin; //登录用户服务器成功
 
-        protected internal override void OnModuleInit()
+        internal static event Action OnUserLogout; //用户登出
+
+        internal static event Action OnShowLoginScene; //没有得到用户信息，需要重新登录或注册
+
+        /*===================== Validate Identity ====================*/
+
+        internal static event Action<int> OnIdentityFailed; //实名认证出错
+
+        internal static event Action OnIdentitySuccess; //实名成功
+
+        internal static event Action<bool> OnAntiAddictionResultLogin; //  防沉迷登陆结果
+
+        /*===================== Anti-addiction ======================*/
+
+        internal delegate void UserAction(UserAccount account);
+
+
+        internal static event Action OnReadedAntiaddtionRules; //已阅读未成年协议（阅读确定后与才能进游戏）
+
+        internal static event Action<LimitType> OnSingleExpenseOverRange; //单次支付金额超过限制
+
+        internal static event Action<LimitType> OnMonthlyExpenseOverRange; //单月支付金额超过限制
+
+        internal static event Action OnNoTimeLeft; //当日游戏时间用尽
+        /*======================================================*/
+
+        protected internal override void OnModuleStart()
         {
-            base.OnModuleInit();
-            Reload();
+            base.OnModuleStart();
+            AccountModule.OnUserLogin += onUserLogin;
+            AccountModule.OnUserLogout += onUserLogout;
+            AccountModule.OnShowLoginScene += ShowLoginScene;
         }
 
-        private void Reload()
+        protected internal override void OnModuleStop()
         {
-            CurrentAccount = FileSaveLoad.LoadAccount();
-            AccountLog.Info($"Reload data UID={CurrentAccount?.UID} TotalIAP={CurrentAccount?.IAP?.Total}, TodayOnline={CurrentAccount?.Online?.Today}");
+            base.OnModuleStop();
+            AccountModule.OnUserLogin -= onUserLogin;
+            AccountModule.OnUserLogout -= onUserLogout;
+            AccountModule.OnShowLoginScene -= ShowLoginScene;
+        }
+
+        private void onUserLogout()
+        {
+            AccountLog.Info($"--- onUserLogout try crash!");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            UnityEngine.Application.Quit();
+#endif
+        }
+
+        private void onUserLogin()
+        {
+            HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
+#if MRQ
+            HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
+#endif
+            if (CurrentAccount?.AgeRange == UserAccount.AgeLevel.Adult)
+            {
+                SDK.Procedure?.EnterGame();
+            }
+
+            AccountLog.Info($"onUserLogin登录成功");
+        }
+
+        private void ShowLoginScene()
+        {
+            HabbyFramework.UI.OpenUISingle(UIViewID.EntryUI);
+            AccountLog.Info($"ShowLoginScene");
+        }
+
+        private void onClearUserCache()
+        {
+            AccountLog.Info($"--- onClearUserCache");
+            AccountHistory.DeleteHistory();
+            ClearCurrent();
         }
         
-        public void SetPrivacyStatus(bool isAgree)
-        {
-            CurrentAccount.IsAgreePrivacy = isAgree;
-            AccountLog.Info($"Privacy Status Change === {isAgree}");
-        }
-        
-        public void CheckUser()
-        {
-            if (HasAccount)
-            {
-                UserAccount account = CurrentAccount;
-                AccountLog.Info($"checkUser token={account.AccessToken}");
-                if (IsLogin) ShowLoginScene();
-            }
-            else
-            {
-                AccountLog.Info($"checkUser has no account info");
-                ShowLoginScene();
-            }
-        }
-
-        public void Save()
+        private void Save()
         {
             if (CurrentAccount == null) return;
             AccountHistory.SaveAccount(CurrentAccount);
@@ -78,7 +128,7 @@ namespace SDKFramework.Account
 #endif
         }
 
-        public void ClearCurrent()
+        private void ClearCurrent()
         {
             if (HasAccount)
             {
@@ -86,92 +136,5 @@ namespace SDKFramework.Account
                 CurrentAccount = null;
             }
         }
-        
-#region ANTIADDICTION
-#if USE_ANTIADDICTION
-        public bool CanPurchase(double amount) => PurchaseChecker.CanPurchase(CurrentAccount, amount);
-        public void RefreshMonthlyExpense(double amount) => CurrentAccount?.RefreshMonthlyExpense(amount);
-
-        public void Purchase(int amount)
-        {
-            AccountLog.Info($"--- Purchase add amount = {amount},nowMonth= {CurrentAccount.IAP.Monthly}" );
-            CurrentAccount.AddIap(amount);
-            AccountLog.Info($"--- Purchase add amount complete! nowMonth= {CurrentAccount.IAP.Monthly}");
-        }
-
-        public bool NoRightAge(UserAccount account)
-        {
-            return account.Age < (int)AppSource.Config.applicableRange;
-        }
-        public bool NoGameTime(UserAccount account)
-        {
-            AccountLog.Info($"ShouldForbidLogin age={account?.AgeRange}, time={(account?.Online != null ? account.Online.Today / 60 : 0)}");
-            if (account == null) return true;
-            return timeManager.IsBadTime(account);
-        }
-
-        public bool NoTimeLeft(UserAccount account)
-        {
-            AccountLog.Info($"HasTimeLeft age={account?.AgeRange} time = {(account?.Online != null ? account.Online.Today / 60 : 0)}");
-            if (account == null) return false;
-            return !timeManager.HasTimeLeft(account);
-        }
-        
-        public void OnApplicationPause(bool pause)
-        {
-            if (CurrentAccount == null) return;
-
-            if (pause)
-            {
-                timeManager.StopTimeCounter(CurrentAccount);
-            }
-            else
-            {
-                timeManager.StartTimeCounter();
-                CurrentAccount.Online?.Refresh();
-            }
-        }
-        //刷新间隔（帧为单位）
-        private int _update_interval = 100;
-
-        private int _update_count = 0;
-        protected internal override void OnModuleUpdate(float deltaTime)
-        {
-            base.OnModuleUpdate(deltaTime);
-            //成年玩家及未登录状态不作处理
-            if (CurrentAccount == null || !IsLogin) return;
-            if (CurrentAccount.AgeRange == AgeLevel.Adult)
-            {
-                // 刷新下在线时间(发心跳包)
-                timeManager.CheckOnlineTime(CurrentAccount);
-                return;
-            }
-
-            if (++_update_count < _update_interval) return;
-            _update_count = 0;
-
-            CheckRegulation(CurrentAccount);
-        }
-
-        public void CheckRegulation(UserAccount account)
-        {
-            AntiAddictionTimeChecker.TimeRegulation regulation = timeManager.CheckOnlineTime(account);
-            if (regulation==AntiAddictionTimeChecker.TimeRegulation.Exit)
-            {
-                timeManager.UploadData(account.Online);
-                OnNoTimeLeft?.Invoke();
-            }
-        }
-#endif
-#endregion
-
-#region Event
-
-        public void FireCloseNoTime() => Logout();
-        public void FireJuvenileEnterGame() => OnReadedAntiaddtionRules?.Invoke();
-        public void FireExpenseOverRange() => OnSingleExpenseOverRange?.Invoke(LimitType.Single);
-        public void FireMonthlyExpenseOverRange() => OnMonthlyExpenseOverRange?.Invoke(LimitType.Monthly);
-
- #endregion
     }
 }

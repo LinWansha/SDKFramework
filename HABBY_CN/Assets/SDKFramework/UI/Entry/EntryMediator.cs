@@ -6,7 +6,7 @@ using SDKFramework.Utils;
 
 public class EntryMediator : UIMediator<EntryView>
 {
-    private bool hasAccountHistory = HabbyFramework.Account.AccountHistory.HasAccountHistory;
+    private readonly bool hasAccountHistory = HabbyFramework.Account.AccountHistory.HasAccountHistory;
     
     protected override void OnInit()
     {

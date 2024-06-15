@@ -185,27 +185,14 @@ namespace SDKFramework.Account.DataSrc
             userExpense.Refresh();
             userExpense.monthlyExpense.value = value;
         }
-
-        public enum UserLoginChannel : int
-        {
-            NotLogin = 0,
-            Visitor = 1,
-            HabbyAccount = 2,
-            Wechat = 3,
-            GameCenter = 4,
-            GooglePlay = 5,
-            AndroidChannel,//目前暂不具体细分
-            Traditional,  // 自建用户名密码形式
-            TapTap, // taptap TODO:需要和后端确认
-        }
         
         public enum AgeLevel : int
         {
-            Unknown = 0,  // 未实名
-            Under8 = 1,   // 8岁以下
-            Under16 = 2,  // 8 - 16岁以下
-            Under18 = 3,   // 16 - 18岁
-            Adult = 4    // 成年
+            Unknown = 0,    // 未实名
+            Under8 = 1,     // 8岁以下
+            Under16 = 2,    // 8 - 16岁以下
+            Under18 = 3,    // 16 - 18岁
+            Adult = 4       // 成年
         }
 
         public void SaveLoginTime()

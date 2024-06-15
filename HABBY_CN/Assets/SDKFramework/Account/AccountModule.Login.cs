@@ -110,8 +110,9 @@ namespace SDKFramework.Account
             });
         }
 
-        public void LoginOrIdentify(UserAccount account)
+        public void LoginOrIdentify(Action<bool> callback)
         {
+            UserAccount account = CurrentAccount;
             AccountLog.Info($"LoginOrIdentify, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}");
             if (string.IsNullOrEmpty(account.LoginChannel))
             {

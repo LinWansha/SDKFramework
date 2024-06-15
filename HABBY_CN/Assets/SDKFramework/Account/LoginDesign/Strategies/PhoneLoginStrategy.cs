@@ -5,8 +5,13 @@ namespace SDKFramework.Account
 {
     public class PhoneLoginStrategy : LoginTemplate
     {
-        public override void Login()
+        private RespHandler _handler;
+        
+        protected override string Channel => "Phone";
+        
+        public override void Login(RespHandler handler)
         {
+            _handler = handler;
             AccountLog.Info("PhoneLogin");
             UIMediator loginMediator = HabbyFramework.UI.OpenUISingle(UIViewID.LoginUI);
             loginMediator.ViewObject.GetComponent<LoginView>().ActivateWindow(2);

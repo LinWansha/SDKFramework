@@ -48,7 +48,7 @@ namespace UnityEngine
                 }
             }
 
-            CoroutineScheduler.Instance.StartCoroutine(LoadAssetAsync(request));
+            AsyncScheduler.Instance.StartCoroutine(LoadAssetAsync(request));
         }
 
     }

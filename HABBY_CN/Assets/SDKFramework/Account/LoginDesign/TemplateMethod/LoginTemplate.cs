@@ -1,30 +1,42 @@
+using System;
+
 namespace SDKFramework.Account
 {
     public abstract class LoginTemplate:ILoginStrategy
     {
         //... The login process requires the steps, needed to change the implementation in subclass overwrite
 
-        // protected Func<bool> IsAgreePrivacy;
+        protected abstract string Channel { get; }
 
-
-        public LoginTemplate()
+        protected LoginTemplate()
         {
             // GraspPrivacyStatus();
         }
-
-        // protected bool GraspPrivacyStatus(bool isAgree = false)
-        // {
-        //     IsAgreePrivacy = false; 
-        //     return IsAgreePrivacy;
-        // }
-
+        
 
         public bool CheckPrivacyStatus()
         {
-            //TODO:从用户持久化数据中拿取
             return HabbyFramework.Account.CurrentAccount.IsAgreePrivacy;
         }
 
-        public abstract void Login();
+        public abstract void Login(RespHandler handler);
+
+        public void ValidateIdentity(RespHandler handler)
+        {
+            HabbyFramework.Account.LoginOrIdentify((success) =>
+            {
+                if (success)
+                {
+                    
+                }
+            });
+        }
+    }
+
+    public class RespHandler
+    {
+        public Action success;
+
+        public Action failed;
     }
 }

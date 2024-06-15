@@ -46,24 +46,24 @@ public partial class LoginMediator : UIMediator<LoginView>
 
     private void OnCallQQGroup()
     {
-        Log.Info("jump to qq group");
+        AccountLog.Info("jump to qq group");
     }
 
     private void OnShowPersonInfoWebView()
     {
-        Log.Info("open web view person info");
+        AccountLog.Info("open web view person info");
     }
 
     private void OnShowPrivacyWebView()
     {
-        Log.Info("open web view privacy agreement");
+        AccountLog.Info("open web view privacy agreement");
     }
 
     private void ShowNotice(MsgType.ShowNoAgreePrivacyNotice arg)
     {
         GameObject noticeTextObj = View.noticeText;
         noticeTextObj.SetActive(true);
-        CoroutineScheduler.Instance.DelayedInvoke(() => noticeTextObj.SetActive(false), 2.5f);
+        AsyncScheduler.Instance.DelayedInvoke(() => noticeTextObj.SetActive(false), 2.5f);
     }
 
     protected override void OnShow(object arg)

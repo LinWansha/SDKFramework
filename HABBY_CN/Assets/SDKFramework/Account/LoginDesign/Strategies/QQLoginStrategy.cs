@@ -2,10 +2,13 @@ namespace SDKFramework.Account
 {
     public class QQLoginStrategy : LoginTemplate
     {
-        public override void Login()
+        protected override string Channel => "QQ";
+        
+        public override void Login(RespHandler handler)
         {
             AccountLog.Info("QQLogin");
             // ...
+            handler.failed();
         }
     }
 }

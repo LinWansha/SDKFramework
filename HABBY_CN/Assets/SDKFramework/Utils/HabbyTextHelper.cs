@@ -32,7 +32,7 @@ namespace SDKFramework.Utils
             var endColor = new Color(startColor.r, startColor.g, startColor.b, 0);
 
             _animationCoroutine =
-                CoroutineScheduler.Instance.StartCoroutine(AnimateTextTip(startPosition, targetPosition, startColor,
+                AsyncScheduler.Instance.StartCoroutine(AnimateTextTip(startPosition, targetPosition, startColor,
                     endColor));
 
             _text.gameObject.SetActive(true);
@@ -76,7 +76,7 @@ namespace SDKFramework.Utils
         {
             if (_animationCoroutine != null)
             {
-                CoroutineScheduler.Instance.StopCoroutine(_animationCoroutine);
+                AsyncScheduler.Instance.StopCoroutine(_animationCoroutine);
                 _animationCoroutine = null;
             }
 

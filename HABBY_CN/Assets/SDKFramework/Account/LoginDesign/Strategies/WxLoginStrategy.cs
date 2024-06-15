@@ -2,7 +2,9 @@ namespace SDKFramework.Account
 {
     public class WxLoginStrategy : LoginTemplate
     {
-        public override void Login()
+        protected override string Channel => "Wx";
+        
+        public override void Login(RespHandler handler)
         {
             AccountLog.Info("WxLogin");
             // ...

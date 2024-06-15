@@ -46,7 +46,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
 
 
         var targetPositionY = _startPos.y - View.root.rect.height - frigeHeigh;
-        _animationCoroutine = CoroutineScheduler.Instance.StartCoroutine(AnimateLoginTip(1f, targetPositionY));
+        _animationCoroutine = AsyncScheduler.Instance.StartCoroutine(AnimateLoginTip(1f, targetPositionY));
     }
 
     private IEnumerator AnimateLoginTip(float duration, float targetPositionY)
@@ -119,7 +119,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
     {
         if (_animationCoroutine != null)
         {
-            CoroutineScheduler.Instance.StopCoroutine(_animationCoroutine);
+            AsyncScheduler.Instance.StopCoroutine(_animationCoroutine);
             _animationCoroutine = null;
         }
 

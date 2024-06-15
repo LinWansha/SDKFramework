@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SDKFramework.Utils
 {
-    public class CoroutineScheduler : MonoSingleton<CoroutineScheduler>
+    public class AsyncScheduler : MonoSingleton<AsyncScheduler>
     {
         // if u want wait a coroutine,can use this
         public static Task Yield(IEnumerator enumerator)
@@ -23,15 +23,21 @@ namespace SDKFramework.Utils
 
             StartCoroutine(WaitAndExecute(action, sec));
         }
+
+        public static TaskCompletionSource<T> CreateTCS<T>()
+        {
+            var tcs = new TaskCompletionSource<T>();
+            return tcs;
+        }
     }
 
     internal class CoroutineAwaiter
     {
-        readonly TaskCompletionSource<object> TCS = new TaskCompletionSource<object>();
+        private readonly TaskCompletionSource<object> TCS = AsyncScheduler.CreateTCS<object>();
 
         public CoroutineAwaiter(IEnumerator enumerator)
         {
-            CoroutineScheduler.Instance.StartCoroutine(WaitCoroutine(TCS, enumerator));
+            AsyncScheduler.Instance.StartCoroutine(WaitCoroutine(TCS, enumerator));
         }
 
         public Task Task => TCS.Task;

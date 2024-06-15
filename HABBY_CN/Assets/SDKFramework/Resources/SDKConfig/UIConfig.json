@@ -73,8 +73,8 @@
   },
   {
     "ID": 13,
-    "Description": "OnClickLogin",
-    "Asset": "SDKPrefab/Login/OnClickLoginUI",
+    "Description": "QuickLogin",
+    "Asset": "SDKPrefab/Login/QuickLoginUI",
     "Mode": 0
   }
 ]

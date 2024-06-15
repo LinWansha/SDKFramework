@@ -51,7 +51,7 @@ public class EntryMediator : UIMediator<EntryView>
             return;
         }
 
-        HabbyFramework.UI.OpenUI(hasAccountHistory ? UIViewID.OnClickLoginUI : UIViewID.LoginUI);
+        HabbyFramework.UI.OpenUI(hasAccountHistory ? UIViewID.QuickLoginUI : UIViewID.LoginUI);
     }
 
     protected override void OnHide()

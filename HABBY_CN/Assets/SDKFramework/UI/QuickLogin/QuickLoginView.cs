@@ -5,8 +5,8 @@ using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-[UIView(typeof(OnClickLoginMediator), UIViewID.OnClickLoginUI)]
-public class OnClickLoginView : UIView
+[UIView(typeof(QuickLoginMediator), UIViewID.QuickLoginUI)]
+public class QuickLoginView : UIView
 {
 
     public Transform dirSigns;

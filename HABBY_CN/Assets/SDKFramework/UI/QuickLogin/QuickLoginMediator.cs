@@ -5,7 +5,7 @@ using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OnClickLoginMediator : UIMediator<OnClickLoginView>
+public class QuickLoginMediator : UIMediator<QuickLoginView>
 {
     protected UserAccount m_selectedAccount;
 

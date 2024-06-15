@@ -47,7 +47,8 @@ public partial class LoginMediator : UIMediator<LoginView>
             }
         }
 
-        View.btnSend.interactable = str.Length == 4;
+        // ReSharper disable once CommentTypo
+        //View.btnSend.interactable = str.Length == 4;
     }
 
 }

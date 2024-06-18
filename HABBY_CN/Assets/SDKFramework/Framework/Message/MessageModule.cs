@@ -46,7 +46,7 @@ namespace SDKFramework.Message
                     type.GetCustomAttribute<MessageHandlerAttribute>(true);
                 if (messageHandlerAttribute != null)
                 {
-                    IMessageHander messageHandler = Activator.CreateInstance(type) as IMessageHander;
+                    IMessageHandler messageHandler = Activator.CreateInstance(type) as IMessageHandler;
                     if (!globalMessageHandlers.ContainsKey(messageHandler.GetHandlerType()))
                     {
                         globalMessageHandlers.Add(messageHandler.GetHandlerType(), new List<object>());

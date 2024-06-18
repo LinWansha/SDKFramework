@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 
 namespace SDKFramework.Message
 {
-    public interface IMessageHander
+    public interface IMessageHandler
     {
         Type GetHandlerType();
 
     }
 
     [MessageHandler]
-    public abstract class MessageHandler<T> : IMessageHander where T : struct
+    public abstract class MessageHandler<T> : IMessageHandler where T : struct
     {
         public Type GetHandlerType()
         {

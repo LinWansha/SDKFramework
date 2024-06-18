@@ -12,9 +12,9 @@ namespace SDKFramework.Network
     public partial class NetworkModule : BaseModule
     {
 #if ENABLE_DEBUG || LOGIN_TEST
-        private const string URL_USER_SERVER = "https://ncac-pq.lezuan9.com/api/v1/{0}"; //测试
+        private const string URL_USER_SERVER = "https://test-account-matchmart.lezuan9.com/api/v1/{0}"; //测试
 #else
-        private const string URL_USER_SERVER = "https://ncac-pq.lezuan9.com/api/v1/{0}";// 正式
+        private const string URL_USER_SERVER = "https://test-account-matchmart.lezuan9.com/api/v1/{0}";// 正式
 #endif
 
         public static string URL => URL_USER_SERVER;
@@ -73,7 +73,6 @@ namespace SDKFramework.Network
             {
                 HabbyFramework.UI.OpenUISingle(UIViewID.LatencyTimeUI);
                 yield return new WaitForSeconds(2);
-                HabbyFramework.UI.CloseUI(UIViewID.LatencyTimeUI);
             }
             string url = string.Format(URL_USER_SERVER, path);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(requestStr);
@@ -93,7 +92,7 @@ namespace SDKFramework.Network
                     request.result == UnityWebRequest.Result.DataProcessingError || !request.isDone)
                 {
                     string errMsg = request.error;
-
+                    HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI);
                     Log.Error($"NetWork Error !!! index={index}, url={url}, msg={errMsg}");
                 }
                 else
@@ -116,7 +115,8 @@ namespace SDKFramework.Network
         
         private void onRetrieveData<TResponse>(UnityWebRequest webRequest, Action<TResponse> callback)
         {
-            string result = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
+            // string result = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
+            string result = NetEnc.decContent(webRequest.downloadHandler.data);
             Log.Info($"response data = {result}");
             TResponse response = JsonConvert.DeserializeObject<TResponse>(result);
             if (callback != null) callback(response);

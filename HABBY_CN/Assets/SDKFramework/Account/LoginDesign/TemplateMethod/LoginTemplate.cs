@@ -23,17 +23,28 @@ namespace SDKFramework.Account
 
         public void ValidateIdentity(RespHandler handler)
         {
-            HabbyFramework.Account.LoginOrIdentify((success) =>
+            HabbyFramework.Account.StartValidation((success,code) =>
             {
                 if (success)
-                {
-                    
-                }
+                    handler.success();
+                else
+                    handler.failed();
+            });
+        }
+        
+        public void RealNameLogin(RespHandler handler)
+        {
+            HabbyFramework.Account.RealNameLogin((success) =>
+            {
+                if (success)
+                    handler.success();
+                else
+                    handler.failed();
             });
         }
     }
 
-    public class RespHandler
+    public struct RespHandler
     {
         public Action success;
 

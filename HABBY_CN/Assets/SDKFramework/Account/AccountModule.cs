@@ -45,11 +45,11 @@ namespace SDKFramework.Account
 
         /*===================== Validate Identity ====================*/
 
-        internal static event Action<int> OnIdentityFailed; //实名认证出错
+        // internal static event Action<int> OnIdentityFailed; //实名认证出错
+        //
+        // internal static event Action OnIdentitySuccess; //实名成功
 
-        internal static event Action OnIdentitySuccess; //实名成功
-
-        internal static event Action<bool> OnAntiAddictionResultLogin; //  防沉迷登陆结果
+        internal static event Action<bool,int> OnValidateIdentityResult; //  防沉迷登陆结果
 
         /*===================== Anti-addiction ======================*/
 

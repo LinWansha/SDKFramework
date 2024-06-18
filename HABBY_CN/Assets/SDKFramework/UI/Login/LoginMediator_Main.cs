@@ -28,6 +28,7 @@ public partial class LoginMediator : UIMediator<LoginView>
 
         View.btnNext.onClick.AddListener(() =>
         {
+            HabbyFramework.Message.Post(new SDKEvent.SendPhoneVerifyCode() { phoneNumber = m_PhoneNum });
             View.ActivateWindow(3);
             SendSMSVerificationCode();
         });
@@ -41,7 +42,7 @@ public partial class LoginMediator : UIMediator<LoginView>
             HabbyFramework.Account.SetPrivacyStatus(agree);
         });
 
-        HabbyFramework.Message.Subscribe<MsgType.ShowNoAgreePrivacyNotice>(ShowNotice);
+        HabbyFramework.Message.Subscribe<SDKEvent.ShowNoAgreePrivacyNotice>(ShowNotice);
     }
 
     private void OnCallQQGroup()
@@ -59,7 +60,7 @@ public partial class LoginMediator : UIMediator<LoginView>
         AccountLog.Info("open web view privacy agreement");
     }
 
-    private void ShowNotice(MsgType.ShowNoAgreePrivacyNotice arg)
+    private void ShowNotice(SDKEvent.ShowNoAgreePrivacyNotice arg)
     {
         GameObject noticeTextObj = View.noticeText;
         noticeTextObj.SetActive(true);

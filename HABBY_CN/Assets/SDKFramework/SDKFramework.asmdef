@@ -1,3 +1,16 @@
 {
-	"name": "SDKFramework"
+    "name": "SDKFramework",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e51c3d4f5c995c24b825752d3f696f55"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

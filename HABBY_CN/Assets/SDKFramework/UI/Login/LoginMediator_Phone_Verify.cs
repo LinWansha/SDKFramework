@@ -43,7 +43,7 @@ public partial class LoginMediator : UIMediator<LoginView>
             lastLength = thisLength;
             if (thisLength == 4)
             {
-                HabbyFramework.Message.Post(new MsgType.PhoneLogin(){phoneNumber = m_PhoneNum,phoneVerifyCode = str});
+                HabbyFramework.Message.Post(new SDKEvent.PhoneLogin(){phoneNumber = m_PhoneNum,phoneVerifyCode = str});
             }
         }
 

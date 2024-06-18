@@ -23,12 +23,14 @@ namespace SDKFramework
 
         public static SDK New()
         {
-            var appJson = HabbyFramework.Asset.LoadConfig("AppConfig");
-            var webJson = HabbyFramework.Asset.LoadConfig("WebConfig");
-            var AppData = JsonUtility.FromJson<AppConfig>(appJson);
-            var webView = JsonUtility.FromJson<WebConfig>(webJson);
-            HabbyFramework.Message.Post(AppData);
-            HabbyFramework.Message.Post(webView);
+            static void PostConfig<T>(string configName) where T : struct
+            {
+                string json = HabbyFramework.Asset.LoadConfig(configName);
+                T config = JsonUtility.FromJson<T>(json);
+                HabbyFramework.Message.Post(config);
+            }
+            PostConfig<AppConfig>("AppConfig");
+            PostConfig<WebConfig>("WebConfig");
             // ReSharper disable once Unity.NoNullPropagation
             SDK Kernel = TheChosenOne?.AddComponent<SDK>();
             return Kernel;
@@ -54,13 +56,12 @@ namespace SDKFramework
             //TODO:Anything...
         }
     }
+    
 
     public class AppSource : MessageHandler<AppConfig>
     {
         public static AppConfig Config;
         
-        public static WebConfig WebView;
-
         public static readonly RuntimePlatform Platform;
 
         static AppSource()
@@ -68,6 +69,17 @@ namespace SDKFramework
             Platform= Application.platform;
         }
         public override void HandleMessage(AppConfig arg)
+        {
+            Config = arg;
+        }
+    }
+    
+    
+    public class WebSource : MessageHandler<WebConfig>
+    {
+        public static WebConfig Config;
+        
+        public override void HandleMessage(WebConfig arg)
         {
             Config = arg;
         }

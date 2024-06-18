@@ -24,7 +24,17 @@ namespace SDKFramework.Message
             }
         }
         
+       
+    }
+
+    public class SDKEvent
+    {
         public struct ShowNoAgreePrivacyNotice { }
+        
+        public struct SendPhoneVerifyCode
+        {
+            public string phoneNumber;
+        }
 
         public struct PhoneLogin
         {

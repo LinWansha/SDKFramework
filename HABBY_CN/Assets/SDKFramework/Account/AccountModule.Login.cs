@@ -30,6 +30,72 @@ namespace SDKFramework.Account
             CurrentAccount.IsAgreePrivacy = isAgree;
             AccountLog.Info($"Privacy Status Change === {isAgree}");
         }
+
+        public void LocalValidateIdentity(UserAccount account)
+        {
+            OnValidateIdentityResult?.Invoke(false,0);
+
+            if (CanLogin(account))
+            {
+                if (account.AgeRange != UserAccount.AgeLevel.Adult)
+                    HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI);
+                Login(account);
+            }
+        }
+        
+        public void StartValidation(Action<bool,int> callback)
+        {
+            UserAccount account = CurrentAccount;
+            AccountLog.Info($"LoginOrIdentify, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}");
+            if (string.IsNullOrEmpty(account.LoginChannel))
+            {
+                callback(false,-999);
+                ShowLoginScene();
+                return;
+            }
+
+            if (account.AgeRange == UserAccount.AgeLevel.Unknown)
+            {
+                AccountModule.OnValidateIdentityResult += callback;
+                HabbyFramework.UI.OpenUI(UIViewID.RealNameUI);
+            }
+        }
+
+        public void ValidateIdentity()
+        {
+            UserAccount account = CurrentAccount;
+            HabbyUserClient.Instance.ValidateIdentity(account, (response) =>
+            {
+                AccountLog.Info($"ValidateIdentity, code={response.code}");
+                if (IdentityResponse.CODE_SUCCESS == response.code)
+                {
+                    account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
+                    OnValidateIdentityResult?.Invoke(false,0);
+                    return;
+                }
+                
+                OnValidateIdentityResult?.Invoke(false,response.code);
+            });
+        }
+
+        public void RealNameLogin(Action<bool> callback)
+        {
+            UserAccount account = CurrentAccount;
+#if USE_ANTIADDICTION
+            if (!CanLogin(account))
+            {
+                callback(false);
+                return;
+            }
+
+            if (account.AgeRange != UserAccount.AgeLevel.Adult)
+            {
+                HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
+            }
+#endif
+            callback(true);
+            Login(account);
+        }
         
         private void Login(UserAccount account)
         {
@@ -65,75 +131,6 @@ namespace SDKFramework.Account
 
             (actionCode == 0 ? OnUserLogout : OnShowLoginScene)?.Invoke();
             AccountLog.Info($"Logout ActionCode={actionCode}");
-        }
-
-        public void LocalValidateIdentity(UserAccount account)
-        {
-            OnIdentitySuccess?.Invoke();
-
-            if (CanLogin(account))
-            {
-                if (account.AgeRange != UserAccount.AgeLevel.Adult)
-                    HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI);
-                Login(account);
-            }
-        }
-
-        public void ValidateIdentity(UserAccount account)
-        {
-            HabbyUserClient.Instance.ValidateIdentity(account, (response) =>
-            {
-                AccountLog.Info($"ValidateIdentity, code={response.code}");
-                if (IdentityResponse.CODE_SUCCESS == response.code)
-                {
-                    account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
-                    OnIdentitySuccess?.Invoke();
-
-                    if (!CanLogin(account))
-                    {
-                        OnAntiAddictionResultLogin?.Invoke(false);
-                        return;
-                    }
-
-                    if (account.AgeRange != UserAccount.AgeLevel.Adult)
-                    {
-                        HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
-                    }
-
-                    Login(account);
-
-                    OnAntiAddictionResultLogin?.Invoke(true);
-                    return;
-                }
-
-                OnIdentityFailed(response.code);
-            });
-        }
-
-        public void LoginOrIdentify(Action<bool> callback)
-        {
-            UserAccount account = CurrentAccount;
-            AccountLog.Info($"LoginOrIdentify, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}");
-            if (string.IsNullOrEmpty(account.LoginChannel))
-            {
-                ShowLoginScene();
-                return;
-            }
-
-            if (account.AgeRange == UserAccount.AgeLevel.Unknown)
-            {
-                HabbyFramework.UI.OpenUI(UIViewID.RealNameUI, account);
-                return;
-            }
-
-#if USE_ANTIADDICTION
-            if (!CanLogin(account)) 
-                return;
-            if (account.AgeRange != UserAccount.AgeLevel.Adult)
-                HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
-#endif
-
-            Login(account);
         }
         
         public void CheckUser()

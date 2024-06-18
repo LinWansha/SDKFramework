@@ -1,13 +1,19 @@
 namespace SDKFramework.Account.Net
 {
+    [System.Serializable]
+    public struct AppleIdUserInfo
+    {
+        public string email;
+        public string namePrefix;
+        public string givenName;
+        public string middleName;
+        public string familyName;
+        public string nameSuffix;
+        public string nickname;
+    }
+    
     public class LoginRequest : Request
     {
-
-        public const int TYPE_LOGIN_PASSWORD = 1;
-        public const int TYPE_LOGIN_WECHAT = 2;
-        public const int TYPE_LOGIN_GAMECENTER = 3;
-        public const int TYPE_LOGIN_VISITOR = 4;
-        
         public string socialId;
         public string deviceId;
         public string password;
@@ -28,6 +34,6 @@ namespace SDKFramework.Account.Net
         public string appleUserId;  
         public string identityToken;
         public string mobileToken;// 手机快速登陆的token
-        
+        public AppleIdUserInfo user;
     }
 }

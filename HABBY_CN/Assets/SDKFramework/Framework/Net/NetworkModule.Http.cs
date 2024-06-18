@@ -75,7 +75,7 @@ namespace SDKFramework.Network
                 yield return new WaitForSeconds(2);
             }
             string url = string.Format(URL_USER_SERVER, path);
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(requestStr);
+            byte[] bodyRaw = NetEnc.encContent(requestStr);
 
             using (UnityWebRequest request = UnityWebRequest.Post(url, ""))
             {

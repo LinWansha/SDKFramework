@@ -1,3 +1,5 @@
+using SDKFramework.Account.Net;
+
 namespace SDKFramework.Account
 {
     public class QQLoginStrategy : LoginTemplate
@@ -8,7 +10,23 @@ namespace SDKFramework.Account
         {
             AccountLog.Info("QQLogin");
             // ...
-            handler.failed();
+            string token = "";
+            HabbyUserClient.Instance.LoginQQChannel((response) =>
+            {
+                if (LoginResponse.CODE_SUCCESS == response.code)
+                {
+                    handler.success();
+                    AccountLog.Info("qq登录成功");
+                }
+                else
+                {
+                    handler.failed();
+
+                    AccountLog.Info("qq登录失败");
+                }
+
+                AccountLog.Info(response.code);
+            }, token);
         }
     }
 }

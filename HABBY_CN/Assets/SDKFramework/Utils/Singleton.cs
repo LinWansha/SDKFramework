@@ -9,15 +9,10 @@ namespace SDKFramework.Utils
         {
             get
             {
-                if (_instance == null)
+                if (_instance != null) return _instance;
+                lock (objlock)
                 {
-                    lock (objlock)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new T();
-                        }
-                    }
+                    _instance ??= new T();
                 }
 
                 return _instance;

@@ -197,14 +197,11 @@ namespace SDKFramework.Account.Net
             HabbyFramework.Network.Post(request, response, PATH_LOGIN);
         }
 
-        public void LoginOAuthChannel(Action<LoginResponse> response, Action<string> error, string channelName,
-            string code = null,
-            string openId = null)
+        public void LoginOAuthChannel(Action<LoginResponse> response, string channelName, string code = null, string openId = null)
         {
             if (string.IsNullOrEmpty(channelName))
             {
                 Log.Info("--- LoginOAuthChannel param error! channelName is null!");
-                error?.Invoke("channelName is null!");
                 return;
             }
 
@@ -236,8 +233,7 @@ namespace SDKFramework.Account.Net
             HabbyFramework.Network.Post(request, response, PATH_LOGIN);
         }
 
-        public void LoginWechat(Action<LoginResponse> response, Action<string> error, string code = null,
-            string openId = null)
+        public void LoginWechat(Action<LoginResponse> response, string code = null, string openId = null)
         {
             LoginRequest request = new LoginRequest
             {
@@ -260,6 +256,18 @@ namespace SDKFramework.Account.Net
 
             Log.Info("--- ### LoginWechat: code=" + code + " openId=" + openId);
             HabbyFramework.Network.Post(request, response, PATH_LOGIN);
+        }
+        
+        public void UnRegisterAccount(string tokenValue,string accountName,string codeValue,Action<UnregistAccountResponse> response)
+        {
+            UnregistAccountRequest request = new UnregistAccountRequest() {
+                clientData = CurrentClientInfo(),
+                timestamp = DateTime.Now.Ticks,
+                code= codeValue,
+                token = tokenValue,
+                accountType = accountName
+            };
+            HabbyFramework.Network.Post(request, response,  PATH_UNREGISTER);
         }
 
         public void RegisterWithAccount(string userName, string password, Action<RegisterResponse> response)

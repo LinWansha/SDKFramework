@@ -1,6 +1,3 @@
-
-using SDKFramework;
-using SDKFramework.Account;
 using SDKFramework.UI;
 
 public class AntiaddictionRulesMediator : UIMediator<AntiaddictionRulesView>
@@ -9,7 +6,6 @@ public class AntiaddictionRulesMediator : UIMediator<AntiaddictionRulesView>
     {
         base.OnShow(arg);
         View.btnSure.onClick.AddListener(Close);
-        AccountModule.OnReadedAntiaddtionRules += SDK.Procedure?.EnterGame;
         this.OnMediatorHide += HabbyFramework.Account.FireJuvenileEnterGame;
     }
 

@@ -99,7 +99,7 @@ namespace SDKFramework.Account
 #endif
             if (CurrentAccount?.AgeRange == UserAccount.AgeLevel.Adult)
             {
-                SDK.Procedure?.EnterGame();
+                // SDK.Procedure?.EnterGame();
             }
 
             AccountLog.Info($"onUserLogin登录成功");

@@ -9,8 +9,6 @@ namespace SDKFramework
     {
         private static readonly GameObject TheChosenOne;
 
-        public static ProcedureOption Procedure;
-
         static SDK()
         {
             TheChosenOne = GameObject.Find("SDK");
@@ -36,20 +34,10 @@ namespace SDKFramework
             return Kernel;
         }
 
-        public void Run(ProcedureOption option)
+        public void Run()
         {
-            Procedure = option;
-            option.Splash?.Invoke();
         }
-
-        public class ProcedureOption
-        {
-            public Action Splash;
-
-            public Action Login;
-
-            public Action EnterGame;
-        }
+        
 
         private void Update()
         {

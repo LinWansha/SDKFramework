@@ -9,7 +9,7 @@ namespace SDKFramework.Editor
 
     public class Configuration_App : EditorWindow
     {
-        private readonly string FilePath = $"{AssetModule.ConfigPath}App.json";
+        private readonly string FilePath = $"{AssetModule.ConfigPath}AppConfig.json";
         private AppConfig _ageTipConfig;
 
         private Vector2 _scrollPosition;

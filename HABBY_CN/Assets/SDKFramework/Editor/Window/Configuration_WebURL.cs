@@ -8,10 +8,11 @@ namespace SDKFramework.Editor
 {
     public class Configuration_WebURL : EditorWindow
     {
-        private string gameLicenseUrl = "";
-        private string privacyUrl = "";
-        private string childrenProtUrl = "";
-        private string thirdPartySharingUrl = "";
+        private string _gameLicenseUrl = "";
+        private string _gamePrivacyUrl = "";
+        private string _childrenPrivacyUrl = "";
+        private string _thirdPartySharingUrl = "";
+        private string _personInfoListUrl = "";
 
         // 配置文件路径
         private readonly string FilePath = $"{AssetModule.ConfigPath}WebConfig.json";
@@ -46,10 +47,11 @@ namespace SDKFramework.Editor
             GUILayout.Label(Tittle, headerStyle);
             EditorGUILayout.Space();
             
-            gameLicenseUrl = EditorGUILayout.TextField("Game License URL:", gameLicenseUrl);
-            privacyUrl = EditorGUILayout.TextField("Privacy URL:", privacyUrl);
-            childrenProtUrl = EditorGUILayout.TextField("Children Prot URL:", childrenProtUrl);
-            thirdPartySharingUrl = EditorGUILayout.TextField("Third Party Sharing URL:", thirdPartySharingUrl);
+            _gameLicenseUrl = EditorGUILayout.TextField("Game License URL:", _gameLicenseUrl);
+            _gamePrivacyUrl = EditorGUILayout.TextField("Game Privacy URL:", _gamePrivacyUrl);
+            _childrenPrivacyUrl = EditorGUILayout.TextField("Children Privacy URL:", _childrenPrivacyUrl);
+            _thirdPartySharingUrl = EditorGUILayout.TextField("Third Party Sharing URL:", _thirdPartySharingUrl);
+            _personInfoListUrl = EditorGUILayout.TextField("Person Info List URL:", _personInfoListUrl);
 
             EditorGUILayout.Space();
 
@@ -67,10 +69,12 @@ namespace SDKFramework.Editor
                 string jsonContent = File.ReadAllText(FilePath);
                 var configData = JsonUtility.FromJson<WebConfig>(jsonContent);
 
-                gameLicenseUrl = configData.gameLicenseUrl;
-                privacyUrl = configData.privacyUrl;
-                childrenProtUrl = configData.childrenProtUrl;
-                thirdPartySharingUrl = configData.thirdPartySharingUrl;
+                _gameLicenseUrl = configData.gameLicenseUrl;
+                _gamePrivacyUrl = configData.gamePrivacyUrl;
+                _childrenPrivacyUrl = configData.childrenPrivacyUrl;
+                _thirdPartySharingUrl = configData.thirdPartySharingUrl;
+                _personInfoListUrl = configData.personInfoListUrl;
+                
             }
             else
             {
@@ -83,10 +87,11 @@ namespace SDKFramework.Editor
         {
             var configData = new WebConfig
             {
-                gameLicenseUrl = gameLicenseUrl,
-                privacyUrl = privacyUrl,
-                childrenProtUrl = childrenProtUrl,
-                thirdPartySharingUrl = thirdPartySharingUrl
+                gameLicenseUrl = _gameLicenseUrl,
+                gamePrivacyUrl = _gamePrivacyUrl,
+                childrenPrivacyUrl = _childrenPrivacyUrl,
+                thirdPartySharingUrl = _thirdPartySharingUrl,
+                personInfoListUrl = _personInfoListUrl
             };
 
             string jsonContent = JsonUtility.ToJson(configData, true);

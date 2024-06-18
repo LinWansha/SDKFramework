@@ -23,9 +23,12 @@ namespace SDKFramework
 
         public static SDK New()
         {
-            var jsonStr = Resources.Load<TextAsset>("SDKConfig/App").text;
-            var AppData = JsonUtility.FromJson<AppConfig>(jsonStr);
+            var appJson = HabbyFramework.Asset.LoadConfig("AppConfig");
+            var webJson = HabbyFramework.Asset.LoadConfig("WebConfig");
+            var AppData = JsonUtility.FromJson<AppConfig>(appJson);
+            var webView = JsonUtility.FromJson<WebConfig>(webJson);
             HabbyFramework.Message.Post(AppData);
+            HabbyFramework.Message.Post(webView);
             // ReSharper disable once Unity.NoNullPropagation
             SDK Kernel = TheChosenOne?.AddComponent<SDK>();
             return Kernel;
@@ -55,6 +58,8 @@ namespace SDKFramework
     public class AppSource : MessageHandler<AppConfig>
     {
         public static AppConfig Config;
+        
+        public static WebConfig WebView;
 
         public static readonly RuntimePlatform Platform;
 

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using Object = UnityEngine.Object;
 namespace SDKFramework.Asset
@@ -25,6 +26,19 @@ namespace SDKFramework.Asset
             }
             Debug.LogError($"没有加载到资源：{path}");
             return null;
+        }
+
+        public string LoadConfig(string fileName)
+        {
+            string path = $"SDKConfig/{fileName}";
+            var config = Resources.Load<TextAsset>(path);
+
+            if (config == null)
+            {
+                Debug.LogError($"没有加载到资源：{path}");
+            }
+
+            return config.text;
         }
         
         public void LoadGameObjectAsync(string path, Action<GameObjectAsset> callback, Action<GameObject> createNewCallback = null)

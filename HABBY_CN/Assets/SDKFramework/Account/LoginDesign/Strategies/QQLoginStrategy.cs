@@ -1,3 +1,4 @@
+using System;
 using SDKFramework.Account.Net;
 
 namespace SDKFramework.Account
@@ -6,27 +7,10 @@ namespace SDKFramework.Account
     {
         protected override string Channel => "QQ";
         
-        public override void Login(RespHandler handler)
+        public override void ChannelLogin(Action<LoginResponse> onResponse)
         {
-            AccountLog.Info("QQLogin");
-            // ...
             string token = "";
-            HabbyUserClient.Instance.LoginQQChannel((response) =>
-            {
-                if (LoginResponse.CODE_SUCCESS == response.code)
-                {
-                    handler.success();
-                    AccountLog.Info("qq登录成功");
-                }
-                else
-                {
-                    handler.failed();
-
-                    AccountLog.Info("qq登录失败");
-                }
-
-                AccountLog.Info(response.code);
-            }, token);
+            HabbyUserClient.Instance.LoginQQChannel(onResponse, token);
         }
     }
 }

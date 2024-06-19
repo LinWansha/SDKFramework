@@ -33,7 +33,7 @@ namespace SDKFramework.Network
             using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
             {
 
-                webRequest.SetRequestHeader("Content-Type", "application/json");
+                webRequest.SetRequestHeader("Content-Type", "application/octet-stream");
                 yield return webRequest.SendWebRequest();
 
                 Log.Info("=== habby status code " + webRequest.responseCode);
@@ -83,7 +83,7 @@ namespace SDKFramework.Network
                 request.timeout = 30;
                 request.uploadHandler = new UploadHandlerRaw(bodyRaw);
                 request.downloadHandler = new DownloadHandlerBuffer();
-                request.SetRequestHeader("Content-Type", "application/json");
+                request.SetRequestHeader("Content-Type", "application/octet-stream");
                 
                 Log.Info($"Request url={url} : index={index}, data={requestStr}");
                 yield return request.SendWebRequest();

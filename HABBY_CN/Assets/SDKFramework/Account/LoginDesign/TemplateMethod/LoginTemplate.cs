@@ -1,4 +1,5 @@
 using System;
+using SDKFramework.Account.Net;
 
 namespace SDKFramework.Account
 {
@@ -18,8 +19,40 @@ namespace SDKFramework.Account
         {
             return HabbyFramework.Account.CurrentAccount.IsAgreePrivacy;
         }
+        
+        internal void Login(RespHandler handler)
+        {
+            AccountLog.Info($"{Channel}Login Start");
+            ChannelLogin((response) =>
+            {
+                if (LoginResponse.CODE_SUCCESS == response.code)
+                {
+                    OnLoginSuccess(handler);
+                }
+                else
+                {
+                    OnLoginFailed(handler);
+                }
 
-        public abstract void Login(RespHandler handler);
+                AccountLog.Info(response.code);
+            });
+        }
+
+        private void OnLoginFailed(RespHandler handler)
+        {
+            AccountLog.Info($"{Channel} µÇÂ¼Ê§°Ü");
+            
+            handler.failed();
+        }
+
+        private void OnLoginSuccess(RespHandler handler)
+        {
+            AccountLog.Info($"{Channel} µÇÂ¼³É¹¦");
+            
+            handler.success();
+        }
+
+        public abstract void ChannelLogin(Action<LoginResponse> onResponse);
 
         public void ValidateIdentity(RespHandler handler)
         {

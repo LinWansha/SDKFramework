@@ -20,13 +20,13 @@ public class SDKExample : MonoBehaviour
 #if UNITY_IOS
         _InitWebView(0, 0, Screen.width, Screen.height);
 #endif
-        Log.Info(WebSource.Config.gameLicenseUrl);
-        OpenWeb(WebSource.Config.gameLicenseUrl);
+        // Log.Info(WebSource.Config.gameLicenseUrl);
+        // OpenWeb(WebSource.Config.gameLicenseUrl);
         // OpenWeb(AppSource.WebView.gamePrivacyUrl);
         // OpenWeb(AppSource.WebView.childrenPrivacyUrl);
         // OpenWeb(AppSource.WebView.thirdPartySharingUrl);
         // OpenWeb(AppSource.WebView.personInfoListUrl);
-        Invoke(nameof(CloseWeb),5);
+        // Invoke(nameof(CloseWeb),5);
     }
     
     

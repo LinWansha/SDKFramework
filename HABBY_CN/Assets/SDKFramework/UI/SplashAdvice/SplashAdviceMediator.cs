@@ -76,9 +76,6 @@ public class SplashAdviceMediator : UIMediator<SplashAdviceView>
                 if (panelData.timer >= fadeOutDuration)
                 {
                     panelData.state = State.None;
-#if MRQ
-                    // SDK.Procedure?.Login();
-#endif
                     Close();
                 }
                 else

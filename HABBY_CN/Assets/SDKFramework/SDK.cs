@@ -52,6 +52,8 @@ namespace SDKFramework
         
         public static readonly RuntimePlatform Platform;
 
+        public static string Channel;
+
         static AppSource()
         {
             Platform= Application.platform;

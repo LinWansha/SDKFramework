@@ -29,7 +29,7 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.btnNext.onClick.AddListener(() =>
         {
             HabbyFramework.Message.Post(new SDKEvent.SendPhoneVerifyCode() { phoneNumber = m_PhoneNum });
-            View.ActivateWindow(3);
+            // View.ActivateWindow(3);
             SendSMSVerificationCode();
         });
 

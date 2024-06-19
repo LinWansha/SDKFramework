@@ -94,9 +94,8 @@ namespace SDKFramework.Account
         private void onUserLogin()
         {
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
-#if MRQ
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
-#endif
+            
             if (CurrentAccount?.AgeRange == UserAccount.AgeLevel.Adult)
             {
                 // SDK.Procedure?.EnterGame();

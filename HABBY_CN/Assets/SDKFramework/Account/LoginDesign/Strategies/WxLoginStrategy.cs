@@ -1,13 +1,15 @@
+using System;
+using SDKFramework.Account.Net;
+
 namespace SDKFramework.Account
 {
     public class WxLoginStrategy : LoginTemplate
     {
         protected override string Channel => "Wx";
         
-        public override void Login(RespHandler handler)
+        public override void ChannelLogin(Action<LoginResponse> onResponse)
         {
-            AccountLog.Info("WxLogin");
-            // ...
+            HabbyUserClient.Instance.LoginWechat(onResponse,"","");
         }
     }
 }

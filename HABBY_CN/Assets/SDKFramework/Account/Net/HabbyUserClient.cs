@@ -39,6 +39,11 @@ namespace SDKFramework.Account.Net
             Application.RequestAdvertisingIdentifierAsync(OnGetAdvertisementId);
         }
 
+        public void ClearSMSLimit(Action<Response> response, string phoneNum,Request request=null)
+        {
+            HabbyFramework.Network.RequestDelete( response, $"{PATH_REQUEST_SMS}/limit/{phoneNum}");
+        }
+
         public void ValidateIdentity(UserAccount account, Action<IdentityResponse> response)
         {
             IdentityRequest request = new IdentityRequest
@@ -388,7 +393,7 @@ namespace SDKFramework.Account.Net
         {
             get
             {
-                if (AppSource.Platform == RuntimePlatform.Android)
+                if (Global.Platform == RuntimePlatform.Android)
                 {
                     return default; //todo: fill this by native
                 }

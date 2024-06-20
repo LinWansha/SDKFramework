@@ -93,9 +93,9 @@ namespace SDKFramework.Account.DataSrc
                 }
                 catch (Exception e)
                 {
+                    Log.Error("--- Load Local Account failed! == "+e);
                     Delete(kUserAccount);
                     DeleteHistory();
-                    Log.Error(e);
                 }
             }
             else

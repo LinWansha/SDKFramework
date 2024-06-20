@@ -2,12 +2,16 @@ using SDKFramework.Config;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
+using Newtonsoft.Json;
 using SDKFramework.Asset;
 
 namespace SDKFramework.Editor
 {
     public class Configuration_WebURL : EditorWindow
     {
+        private string _testAccountServerURL = "";
+        private string _prodAccountServerURL = "";
+        
         private string _gameLicenseUrl = "";
         private string _gamePrivacyUrl = "";
         private string _childrenPrivacyUrl = "";
@@ -47,6 +51,9 @@ namespace SDKFramework.Editor
             GUILayout.Label(Tittle, headerStyle);
             EditorGUILayout.Space();
             
+            _testAccountServerURL = EditorGUILayout.TextField("Account Server URL (测试) :", _testAccountServerURL);
+            _prodAccountServerURL = EditorGUILayout.TextField("Account Server URL (线上):", _prodAccountServerURL);
+            
             _gameLicenseUrl = EditorGUILayout.TextField("Game License URL:", _gameLicenseUrl);
             _gamePrivacyUrl = EditorGUILayout.TextField("Game Privacy URL:", _gamePrivacyUrl);
             _childrenPrivacyUrl = EditorGUILayout.TextField("Children Privacy URL:", _childrenPrivacyUrl);
@@ -67,13 +74,16 @@ namespace SDKFramework.Editor
             if (File.Exists(FilePath))
             {
                 string jsonContent = File.ReadAllText(FilePath);
-                var configData = JsonUtility.FromJson<WebConfig>(jsonContent);
+                var configData = JsonConvert.DeserializeObject<WebConfig>(jsonContent);
 
-                _gameLicenseUrl = configData.gameLicenseUrl;
-                _gamePrivacyUrl = configData.gamePrivacyUrl;
-                _childrenPrivacyUrl = configData.childrenPrivacyUrl;
-                _thirdPartySharingUrl = configData.thirdPartySharingUrl;
-                _personInfoListUrl = configData.personInfoListUrl;
+                _testAccountServerURL = configData.AccountServerURL.test;
+                _prodAccountServerURL = configData.AccountServerURL.prod;
+                
+                _gameLicenseUrl = configData.WebView.gameLicenseUrl;
+                _gamePrivacyUrl = configData.WebView.gamePrivacyUrl;
+                _childrenPrivacyUrl = configData.WebView.childrenPrivacyUrl;
+                _thirdPartySharingUrl = configData.WebView.thirdPartySharingUrl;
+                _personInfoListUrl = configData.WebView.personInfoListUrl;
                 
             }
             else
@@ -87,14 +97,22 @@ namespace SDKFramework.Editor
         {
             var configData = new WebConfig
             {
-                gameLicenseUrl = _gameLicenseUrl,
-                gamePrivacyUrl = _gamePrivacyUrl,
-                childrenPrivacyUrl = _childrenPrivacyUrl,
-                thirdPartySharingUrl = _thirdPartySharingUrl,
-                personInfoListUrl = _personInfoListUrl
+                AccountServerURL =
+                {
+                    test = _testAccountServerURL,
+                    prod = _prodAccountServerURL
+                },
+                WebView =
+                {
+                    gameLicenseUrl = _gameLicenseUrl,
+                    gamePrivacyUrl = _gamePrivacyUrl,
+                    childrenPrivacyUrl = _childrenPrivacyUrl,
+                    thirdPartySharingUrl = _thirdPartySharingUrl,
+                    personInfoListUrl = _personInfoListUrl
+                }
             };
 
-            string jsonContent = JsonUtility.ToJson(configData, true);
+            string jsonContent = JsonConvert.SerializeObject(configData,Formatting.Indented);
             File.WriteAllText(FilePath, jsonContent);
 
             Debug.Log("Links saved to WebConfig.json");

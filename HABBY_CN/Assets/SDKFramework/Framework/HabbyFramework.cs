@@ -34,7 +34,7 @@ public class HabbyFramework : MonoBehaviour
     public static AccountModule Account => ModuleDriver.Instance.GetModule<AccountModule>();
     
     // [Module(6)] 
-    // public static AccountModule Analytics => ModuleDriver.Instance.GetModule<AccountModule>();
+    // public static AnalyticsModule Analytics => ModuleDriver.Instance.GetModule<AnalyticsModule>();
     
 
     private bool activing;

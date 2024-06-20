@@ -60,65 +60,6 @@ namespace SDKFramework.Account
             return tcs.Task;
         }
         
-        // public async void Execute(LoginChannel channel)
-        // {
-        //     loginStrategy = Strategy_MAP[channel];
-        //     if (!loginStrategy.CheckPrivacyStatus())
-        //     {
-        //         AccountLog.Info($"User has not agreed to privacy policy, cannot login with {channel}");
-        //         HabbyFramework.Message.Post(new MsgType.ShowNoAgreePrivacyNotice());
-        //         return;
-        //     }
-        //
-        //     var loginTCS = AsyncScheduler.CreateTCS<bool>();
-        //
-        //     loginStrategy.Login(new RespHandler
-        //     {
-        //         success = () =>
-        //         {
-        //             AccountLog.Info("[channel login] successful !!!");
-        //             loginTCS.SetResult(true);
-        //         },
-        //         failed = () =>
-        //         {
-        //             AccountLog.Warn("[channel login]  failed.");
-        //             loginTCS.SetResult(false);
-        //         },
-        //     });
-        //
-        //     bool loginSuccess = await loginTCS.Task;
-        //
-        //     if (!loginSuccess)
-        //         return;
-        //
-        //
-        //     var validateTCS = AsyncScheduler.CreateTCS<bool>();
-        //
-        //     loginStrategy.ValidateIdentity(new RespHandler
-        //     {
-        //         success = () =>
-        //         {
-        //             AccountLog.Info("[validate identity] successful !!!");
-        //             validateTCS.SetResult(true);
-        //         },
-        //         failed = () =>
-        //         {
-        //             AccountLog.Warn("[validate identity] failed.");
-        //             validateTCS.SetResult(false);
-        //         },
-        //     });
-        //
-        //     bool validateSuccess = await validateTCS.Task;
-        //
-        //     if (!validateSuccess)
-        //         return;
-        //
-        //     loginStrategy.RealNameLogin(new RespHandler
-        //     {
-        //         success = () => { AccountLog.Info("[real name login] successful !!!"); },
-        //         failed = () => { AccountLog.Warn("[real name login] failed."); },
-        //     });
-        // }
     }
 
     

@@ -1,5 +1,7 @@
 using System;
+using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
+using SDKFramework.Account.Utils;
 
 namespace SDKFramework.Account
 {
@@ -22,37 +24,68 @@ namespace SDKFramework.Account
         
         internal void Login(RespHandler handler)
         {
-            AccountLog.Info($"{Channel}Login Start");
-            ChannelLogin((response) =>
+            AccountLog.Info($"{Channel} Login Start");
+            Action<LoginResponse> loginResponseHandler = (response) =>
             {
-                if (LoginResponse.CODE_SUCCESS == response.code)
+                if (Response.CODE_SUCCESS == response.code)
                 {
-                    OnLoginSuccess(handler);
+                    OnLoginSuccess(response);
+                    handler.success();
                 }
                 else
                 {
-                    OnLoginFailed(handler);
+                    OnLoginFailed(response);
+                    handler.failed();
                 }
-
-                AccountLog.Info(response.code);
-            });
+            };
+            if (!HabbyFramework.Account.HasAccount)
+            {
+                ChannelLogin(loginResponseHandler);
+            }
+            else
+            {
+                HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,"", "");
+            }
+           
         }
-
-        private void OnLoginFailed(RespHandler handler)
-        {
-            AccountLog.Info($"{Channel} ��¼ʧ��");
-            
-            handler.failed();
-        }
-
-        private void OnLoginSuccess(RespHandler handler)
-        {
-            AccountLog.Info($"{Channel} ��¼�ɹ�");
-            
-            handler.success();
-        }
-
+        
         public abstract void ChannelLogin(Action<LoginResponse> onResponse);
+
+        private void OnLoginSuccess(LoginResponse response)
+        {
+            AccountLog.Info($"{Channel} 登录成功");
+            UserAccount account = AccountDataUtil.ParseLoginAccountInfo(response);
+            account.UID = response.data.userId;
+            account.LoginChannel = Channel;
+            // HabbyFramework.Account.Save
+            if (response.data.isNewUser && true)
+            {
+                //todo: track_first_active
+            }
+            else
+            {
+                //todo: track_not_new_user
+            }
+            //HabbyCloudConfigManager.Instance.SetGmUserId(account.UID);
+            
+        }
+
+        private void OnLoginFailed(LoginResponse response)
+        {
+            AccountLog.Info($"{Channel} 登录失败");
+            switch (response.code)
+            {
+                case Response.CODE_APP_TOKEN_EXPIRE:
+                    AccountLog.Warn($"{Channel} 授权过期");
+                    break;
+                case Response.CAPTCHA_INVALID:
+                    AccountLog.Warn($"手机验证码错误");
+                    break;
+                default:
+                    // HabbyFramework.Account.ClearCurrent();
+                    break;
+            }
+        }
 
         public void ValidateIdentity(RespHandler handler)
         {

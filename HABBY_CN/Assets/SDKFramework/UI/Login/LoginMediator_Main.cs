@@ -29,7 +29,7 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.btnNext.onClick.AddListener(() =>
         {
             HabbyFramework.Message.Post(new SDKEvent.SendPhoneVerifyCode() { phoneNumber = m_PhoneNum });
-            // View.ActivateWindow(3);
+            View.ActivateWindow(3);
             SendSMSVerificationCode();
         });
 
@@ -62,6 +62,8 @@ public partial class LoginMediator : UIMediator<LoginView>
 
     private void ShowNotice(SDKEvent.ShowNoAgreePrivacyNotice arg)
     {
+        if (View.noticeText.activeSelf)return;
+        
         GameObject noticeTextObj = View.noticeText;
         noticeTextObj.SetActive(true);
         AsyncScheduler.Instance.DelayedInvoke(() => noticeTextObj.SetActive(false), 2.5f);

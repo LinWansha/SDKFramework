@@ -3,34 +3,8 @@ using SDKFramework.Utils;
 
 namespace SDKFramework.Analytics
 {
-    public interface TGAImpl
-    {
-        void UserSet(Dictionary<string, object> properties);
-        
-        void Report2TGA(string eventName);
-
-        void Report2TGA(string eventName, Dictionary<string, object> eventParams);
-    }
-    
-    public interface MMPImpl
-    {
-        void UserSet(Dictionary<string, object> properties);
-        
-        void Report2MMP(string eventName);
-
-        void Report2MMP(string eventName, Dictionary<string, object> eventParams);
-    }
-    
-    public interface GravityImpl
-    {
-        void UserSet(Dictionary<string, object> properties);
-        
-        void Report2Gravity(string eventName);
-
-        void Report2Gravity(string eventName, Dictionary<string, object> eventParams);
-    }
-    
-    public class AnalyticsModule:Singleton<AnalyticsModule>
+   
+    public partial class AnalyticsModule:Singleton<AnalyticsModule>
     {
         private TGAImpl TGA;
         private MMPImpl MMP;
@@ -45,25 +19,7 @@ namespace SDKFramework.Analytics
             InitializeGravity();
         }
 
-
-        private void InitializeTGA()
-        {
-            _propertyBuilder
-                .Add("oaid", "unknow")          //国内用户唯一的设备ID
-                .Add("ageLevel", "unknow")      //年龄段
-                .Add("login_type", "unknow")    //weixin/qq/phone/appleid/
-                .Add("tio_id", "unknow")        //热云id
-                .Add("total_iap_cny", 00000);   //人民币计充值金额
-            TGA?.UserSet(_propertyBuilder.ToProperty());
-        }
         
-        private void InitializeMMP()
-        {
-        }
-        
-        private void InitializeGravity()
-        {
-        }
     }
     
     public class TGPropertyBuilder

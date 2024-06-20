@@ -74,7 +74,7 @@ public class LoginView : UIView
 
     private void Awake()
     {
-        if (AppSource.Platform == RuntimePlatform.Android)
+        if (Global.Platform == RuntimePlatform.Android)
         {
             privacyObj.SetActive(false);
             btnAppleLogin.gameObject.SetActive(false);

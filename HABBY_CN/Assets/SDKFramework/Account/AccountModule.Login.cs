@@ -58,7 +58,9 @@ namespace SDKFramework.Account
             {
                 AccountModule.OnValidateIdentityResult += callback;
                 HabbyFramework.UI.OpenUI(UIViewID.RealNameUI);
+                return;
             }
+            OnValidateIdentityResult?.Invoke(false,0);
         }
 
         public void ValidateIdentity()

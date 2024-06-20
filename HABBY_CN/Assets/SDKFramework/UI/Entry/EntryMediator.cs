@@ -12,9 +12,9 @@ public class EntryMediator : UIMediator<EntryView>
     {
         base.OnInit();
         View.versionName.text = $"版本号：{Application.version}";
-        if (AppSource.Config.hasLicense)
+        if (Global.App.hasLicense)
         {
-            if (AppSource.Platform==RuntimePlatform.IPhonePlayer)
+            if (Global.Platform==RuntimePlatform.IPhonePlayer)
             {
                 View.privacyLine.SetActive(false);
             }
@@ -33,7 +33,7 @@ public class EntryMediator : UIMediator<EntryView>
         base.OnShow(arg);
 
         View.ageTip.GetComponent<Image>().sprite =
-            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)AppSource.Config.applicableRange);
+            HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)Global.App.applicableRange);
 
         View.btnEnter.onClick.AddListener(EnterGameOrLogin);
         View.ageTip.onClick.AddListener(ShowAgeTip);

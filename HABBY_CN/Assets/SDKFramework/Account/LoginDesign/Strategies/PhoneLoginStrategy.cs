@@ -1,4 +1,5 @@
 using System;
+using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Message;
 using SDKFramework.UI;
@@ -8,7 +9,7 @@ namespace SDKFramework.Account
     public class PhoneLoginStrategy : LoginTemplate
     {
         private LoginView _loginView;
-        protected override string Channel => "Phone";
+        protected override string Channel => UserAccount.ChannelPhone;
 
         private Action<LoginResponse> _onResponse;
         
@@ -16,7 +17,7 @@ namespace SDKFramework.Account
         {
             _onResponse = onResponse;
             UIMediator loginMediator = HabbyFramework.UI.OpenUISingle(UIViewID.LoginUI);
-            _loginView=loginMediator.ViewObject.GetComponent<LoginView>();
+            _loginView = loginMediator.ViewObject.GetComponent<LoginView>();
             _loginView.ActivateWindow(2);
             HabbyFramework.Message.Subscribe<SDKEvent.SendPhoneVerifyCode>(_SendPhoneVerifyCode);            
             HabbyFramework.Message.Subscribe<SDKEvent.PhoneLogin>(_PhoneLogin);            
@@ -29,7 +30,6 @@ namespace SDKFramework.Account
                 if (response.code == 0 )
                 {
                     AccountLog.Info("发送验证码 成功");
-                    _loginView.ActivateWindow(3);
                 }
                 else if(response.code == SendUserSmsCodeResponse.CAPTCHA_EXCEEDED_TIMES) // 超次数
                 {

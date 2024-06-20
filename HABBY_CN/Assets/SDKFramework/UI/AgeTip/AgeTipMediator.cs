@@ -8,7 +8,7 @@ public class AgeTipMediator : UIMediator<AgeTipView>
         base.OnShow(arg);
 
         View.btnSure.onClick.AddListener(Close);
-        SetMsg(AppSource.Config.gameName, AppSource.Config.description);
+        SetMsg(Global.App.gameName, Global.App.description);
 
         //UI不开bestfit就把这个打开
         //view.StartCoroutine(TextDisaplayHelper.GetTextDisaplayHelper().RearrangingText(view.ContentText));

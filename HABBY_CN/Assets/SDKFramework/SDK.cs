@@ -1,10 +1,39 @@
-using System;
+using Newtonsoft.Json;
 using SDKFramework.Config;
-using SDKFramework.Message;
 using UnityEngine;
 
 namespace SDKFramework
 {
+    public static class Global
+    {
+        static Global()
+        {
+            App = ParseConfig<AppConfig>("AppConfig");
+
+            var webConfig = ParseConfig<WebConfig>("WebConfig");
+            WebView = webConfig.WebView;
+            AccountServerURL = webConfig.AccountServerURL;
+
+            Platform = Application.platform;
+        }
+
+        private static T ParseConfig<T>(string configName) where T : struct
+        {
+            string json = HabbyFramework.Asset.LoadConfig(configName);
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public static AppConfig App { get; }
+    
+        public static readonly RuntimePlatform Platform;
+
+        public static string Channel;
+    
+        public static WebConfig.WebViewData WebView { get; }
+    
+        public static WebConfig.AccountServerData AccountServerURL { get; }
+    }
+    
     public class SDK : MonoBehaviour
     {
         private static readonly GameObject TheChosenOne;
@@ -21,14 +50,6 @@ namespace SDKFramework
 
         public static SDK New()
         {
-            static void PostConfig<T>(string configName) where T : struct
-            {
-                string json = HabbyFramework.Asset.LoadConfig(configName);
-                T config = JsonUtility.FromJson<T>(json);
-                HabbyFramework.Message.Post(config);
-            }
-            PostConfig<AppConfig>("AppConfig");
-            PostConfig<WebConfig>("WebConfig");
             // ReSharper disable once Unity.NoNullPropagation
             SDK Kernel = TheChosenOne?.AddComponent<SDK>();
             return Kernel;
@@ -38,40 +59,6 @@ namespace SDKFramework
         {
         }
         
-
-        private void Update()
-        {
-            //TODO:Anything...
-        }
     }
     
-
-    public class AppSource : MessageHandler<AppConfig>
-    {
-        public static AppConfig Config;
-        
-        public static readonly RuntimePlatform Platform;
-
-        public static string Channel;
-
-        static AppSource()
-        {
-            Platform= Application.platform;
-        }
-        public override void HandleMessage(AppConfig arg)
-        {
-            Config = arg;
-        }
-    }
-    
-    
-    public class WebSource : MessageHandler<WebConfig>
-    {
-        public static WebConfig Config;
-        
-        public override void HandleMessage(WebConfig arg)
-        {
-            Config = arg;
-        }
-    }
 }

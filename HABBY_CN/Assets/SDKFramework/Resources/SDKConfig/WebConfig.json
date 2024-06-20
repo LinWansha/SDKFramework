@@ -1,7 +1,13 @@
 {
+  "AccountServerURL": {
+    "test": "https://test-account-matchmart.lezuan9.com",
+    "prod": "https://account-matchmart.lezuan9.com"
+  },
+  "WebView": {
     "gameLicenseUrl": "https://www.lezuan.net/server.html",
     "gamePrivacyUrl": "https://www.lezuan.net/zzdrgamePrivacy.html",
     "childrenPrivacyUrl": "https://www.lezuan.net/children.html",
     "thirdPartySharingUrl": "https://www.lezuan.net/InformationSharingList.html",
     "personInfoListUrl": "https://www.lezuan.net/agreementList.html"
+  }
 }

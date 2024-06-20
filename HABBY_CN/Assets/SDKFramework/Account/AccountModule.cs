@@ -11,7 +11,7 @@ namespace SDKFramework.Account
 
         private readonly AntiAddictionTimeChecker timeManager = new AntiAddictionTimeChecker();
         
-        public bool HasAccount => CurrentAccount != null;
+        public bool HasAccount => CurrentAccount != null && CurrentAccount.LoginChannel!=null;
         
         public UserAccount CurrentAccount { get; private set; }
         
@@ -44,11 +44,6 @@ namespace SDKFramework.Account
         internal static event Action OnShowLoginScene; //没有得到用户信息，需要重新登录或注册
 
         /*===================== Validate Identity ====================*/
-
-        // internal static event Action<int> OnIdentityFailed; //实名认证出错
-        //
-        // internal static event Action OnIdentitySuccess; //实名成功
-
         internal static event Action<bool,int> OnValidateIdentityResult; //  防沉迷登陆结果
 
         /*===================== Anti-addiction ======================*/

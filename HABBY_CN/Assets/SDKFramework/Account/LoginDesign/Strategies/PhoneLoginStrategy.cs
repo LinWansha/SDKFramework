@@ -48,7 +48,7 @@ namespace SDKFramework.Account
             AccountLog.Info($"验证手机验证码 用手机号登录 手机号：[{arg.phoneNumber}] 验证码： [{arg.phoneVerifyCode}]");
 
             HabbyUserClient.Instance.LoginPhoneChannel(_onResponse,arg.phoneNumber,arg.phoneVerifyCode);
-            
+            _onResponse = null;
         }
     }
 }

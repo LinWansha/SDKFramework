@@ -112,14 +112,7 @@ namespace SDKFramework.Network
 
             IEnumerator _delete<TResponse>(string path, Action<TResponse> callback)
             {
-                int index = addToPending();
-
-                float maxDelay = 45 * mPending.Count;
-                while (mPending.ContainsKey(index - 1) && Time.time - mPending[index] < maxDelay)
-                {
-                    HabbyFramework.UI.OpenUISingle(UIViewID.LatencyTimeUI);
-                    yield return new WaitForSeconds(2);
-                }
+                
 
                 string url = $"{URL_USER_SERVER}{path}";
                 byte[] bodyRaw = default;
@@ -132,7 +125,7 @@ namespace SDKFramework.Network
                     request.SetRequestHeader("Content-Type", "application/octet-stream");
                     request.SetRequestHeader("habbysecret", "jghju8tiu4jskheyx"); //todo:上线前删掉这一行
 
-                    Log.Info($"Request url={url} : index={index}, data=");
+                    Log.Info($"Request url={url}");
                     yield return request.SendWebRequest();
 
                     if (request.result == UnityWebRequest.Result.ConnectionError ||
@@ -140,15 +133,14 @@ namespace SDKFramework.Network
                     {
                         string errMsg = request.error;
                         HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI);
-                        Log.Error($"NetWork Error !!! index={index}, url={url}, msg={errMsg}");
+                        Log.Error($"NetWork Error !!! url={url}, msg={errMsg}");
                     }
                     else
                     {
-                        Log.Info($"Response index={index}, url={url}, msg={request.responseCode}, content-length={request.downloadedBytes}");
+                        Log.Info($"Response url={url}, msg={request.responseCode}, content-length={request.downloadedBytes}");
                         Log.Info("delete success");
                     }
 
-                    RemoveLast(index);
                 }
             }
 

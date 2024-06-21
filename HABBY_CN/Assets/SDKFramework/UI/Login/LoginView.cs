@@ -98,7 +98,7 @@ public class LoginView : UIView
         }
         else
         {
-            Debug.LogWarning($"Invalid window ID: {id}. No window will be activated.");
+            Log.Warn($"Invalid window ID: {id}. No window will be activated.");
         }
 
         StopAllCoroutines();

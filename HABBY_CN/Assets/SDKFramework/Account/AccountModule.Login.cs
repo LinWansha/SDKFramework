@@ -126,7 +126,7 @@ namespace SDKFramework.Account
                 timeManager.StopTimeCounter(CurrentAccount);
 #endif
                 //TODO：这部分逻辑应该重新整理，版署可以这样做，线上切换账号时登出，不会在本地清掉当前账号数据存档
-                (actionCode == 0 ? (Action)Save : ClearCurrent)();
+                // (actionCode == 0 ? (Action)Save : ClearCurrent)();
             }
 
             IsLogin = false;

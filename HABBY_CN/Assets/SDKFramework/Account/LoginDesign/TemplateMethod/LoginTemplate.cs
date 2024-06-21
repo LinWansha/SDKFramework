@@ -44,7 +44,8 @@ namespace SDKFramework.Account
             }
             else
             {
-                HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,"", "");
+                Log.Info("LoginWithToken");
+                HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,Channel, HabbyFramework.Account.CurrentAccount.AccessToken);
             }
            
         }
@@ -54,16 +55,20 @@ namespace SDKFramework.Account
         private void OnLoginSuccess(LoginResponse response)
         {
             AccountLog.Info($"{Channel} 登录成功");
+            HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
+            HabbyFramework.UI.CloseUI(UIViewID.QuickLoginUI);
             UserAccount account = AccountDataUtil.ParseLoginAccountInfo(response);
             account.UID = response.data.userId;
             account.LoginChannel = Channel;
-            // HabbyFramework.Account.Save
+            HabbyFramework.Account.Save(account);
             if (response.data.isNewUser && true)
             {
+                Log.Info("IsNewUSer");
                 //todo: track_first_active
             }
             else
             {
+                Log.Info("IsNotNewUSer");
                 //todo: track_not_new_user
             }
             //HabbyCloudConfigManager.Instance.SetGmUserId(account.UID);

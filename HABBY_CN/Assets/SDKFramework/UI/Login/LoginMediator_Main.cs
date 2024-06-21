@@ -11,8 +11,7 @@ public partial class LoginMediator : UIMediator<LoginView>
     protected override void OnInit()
     {
         base.OnInit();
-
-        View.btnPhoneLogin.onClick.AddListener(()=>loginRunner.Execute(LoginChannel.Phone));
+        
         View.btnWxLogin.onClick.AddListener(()=>loginRunner.Execute(LoginChannel.WX));
         View.btnWxLogin2.onClick.AddListener(()=>loginRunner.Execute(LoginChannel.WX));
         View.btnQQLogin.onClick.AddListener(()=>loginRunner.Execute(LoginChannel.QQ));
@@ -24,17 +23,22 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.btnPersonInfo.onClick.AddListener(OnShowPersonInfoWebView);
         View.btnCallQQGroup.onClick.AddListener(OnCallQQGroup);
 
-        View.phoneNumInput.onValueChanged.AddListener(InputPhoneNum);
-
         View.btnNext.onClick.AddListener(() =>
         {
-            HabbyFramework.Message.Post(new SDKEvent.SendPhoneVerifyCode() { phoneNumber = m_PhoneNum });
             View.ActivateWindow(3);
             SendSMSVerificationCode();
         });
 
-        View.btnSend.onClick.AddListener(SendSMSVerificationCode);
+        View.btnPhoneLogin.onClick.AddListener(() =>
+        {
+            if (HabbyFramework.Account.CurrentAccount.IsAgreePrivacy)
+                View.ActivateWindow(2);
+            else
+                ShowNotice(default);
+        });
 
+        View.btnSend.onClick.AddListener(SendSMSVerificationCode);
+        View.phoneNumInput.onValueChanged.AddListener(InputPhoneNum);
         View.verifyCodeInput.OnInputValueChangedEvent += HandleCodeInput;
 
         View.privacyToggle.onValueChanged.AddListener((@agree) =>

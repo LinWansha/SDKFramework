@@ -111,10 +111,11 @@ namespace SDKFramework.Account
             AccountHistory.DeleteHistory();
             ClearCurrent();
         }
-        
-        private void Save()
+
+        public void Save(UserAccount account = null)
         {
             if (CurrentAccount == null) return;
+            CurrentAccount = account;
             AccountHistory.SaveAccount(CurrentAccount);
             FileSaveLoad.SaveAccount(CurrentAccount);
 #if USE_ANTIADDICTION

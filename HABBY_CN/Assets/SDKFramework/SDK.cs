@@ -23,15 +23,15 @@ namespace SDKFramework
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public static AppConfig App { get; }
+        public static readonly AppConfig App;
     
         public static readonly RuntimePlatform Platform;
 
-        public static string Channel;
-    
-        public static WebConfig.WebViewData WebView { get; }
-    
-        public static WebConfig.AccountServerData AccountServerURL { get; }
+        public static readonly string Channel;
+
+        public static readonly WebConfig.WebViewData WebView;
+
+        public static readonly WebConfig.AccountServerData AccountServerURL;
     }
     
     public class SDK : MonoBehaviour

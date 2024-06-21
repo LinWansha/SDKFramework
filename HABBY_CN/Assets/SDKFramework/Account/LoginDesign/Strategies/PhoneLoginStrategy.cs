@@ -6,49 +6,31 @@ using SDKFramework.UI;
 
 namespace SDKFramework.Account
 {
+
+    public struct PhoneInfo
+    {
+        public string phoneNumber;
+        public string verifyCode;
+    }
+    class PhoneLoginInfo:MessageHandler<PhoneInfo>
+    {
+        public static string phoneNumber;
+        public static string verifyCode;
+        public override void HandleMessage(PhoneInfo arg)
+        {
+            verifyCode = arg.verifyCode;
+            phoneNumber = arg.phoneNumber;
+        }
+    }
     public class PhoneLoginStrategy : LoginTemplate
     {
-        private LoginView _loginView;
         protected override string Channel => UserAccount.ChannelPhone;
 
-        private Action<LoginResponse> _onResponse;
-        
         public override void ChannelLogin(Action<LoginResponse> onResponse)
         {
-            _onResponse = onResponse;
-            UIMediator loginMediator = HabbyFramework.UI.OpenUISingle(UIViewID.LoginUI);
-            _loginView = loginMediator.ViewObject.GetComponent<LoginView>();
-            _loginView.ActivateWindow(2);
-            HabbyFramework.Message.Subscribe<SDKEvent.SendPhoneVerifyCode>(_SendPhoneVerifyCode);            
-            HabbyFramework.Message.Subscribe<SDKEvent.PhoneLogin>(_PhoneLogin);            
+            AccountLog.Info($"验证手机验证码 用手机号登录 手机号：[{PhoneLoginInfo.phoneNumber}] 验证码： [{PhoneLoginInfo.verifyCode}]");
+            HabbyUserClient.Instance.LoginPhoneChannel(onResponse,PhoneLoginInfo.phoneNumber,PhoneLoginInfo.verifyCode);
         }
-
-        private void _SendPhoneVerifyCode(SDKEvent.SendPhoneVerifyCode arg)
-        {
-            HabbyUserClient.Instance.RequestSmsCode(arg.phoneNumber,(response =>
-            {
-                if (response.code == 0 )
-                {
-                    AccountLog.Info("发送验证码 成功");
-                }
-                else if(response.code == SendUserSmsCodeResponse.CAPTCHA_EXCEEDED_TIMES) // 超次数
-                {
-                    AccountLog.Info("发送验证码 超次数");
-                }
-                else
-                {
-                    AccountLog.Info("发送验证码 失败"+response.code);
-                }
-            }));
-        }
-
-        private void _PhoneLogin(SDKEvent.PhoneLogin arg)
-        {
-            //验证手机验证码 手机号登录
-            AccountLog.Info($"验证手机验证码 用手机号登录 手机号：[{arg.phoneNumber}] 验证码： [{arg.phoneVerifyCode}]");
-
-            HabbyUserClient.Instance.LoginPhoneChannel(_onResponse,arg.phoneNumber,arg.phoneVerifyCode);
-            _onResponse = null;
-        }
+        
     }
 }

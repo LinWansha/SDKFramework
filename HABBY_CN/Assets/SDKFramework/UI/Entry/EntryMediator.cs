@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using SDKFramework;
+using SDKFramework.Account;
+using SDKFramework.Account.DataSrc;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +9,8 @@ using SDKFramework.Utils;
 
 public class EntryMediator : UIMediator<EntryView>
 {
-    private readonly bool hasAccountHistory = HabbyFramework.Account.AccountHistory.HasAccountHistory;
+    private AccountModule AccountModule = HabbyFramework.Account;
+    private Dictionary<string, LoginChannel> OfficialChannelMap;
     
     protected override void OnInit()
     {
@@ -20,12 +24,23 @@ public class EntryMediator : UIMediator<EntryView>
             }
             else
             {
-                View.argeeToggle.isOn = false;//todo: 从本地持久化数据拿取
+                View.privacyToggle.isOn = false;//todo: 从本地持久化数据拿取
                 View.licenseObj.SetActive(true);
                 View.btnPrivacy.onClick.AddListener(() => { });//TODO:open webView
                 View.btnPersonalInfo.onClick.AddListener(() => { });
             }
         }
+        View.privacyToggle.onValueChanged.AddListener((@agree) =>
+        {
+            HabbyFramework.Account.SetPrivacyStatus(agree);
+        });
+        OfficialChannelMap = new Dictionary<string, LoginChannel>()
+        {
+            {UserAccount.ChannelQQ,LoginChannel.QQ},
+            {UserAccount.ChannelPhone,LoginChannel.Phone},
+            {UserAccount.ChannelWeiXin,LoginChannel.WX},
+            {UserAccount.ChannelAppleId,LoginChannel.Apple},
+        };
     }
 
     protected override void OnShow(object arg)
@@ -45,14 +60,16 @@ public class EntryMediator : UIMediator<EntryView>
     }
     private void EnterGameOrLogin()
     {
-        if (View.argeeToggle.isOn == false)
+        if (View.privacyToggle.isOn == false)
         {
             HabbyTextHelper.Instance.ShowTip("请勾选用户协议");
             return;
         }
 
-        // HabbyFramework.UI.OpenUI(hasAccountHistory ? UIViewID.QuickLoginUI : UIViewID.LoginUI);
-        HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+        if (!AccountModule.HasAccount)
+            HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+        else
+            AccountModule.loginRunner.Execute(OfficialChannelMap[Global.Channel]);
     }
 
     protected override void OnHide()

@@ -103,6 +103,7 @@ public class LoginView : UIView
 
         StopAllCoroutines();
         phoneNumInput.text = "";
+        // if (id==2)
     }
 
     public void OnCloseAllWindow()

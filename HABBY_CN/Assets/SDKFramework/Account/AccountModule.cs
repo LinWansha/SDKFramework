@@ -8,6 +8,8 @@ namespace SDKFramework.Account
     public partial class AccountModule
     {
         public bool IsLogin { get; private set; }
+        
+        internal DecisionMaker loginRunner = new DecisionMaker();
 
         private readonly AntiAddictionTimeChecker timeManager = new AntiAddictionTimeChecker();
         

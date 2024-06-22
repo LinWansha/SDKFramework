@@ -14,5 +14,5 @@ public class EntryView :  UIView
     public Button btnPrivacy;
     public Button btnPersonalInfo;
 
-    public Toggle argeeToggle;
+    public Toggle privacyToggle;
 }

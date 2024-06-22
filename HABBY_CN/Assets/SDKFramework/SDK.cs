@@ -27,11 +27,11 @@ namespace SDKFramework
     
         public static readonly RuntimePlatform Platform;
 
-        public static readonly string Channel;
-
         public static readonly WebConfig.WebViewData WebView;
 
         public static readonly WebConfig.AccountServerData AccountServerURL;
+        
+        public static string Channel => HabbyFramework.Account.CurrentAccount?.LoginChannel;
     }
     
     public class SDK : MonoBehaviour

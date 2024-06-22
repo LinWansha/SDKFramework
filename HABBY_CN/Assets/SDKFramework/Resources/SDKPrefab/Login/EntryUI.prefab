@@ -262,7 +262,7 @@ MonoBehaviour:
   btnEnter: {fileID: 4791606315721131485}
   btnPrivacy: {fileID: 4791606316852750269}
   btnPersonalInfo: {fileID: 4791606316688349101}
-  argeeToggle: {fileID: 4791606316064270141}
+  privacyToggle: {fileID: 4791606316064270141}
 --- !u!114 &6909299913075744781
 MonoBehaviour:
   m_ObjectHideFlags: 0

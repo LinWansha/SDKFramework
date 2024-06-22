@@ -44,7 +44,7 @@ namespace SDKFramework.Account
             }
             else
             {
-                Log.Info("LoginWithToken");
+                AccountLog.Info("LoginWithToken");
                 HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,Channel, HabbyFramework.Account.CurrentAccount.AccessToken);
             }
            
@@ -63,12 +63,12 @@ namespace SDKFramework.Account
             HabbyFramework.Account.Save(account);
             if (response.data.isNewUser && true)
             {
-                Log.Info("IsNewUSer");
+                AccountLog.Info("IsNewUSer");
                 //todo: track_first_active
             }
             else
             {
-                Log.Info("IsNotNewUSer");
+                AccountLog.Info("IsNotNewUSer");
                 //todo: track_not_new_user
             }
             //HabbyCloudConfigManager.Instance.SetGmUserId(account.UID);
@@ -89,6 +89,11 @@ namespace SDKFramework.Account
                 default:
                     // HabbyFramework.Account.ClearCurrent();
                     break;
+            }
+
+            if (HabbyFramework.Account.HasAccount)
+            {
+                
             }
         }
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public partial class LoginMediator : UIMediator<LoginView>
 {
-    readonly DecisionMaker loginRunner = new DecisionMaker();
+    private readonly DecisionMaker loginRunner = HabbyFramework.Account.loginRunner;
     protected override void OnInit()
     {
         base.OnInit();

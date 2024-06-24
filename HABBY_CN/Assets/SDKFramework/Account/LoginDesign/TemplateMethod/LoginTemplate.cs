@@ -8,7 +8,7 @@ namespace SDKFramework.Account
     public abstract class LoginTemplate:ILoginStrategy
     {
         //... The login process requires the steps, needed to change the implementation in subclass overwrite
-
+    
         protected abstract string Channel { get; }
 
         protected LoginTemplate()
@@ -55,23 +55,23 @@ namespace SDKFramework.Account
         private void OnLoginSuccess(LoginResponse response)
         {
             AccountLog.Info($"{Channel} 登录成功");
+            
             HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
-            HabbyFramework.UI.CloseUI(UIViewID.QuickLoginUI);
+            
             UserAccount account = AccountDataUtil.ParseLoginAccountInfo(response);
-            account.UID = response.data.userId;
             account.LoginChannel = Channel;
             HabbyFramework.Account.Save(account);
+
             if (response.data.isNewUser && true)
             {
                 AccountLog.Info("IsNewUSer");
-                //todo: track_first_active
+                HabbyFramework.Analytics.TGA_first_login_suc();
             }
             else
             {
                 AccountLog.Info("IsNotNewUSer");
-                //todo: track_not_new_user
-            }
-            //HabbyCloudConfigManager.Instance.SetGmUserId(account.UID);
+
+            }//HabbyCloudConfigManager.Instance.SetGmUserId(account.UID);
             
         }
 

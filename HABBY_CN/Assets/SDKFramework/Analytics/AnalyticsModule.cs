@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using SDKFramework.Utils;
 
 namespace SDKFramework.Analytics
 {
    
-    public partial class AnalyticsModule:Singleton<AnalyticsModule>
+    public partial class AnalyticsModule:BaseModule
     {
         private TGAImpl TGA;
         private MMPImpl MMP;
@@ -19,7 +20,24 @@ namespace SDKFramework.Analytics
             InitializeGravity();
         }
 
-        
+        protected internal override void OnModuleInit()
+        {
+            base.OnModuleInit();
+            TGA_app_start();
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus)
+            {
+                TGA_app_end("切后台/锁屏");
+            }
+        }
+
+        private void OnApplicationQuit()
+        {
+            TGA_app_end("主动退出/杀进程/崩溃");
+        }
     }
     
     public class TGPropertyBuilder

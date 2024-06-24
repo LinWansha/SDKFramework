@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using SDKFramework;
 using SDKFramework.Account;
+using SDKFramework.Analytics;
 using SDKFramework.Asset;
 using SDKFramework.Message;
 using SDKFramework.Network;
@@ -33,8 +34,8 @@ public class HabbyFramework : MonoBehaviour
     [Module(5)] 
     public static AccountModule Account => ModuleDriver.Instance.GetModule<AccountModule>();
     
-    // [Module(6)] 
-    // public static AnalyticsModule Analytics => ModuleDriver.Instance.GetModule<AnalyticsModule>();
+    [Module(6)] 
+    public static AnalyticsModule Analytics => ModuleDriver.Instance.GetModule<AnalyticsModule>();
     
 
     private bool activing;

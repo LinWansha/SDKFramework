@@ -8,7 +8,7 @@ namespace SDKFramework.Account.Utils
     {
         public static UserAccount ParseLoginAccountInfo(LoginResponse response)
         {
-            AccountLog.Info($"[Account] ParseLoginAccountInfo token={response.token}, age={response.data.age}");
+            AccountLog.Info($" ParseLoginAccountInfo token={response.token}, age={response.data.age}");
 
             UserAccount account = new UserAccount()
             {

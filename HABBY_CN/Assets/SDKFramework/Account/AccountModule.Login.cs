@@ -18,11 +18,12 @@ namespace SDKFramework.Account
         {
             if (HasAccount) return;
             CurrentAccount = FileSaveLoad.LoadAccount();
-            Log.Info(message:
-                $" Reload data UID={CurrentAccount?.UID}" +
-                $" TotalIAP={CurrentAccount?.IAP?.Total}" +
-                $" TodayOnline={CurrentAccount?.Online?.Today}"+
-                $" AccessToken={CurrentAccount?.AccessToken}");
+            AccountLog.Info(message:
+                $" Reload data UID={CurrentAccount.UID}" +
+                $" AgeRange={CurrentAccount.AgeRange}" +
+                $" TotalIAP={CurrentAccount.IAP?.Total}" +
+                $" TodayOnline={CurrentAccount.Online?.Today}"+
+                $" AccessToken={CurrentAccount.AccessToken}");
         }
         
         public void SetPrivacyStatus(bool isAgree)
@@ -31,22 +32,23 @@ namespace SDKFramework.Account
             AccountLog.Info($"Privacy Status Change === {isAgree}");
         }
 
-        public void LocalValidateIdentity(UserAccount account)
+        public void LocalValidateIdentity()
         {
-            OnValidateIdentityResult?.Invoke(false,0);
-
+            UserAccount account = CurrentAccount;
             if (CanLogin(account))
             {
                 if (account.AgeRange != UserAccount.AgeLevel.Adult)
                     HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI);
-                Login(account);
+                OnValidateIdentityResult?.Invoke(true,0);
+                return;
             }
+            OnValidateIdentityResult?.Invoke(false,-1);
         }
         
         public void StartValidation(Action<bool,int> callback)
         {
             UserAccount account = CurrentAccount;
-            AccountLog.Info($"LoginOrIdentify, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}");
+            AccountLog.Info($"StartValidation, token={account.AccessToken}, channel={account.LoginChannel}, age={account.AgeRange}");
             if (string.IsNullOrEmpty(account.LoginChannel))
             {
                 callback(false,-999);
@@ -60,15 +62,17 @@ namespace SDKFramework.Account
                 HabbyFramework.UI.OpenUI(UIViewID.RealNameUI);
                 return;
             }
-            OnValidateIdentityResult?.Invoke(false,0);
+            OnValidateIdentityResult?.Invoke(true,0);
+            callback(true, 0);
         }
 
         public void ValidateIdentity()
         {
+            AccountLog.Info("ValidateIdentity");
             UserAccount account = CurrentAccount;
             HabbyUserClient.Instance.ValidateIdentity(account, (response) =>
             {
-                AccountLog.Info($"ValidateIdentity, code={response.code}");
+                AccountLog.Info($"ValidateIdentity response : code={response.code}");
                 if (IdentityResponse.CODE_SUCCESS == response.code)
                 {
                     account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
@@ -83,6 +87,7 @@ namespace SDKFramework.Account
         public void RealNameLogin(Action<bool> callback)
         {
             UserAccount account = CurrentAccount;
+            AccountLog.Info($"RealNameLogin, AgeRange ={account.AgeRange}");
 #if USE_ANTIADDICTION
             if (!CanLogin(account))
             {

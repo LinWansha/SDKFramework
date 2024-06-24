@@ -85,7 +85,7 @@ public class RealNameMediator : UIMediator<RealNameView>
         m_Account.Age = entity.Age;
         
         HabbyFramework.Account.ValidateIdentity();
-        //HabbyFramework.Account.LocalValidateIdentity(m_Account);
+        // HabbyFramework.Account.LocalValidateIdentity();
     }
 
     private void OnEditEnd(string arg0)

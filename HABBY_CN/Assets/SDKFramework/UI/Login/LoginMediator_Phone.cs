@@ -9,7 +9,6 @@ public partial class LoginMediator : UIMediator<LoginView>
     {
         bool IsValidPhoneNumber(string phoneNumber)
         {
-            //TODO：确认正则是否可行？是不是需要与服务器交互？
             string pattern = @"^1[3456789]\d{9}$";
             return Regex.IsMatch(phoneNumber, pattern);
         }
@@ -22,12 +21,12 @@ public partial class LoginMediator : UIMediator<LoginView>
             modifiedStr = modifiedStr.Substring(0, 11);
         }
 
-        // 更新输入框内容，如果不与当前内容相同的话
         if (phoneNum != modifiedStr)
         {
             View.phoneNumInput.text = modifiedStr;
-            View.phoneNumInput.caretPosition = modifiedStr.Length; // 设置光标位置
+            View.phoneNumInput.caretPosition = modifiedStr.Length; 
         }
+        
         View.btnNext.interactable = IsValidPhoneNumber(modifiedStr);
         if (m_PhoneNum != "") return;
         m_PhoneNum = View.btnNext.interactable ? phoneNum : "";

@@ -23,12 +23,6 @@ public partial class LoginMediator : UIMediator<LoginView>
         View.btnPersonInfo.onClick.AddListener(OnShowPersonInfoWebView);
         View.btnCallQQGroup.onClick.AddListener(OnCallQQGroup);
 
-        View.btnNext.onClick.AddListener(() =>
-        {
-            View.ActivateWindow(3);
-            SendSMSVerificationCode();
-        });
-
         View.btnPhoneLogin.onClick.AddListener(() =>
         {
             if (HabbyFramework.Account.CurrentAccount.IsAgreePrivacy)
@@ -37,6 +31,7 @@ public partial class LoginMediator : UIMediator<LoginView>
                 ShowNotice(default);
         });
 
+        View.btnNext.onClick.AddListener(SendSMSVerificationCode);
         View.btnSend.onClick.AddListener(SendSMSVerificationCode);
         View.phoneNumInput.onValueChanged.AddListener(InputPhoneNum);
         View.verifyCodeInput.OnInputValueChangedEvent += HandleCodeInput;
@@ -45,6 +40,8 @@ public partial class LoginMediator : UIMediator<LoginView>
         {
             HabbyFramework.Account.SetPrivacyStatus(agree);
         });
+
+        View.btnBack3.onClick.AddListener(() => { m_PhoneNum = ""; });
 
         HabbyFramework.Message.Subscribe<SDKEvent.ShowNoAgreePrivacyNotice>(ShowNotice);
     }

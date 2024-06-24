@@ -14,6 +14,7 @@ public partial class LoginMediator : UIMediator<LoginView>
             if (response.code == 0 )
             {
                 AccountLog.Info("发送验证码 成功");
+                View.ActivateWindow(3);
                 RefreshVerifyCodeUI();
             }
             else if(response.code == SendUserSmsCodeResponse.CAPTCHA_EXCEEDED_TIMES) // 超次数

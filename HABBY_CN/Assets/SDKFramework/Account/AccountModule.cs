@@ -81,6 +81,7 @@ namespace SDKFramework.Account
         private void onUserLogout()
         {
             AccountLog.Info($"--- onUserLogout try crash!");
+            Save(CurrentAccount);
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -93,11 +94,6 @@ namespace SDKFramework.Account
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
             
-            if (CurrentAccount?.AgeRange == UserAccount.AgeLevel.Adult)
-            {
-                // SDK.Procedure?.EnterGame();
-            }
-
             AccountLog.Info($"onUserLogin登录成功");
         }
 

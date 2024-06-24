@@ -23,18 +23,9 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
         ShowAnimation();
     }
 
-    public void ShowAnimation(UserAccount account = null)
+    public void ShowAnimation()
     {
-        if (account == null)
-        {
-            account = HabbyFramework.Account.CurrentAccount;
-            if (account == null)
-            {
-                account = new UserAccount();
-                account.LoginChannel = UserAccount.ChannelWeiXin;
-                account.NickName = "xxxx";
-            }
-        }
+        UserAccount account = HabbyFramework.Account.CurrentAccount;
 
         SetChannel(account.LoginChannel);
         View.nameText.text = account.UID;

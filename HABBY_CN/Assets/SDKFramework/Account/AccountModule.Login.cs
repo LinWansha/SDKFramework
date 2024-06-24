@@ -123,15 +123,10 @@ namespace SDKFramework.Account
             OnUserLogin?.Invoke();
         }
 
-        private void Logout(int actionCode = 0)
+        public void Logout(int actionCode = 0)
         {
             AccountLog.Info($"Logout,ActionCode={actionCode}, account={CurrentAccount}");
             if (CurrentAccount == null)return;
-            
-            if (actionCode==0)
-                Save(CurrentAccount);
-            else
-                CurrentAccount.AccessToken = "";
 
             IsLogin = false;
 #if USE_ANTIADDICTION

@@ -37,8 +37,6 @@ namespace SDKFramework.Account
             UserAccount account = CurrentAccount;
             if (CanLogin(account))
             {
-                if (account.AgeRange != UserAccount.AgeLevel.Adult)
-                    HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI);
                 OnValidateIdentityResult?.Invoke(true,0);
                 return;
             }

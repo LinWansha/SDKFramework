@@ -23,20 +23,20 @@ namespace SDKFramework.Analytics
         protected internal override void OnModuleInit()
         {
             base.OnModuleInit();
-            TGA_app_start();
+            /*TGA_app_start();*/
         }
 
         private void OnApplicationFocus(bool hasFocus)
         {
-            if (!hasFocus)
+            /*if (!hasFocus)
             {
                 TGA_app_end("切后台/锁屏");
-            }
+            }*/
         }
 
         private void OnApplicationQuit()
         {
-            TGA_app_end("主动退出/杀进程/崩溃");
+            /*TGA_app_end("主动退出/杀进程/崩溃");*/
         }
     }
     

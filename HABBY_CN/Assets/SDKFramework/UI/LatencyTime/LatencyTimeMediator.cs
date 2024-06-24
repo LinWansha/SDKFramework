@@ -9,8 +9,14 @@ public class LatencyTimeMediator : UIMediator<LatencyTimeView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-        View.label.text = arg as string;
+
         Log.Info("LatencyTimeMediator");
+
+        if (arg==null)
+            View.label.text = "加载中...";
+        else
+            View.label.text = arg as string;
+            
         AsyncScheduler.Instance.DelayedInvoke(Close, 2);
     }
 

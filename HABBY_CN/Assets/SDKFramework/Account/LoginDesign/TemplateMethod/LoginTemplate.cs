@@ -11,21 +11,16 @@ namespace SDKFramework.Account
     
         protected abstract string Channel { get; }
 
-        protected LoginTemplate()
-        {
-            // GraspPrivacyStatus();
-        }
-        
-
         public bool CheckPrivacyStatus()
         {
             return HabbyFramework.Account.CurrentAccount.IsAgreePrivacy;
         }
         
+        private Action<LoginResponse> loginResponseHandler;
         internal void Login(RespHandler handler)
         {
             AccountLog.Info($"{Channel} Login Start");
-            Action<LoginResponse> loginResponseHandler = (response) =>
+            loginResponseHandler = (response) =>
             {
                 if (Response.CODE_SUCCESS == response.code)
                 {
@@ -47,7 +42,6 @@ namespace SDKFramework.Account
                 AccountLog.Info("LoginWithToken");
                 HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,Channel, HabbyFramework.Account.CurrentAccount.AccessToken);
             }
-           
         }
         
         public abstract void ChannelLogin(Action<LoginResponse> onResponse);
@@ -71,13 +65,13 @@ namespace SDKFramework.Account
             {
                 AccountLog.Info("IsNotNewUSer");
 
-            }//HabbyCloudConfigManager.Instance.SetGmUserId(account.UID);
+            }
             
         }
 
         private void OnLoginFailed(LoginResponse response)
         {
-            AccountLog.Info($"{Channel} 登录失败");
+            AccountLog.Info($"{Channel} 登录失败, errorCode: {response.code}");
             switch (response.code)
             {
                 case Response.CODE_APP_TOKEN_EXPIRE:
@@ -86,14 +80,11 @@ namespace SDKFramework.Account
                 case Response.CAPTCHA_INVALID:
                     AccountLog.Warn($"手机验证码错误");
                     break;
-                default:
-                    // HabbyFramework.Account.ClearCurrent();
-                    break;
             }
 
             if (HabbyFramework.Account.HasAccount)
             {
-                
+                ChannelLogin(loginResponseHandler);
             }
         }
 

@@ -80,8 +80,8 @@ namespace SDKFramework.Account
 
         private void onUserLogout()
         {
+            Save();
             AccountLog.Info($"--- onUserLogout try crash!");
-            Save(CurrentAccount);
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -110,11 +110,16 @@ namespace SDKFramework.Account
             ClearCurrent();
         }
 
-        public void Save(UserAccount account)
+        public void Save(UserAccount account = null)
         {
-            CurrentAccount = account;
+            if (account != null)
+            {
+                CurrentAccount = account;
+            }
+
             AccountHistory.SaveAccount(CurrentAccount);
             FileSaveLoad.SaveAccount(CurrentAccount);
+
 #if USE_ANTIADDICTION
             timeManager.UploadData(CurrentAccount.Online);
 #endif

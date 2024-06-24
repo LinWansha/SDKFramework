@@ -64,6 +64,7 @@ namespace SDKFramework.Account
             }
             OnValidateIdentityResult?.Invoke(true,0);
             callback(true, 0);
+            HabbyFramework.Analytics.TGA_first_active();
         }
 
         public void ValidateIdentity()
@@ -124,20 +125,19 @@ namespace SDKFramework.Account
 
         private void Logout(int actionCode = 0)
         {
-            AccountLog.Info($"Logout, account={CurrentAccount}");
-            if (CurrentAccount != null)
-            {
-#if USE_ANTIADDICTION
-                timeManager.StopTimeCounter(CurrentAccount);
-#endif
-                //TODO：这部分逻辑应该重新整理，版署可以这样做，线上切换账号时登出，不会在本地清掉当前账号数据存档
-                // (actionCode == 0 ? (Action)Save : ClearCurrent)();
-            }
+            AccountLog.Info($"Logout,ActionCode={actionCode}, account={CurrentAccount}");
+            if (CurrentAccount == null)return;
+            
+            if (actionCode==0)
+                Save(CurrentAccount);
+            else
+                CurrentAccount.AccessToken = "";
 
             IsLogin = false;
-
+#if USE_ANTIADDICTION
+            timeManager.StopTimeCounter(CurrentAccount);
+#endif
             (actionCode == 0 ? OnUserLogout : OnShowLoginScene)?.Invoke();
-            AccountLog.Info($"Logout ActionCode={actionCode}");
         }
         
         public void CheckUser()
@@ -155,5 +155,28 @@ namespace SDKFramework.Account
             }
         }
 
+        public void UnRegister(Action<bool> callback)
+        {
+            var account = CurrentAccount;
+            string oauthCode = "";
+            if (account.LoginChannel == ChannelAppleId)
+            {
+                //TODO: 删除ios授权前 先从新申请授权（为了拿到授权code）
+                oauthCode = "删除ios授权前 先从新申请授权（为了拿到授权code）";
+            }
+            HabbyUserClient.Instance.UnRegisterAccount(account.AccessToken,account.LoginChannel,oauthCode, (response) =>
+            {
+                if (0==response.code)
+                {
+                    AccountLog.Info("注销账号成功");
+                    callback(true);
+                }
+                else
+                {
+                    AccountLog.Info("注销账号失败");
+                    callback(false);
+                }
+            });
+        }
     }
 }

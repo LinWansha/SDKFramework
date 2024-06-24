@@ -114,9 +114,8 @@ namespace SDKFramework.Account
             ClearCurrent();
         }
 
-        public void Save(UserAccount account = null)
+        public void Save(UserAccount account)
         {
-            if (CurrentAccount == null) return;
             CurrentAccount = account;
             AccountHistory.SaveAccount(CurrentAccount);
             FileSaveLoad.SaveAccount(CurrentAccount);
@@ -124,7 +123,7 @@ namespace SDKFramework.Account
             timeManager.UploadData(CurrentAccount.Online);
 #endif
         }
-
+        
         private void ClearCurrent()
         {
             if (HasAccount)

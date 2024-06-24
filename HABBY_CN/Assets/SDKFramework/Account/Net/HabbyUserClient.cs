@@ -263,14 +263,14 @@ namespace SDKFramework.Account.Net
             HabbyFramework.Network.Post(request, response, PATH_LOGIN);
         }
         
-        public void UnRegisterAccount(string tokenValue,string accountName,string codeValue,Action<UnregistAccountResponse> response)
+        public void UnRegisterAccount(string token,string channelName,string oauthCode,Action<UnregistAccountResponse> response)
         {
             UnregistAccountRequest request = new UnregistAccountRequest() {
                 clientData = CurrentClientInfo(),
                 timestamp = DateTime.Now.Ticks,
-                code= codeValue,
-                token = tokenValue,
-                accountType = accountName
+                token = token,
+                code= oauthCode,
+                accountType = channelName
             };
             HabbyFramework.Network.Post(request, response,  PATH_UNREGISTER);
         }

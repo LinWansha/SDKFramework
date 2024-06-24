@@ -86,7 +86,7 @@ namespace SDKFramework.Network
                 {
                     string errMsg = request.error;
                     HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI);
-                    Log.Error($"NetWork Error !!! index={index}, url={url}, msg={errMsg}");
+                    Log.Warn($"NetWork Error !!! index={index}, url={url}, msg={errMsg}");
                 }
                 else
                 {

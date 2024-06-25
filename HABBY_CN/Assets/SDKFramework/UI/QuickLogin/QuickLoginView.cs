@@ -22,6 +22,7 @@ public class QuickLoginView : UIView
     public AccountItemUI currentAccountItem;
 
     public Button btnAddAccount;
+    public ScrollViewExt dropDown;
 
 
     private void Awake()

@@ -1,3 +1,4 @@
+using SDKFramework;
 using SDKFramework.Account;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
@@ -16,6 +17,8 @@ public class RealNameMediator : UIMediator<RealNameView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
+        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.verify_show);
+        
         AccountModule.OnValidateIdentityResult += onResult;
         View.btConfirm.onClick.AddListener(Confirm);
         View.nameInput.onEndEdit.AddListener(OnEditEnd);
@@ -52,6 +55,7 @@ public class RealNameMediator : UIMediator<RealNameView>
     public void Confirm()
     {
         if (!InputFully()) return;
+        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.verify_submit);
         if (!LocalIdentityUtil.IsChineseName(Name))
         {
             setNotice(WrongName);

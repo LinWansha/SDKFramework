@@ -30,6 +30,7 @@ namespace SDKFramework.Account
         {
             CurrentAccount.IsAgreePrivacy = isAgree;
             AccountLog.Info($"Privacy Status Change === {isAgree}");
+            if (isAgree)HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.agree_privacy);
         }
 
         public void LocalValidateIdentity()
@@ -74,6 +75,7 @@ namespace SDKFramework.Account
                 AccountLog.Info($"ValidateIdentity response : code={response.code}");
                 if (IdentityResponse.CODE_SUCCESS == response.code)
                 {
+                    HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.verify_success);
                     account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
                     OnValidateIdentityResult?.Invoke(false,0);
                     return;
@@ -95,22 +97,23 @@ namespace SDKFramework.Account
             }
 
             if (account.AgeRange != UserAccount.AgeLevel.Adult)
-            {
                 HabbyFramework.UI.OpenUI(UIViewID.AntiaddictionRulesUI);
-            }
+            else
+                HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.age_pass);
 #endif
-            callback(true);
             Login(account);
+            callback(true);
         }
         
         private void Login(UserAccount account)
         {
             AccountLog.Info($"Login,account={account?.AccessToken}, age={account?.AgeRange}");
+            
             if (account == null) return;
-            account.SaveLoginTime();
             CurrentAccount = account;
             FileSaveLoad.SaveAccount(account);
             AccountHistory.SaveAccount(account);
+            
 #if USE_ANTIADDICTION
             account.IAP?.Refresh();
             account.Online?.Refresh();
@@ -127,6 +130,7 @@ namespace SDKFramework.Account
             if (CurrentAccount == null)return;
 
             IsLogin = false;
+            IsLoginStateDirty = true;
 #if USE_ANTIADDICTION
             timeManager.StopTimeCounter(CurrentAccount);
 #endif

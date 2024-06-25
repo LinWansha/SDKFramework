@@ -153,10 +153,18 @@ namespace SDKFramework.Network
         
         private void onRetrieveData<TResponse>(UnityWebRequest webRequest, Action<TResponse> callback)
         {
-            string result = NetEnc.decContent(webRequest.downloadHandler.data);
-            Log.Info($"response data = {result}");
-            TResponse response = JsonConvert.DeserializeObject<TResponse>(result);
-            if (callback != null) callback(response);
+            try
+            {
+                string result = NetEnc.decContent(webRequest.downloadHandler.data);
+                Log.Info($"response data = {result}");
+                TResponse response = JsonConvert.DeserializeObject<TResponse>(result);
+                if (callback != null) callback(response);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                throw;
+            }
         }
 
         public void ClearHttpQueue()

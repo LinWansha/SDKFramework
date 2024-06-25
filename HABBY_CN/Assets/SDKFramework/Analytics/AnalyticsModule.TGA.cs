@@ -23,7 +23,7 @@ namespace SDKFramework
         click_webclose,         // 点击关闭按钮
 
         //  unknown_user
-        logo_loading_success,   // 加载登录页成功（看到开始游戏按钮）
+        logo_loading_success,   // 加载登录页成功（看到开始游戏按钮
         verify_show,            // 实名认证界面展示
         verify_submit,          // 用户点击认证
         verify_success,         // 实名成功
@@ -219,13 +219,13 @@ namespace SDKFramework.Analytics
         }
 
 
-        private UserAccount CurrentAccount = HabbyFramework.Account.CurrentAccount;
         /// <summary>
         /// 国内登录过程关键漏斗，触发时机参考step参数
         /// </summary>
         public void TGA_cn_login(LoginStepCN step)
         {
             if (!TGAInitialized) return;
+            UserAccount CurrentAccount = HabbyFramework.Account.CurrentAccount;
             var account_state = string.IsNullOrEmpty(CurrentAccount.LoginChannel)
                 ? "unknown_user"
                 : "already_hadaccount";

@@ -30,11 +30,6 @@ namespace SDKFramework.Message
     public class SDKEvent
     {
         public struct ShowNoAgreePrivacyNotice { }
-
-        public struct PhoneLogin
-        {
-            public string phoneNumber;
-            public string phoneVerifyCode;
-        }
+        
     }
 }

@@ -26,7 +26,6 @@ public enum UIViewID
     
     AntiaddictionRulesUI = 12,
 
-
     QuickLoginUI = 13,
 
 }

@@ -77,12 +77,14 @@ public partial class LoginMediator : UIMediator<LoginView>
         {
             View.ActivateWindow((int)arg);
         }
+        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.login_choose_show);
     }
 
     protected override void OnHide()
     {
         View.ActivateWindow(1);
         HabbyFramework.UI.CloseUI(UIViewID.QuickLoginUI);
+        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.click_webclose);
         base.OnHide();
     }
 }

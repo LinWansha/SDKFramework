@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,16 +8,11 @@ public class AccountItemUI : MonoBehaviour
     public Text uidText;
     public Image channelIconImage;
     public Button btnDelete;
-    
+
     public void Setup(string uid, string channelName)
     {
         uidText.text = uid;
         channelIconImage.sprite = GetChannelIcon(channelName);
-        // btnDelete.onClick.AddListener(() =>
-        // {
-        //     HabbyFramework.Account.AccountHistory.DeleteById(uid,channelName);
-        // });
-        //btnSelect.onClick.AddListener();
     }
     
     Sprite GetChannelIcon(string channelName)
@@ -29,12 +25,16 @@ public class AccountItemUI : MonoBehaviour
             case "appleid":
                 return HabbyFramework.Asset.LoadAssets<Sprite>("Textures/" + channelName);
             default:
-                return null; // 或者返回一个默认的图标
+                Log.Error("Channel Name Error");
+                return null; 
         }
     }
 
     public void SwitchBtnDelete()
     {
-        btnDelete.gameObject.SetActive(!btnDelete.gameObject.activeSelf);
+        if (btnDelete!=null)
+        {
+            btnDelete.gameObject.SetActive(!btnDelete.gameObject.activeSelf);
+        }
     }
 }

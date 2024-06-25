@@ -43,13 +43,13 @@ namespace SDKFramework.Account.Utils
             // 一代身份证：
             if (idCardNumber.Length == 15)
             {
-                Log.Warn("15位身份证号码不检查校验码。");
+                AccountLog.Warn("15位身份证号码不检查校验码。");
                 return true;
             }
             // 二代身份证：
             if (!Regex.IsMatch(idCardNumber, @"^\d{17}(\d|X|x)$"))//        ^\d{17}(\d|X|x)$            ^\d{17}(\d|X)$
             {
-                Log.Warn("无效的身份证号码格式。");
+                AccountLog.Warn("无效的身份证号码格式。");
                 return false;
             }
 
@@ -70,11 +70,11 @@ namespace SDKFramework.Account.Utils
 
             if(isValid)
             {
-                Log.Warn("这是一个正确的身份证号码。");
+                AccountLog.Info("这是一个正确的身份证号码。");
             }
             else
             {
-                Log.Warn("这是一个错误的身份证号码。");
+                AccountLog.Warn("这是一个错误的身份证号码。");
             }
 
             return isValid;

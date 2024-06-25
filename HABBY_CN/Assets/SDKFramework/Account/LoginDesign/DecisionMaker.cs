@@ -29,6 +29,7 @@ namespace SDKFramework.Account
 
         public async void Execute(LoginChannel channel)
         {
+            HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.choose_channel);
             loginStrategy = Strategy_MAP[channel];
     
             if (!loginStrategy.CheckPrivacyStatus())
@@ -53,8 +54,8 @@ namespace SDKFramework.Account
 
             action(new RespHandler
             {
-                success = () => tcs.SetResult(true),
-                failed = () => tcs.SetResult(false),
+                success = () => tcs.TrySetResult(true),
+                failed = () => tcs.TrySetResult(false),
             });
 
             return tcs.Task;

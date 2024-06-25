@@ -50,23 +50,10 @@ namespace SDKFramework.Account
         {
             AccountLog.Info($"{Channel} 登录成功");
             
+            HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.get_data_success);
             HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
             
-            UserAccount account = AccountDataUtil.ParseLoginAccountInfo(response);
-            account.LoginChannel = Channel;
-            HabbyFramework.Account.Save(account);
-
-            if (response.data.isNewUser && true)
-            {
-                AccountLog.Info("IsNewUSer");
-                HabbyFramework.Analytics.TGA_first_login_suc();
-            }
-            else
-            {
-                AccountLog.Info("IsNotNewUSer");
-
-            }
-            
+            AccountDataUtil.ParseAndSaveAccount(response,Channel);
         }
 
         private void OnLoginFailed(LoginResponse response)
@@ -84,19 +71,23 @@ namespace SDKFramework.Account
 
             if (HabbyFramework.Account.HasAccount)
             {
+                AccountLog.Info($"重新授权 {Channel}");
                 ChannelLogin(loginResponseHandler);
             }
         }
 
         public void ValidateIdentity(RespHandler handler)
         {
-            HabbyFramework.Account.StartValidation((success,code) =>
+            Action<bool, int> onComplete = null;
+            onComplete = (success, code) =>
             {
                 if (success)
                     handler.success();
                 else
                     handler.failed();
-            });
+                AccountModule.OnValidateIdentityResult -= onComplete;
+            };
+            HabbyFramework.Account.StartValidation(onComplete);
         }
         
         public void RealNameLogin(RespHandler handler)

@@ -47,6 +47,8 @@ public class EntryMediator : UIMediator<EntryView>
     {
         base.OnShow(arg);
 
+        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.logo_loading_success);
+
         View.ageTip.GetComponent<Image>().sprite =
             HabbyFramework.Asset.LoadAssets<Sprite>("TexTures/" + (int)Global.App.applicableRange);
 
@@ -60,12 +62,19 @@ public class EntryMediator : UIMediator<EntryView>
     }
     private void EnterGameOrLogin()
     {
+        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.click_startgame_bt);
         if (View.privacyToggle.isOn == false)
         {
             HabbyTextHelper.Instance.ShowTip("请勾选用户协议");
             return;
         }
 
+        if (AccountModule.IsLoginStateDirty)
+        {
+            HabbyFramework.UI.OpenUI(UIViewID.QuickLoginUI);
+            return;
+        }
+        
         if (!AccountModule.HasAccount)
             HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
         else

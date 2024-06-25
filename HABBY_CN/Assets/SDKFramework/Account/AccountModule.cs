@@ -9,6 +9,8 @@ namespace SDKFramework.Account
     {
         public bool IsLogin { get; private set; }
         
+        public bool IsLoginStateDirty { get; private set; }
+        
         internal DecisionMaker loginRunner = new DecisionMaker();
 
         private readonly AntiAddictionTimeChecker timeManager = new AntiAddictionTimeChecker();
@@ -127,11 +129,9 @@ namespace SDKFramework.Account
         
         private void ClearCurrent()
         {
-            if (HasAccount)
-            {
-                FileSaveLoad.SaveAccount(null);
-                CurrentAccount = null;
-            }
+            if (!HasAccount) return;
+            FileSaveLoad.SaveAccount(null);
+            CurrentAccount = null;
         }
     }
 }

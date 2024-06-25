@@ -15,12 +15,12 @@ namespace SDKFramework.Account
 
         public static void Warn(object message)
         {
-            Log.Info(message, TAG.DoMagic(Color));
+            Log.Warn(message, TAG.DoMagic(Color));
         }
 
         public static void Error(object message)
         {
-            Log.Info(message, TAG.DoMagic(Color));
+            Log.Error(message, TAG.DoMagic(Color));
         }
     }
 }

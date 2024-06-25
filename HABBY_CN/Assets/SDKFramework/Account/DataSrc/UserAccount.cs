@@ -41,27 +41,16 @@ namespace SDKFramework.Account.DataSrc
         string uid;
         public string UID{ get => uid; set => uid = value; }
     
-        [FormerlySerializedAs("offlinetime")] 
-        long loginTime;
-        public long LoginTime { get => loginTime; set => loginTime = value; }
-        
-        
+
         string nickName;
         public string NickName{ get => nickName; set => nickName = value; }
         
         string phoneNumber;
         public string PhoneNumber  { get => phoneNumber; set => phoneNumber = value; }
-
-        private string userId;
-        public string UserId{ get => userId; set => userId = value; }
-
-        string password;
-        public string Password { get => password; set => password = value; }
-
+        
         
         string realName;
         public string RealName { get => realName; set => realName = value; }
-
         
         string idcard;
         public string IdCard  { get => idcard; set => idcard = value; }
@@ -69,86 +58,27 @@ namespace SDKFramework.Account.DataSrc
         
         string channel;
         public string LoginChannel { get => channel; set => channel = value; }
-        
-        /// <summary>
-        /// 登陆方式名：例如短信验证，手机一键登录，qq，微信等，
-        /// 注：多个登陆方式可能对应一个LoginChannel（ 例如手机短信，手机一键登录）
-        /// </summary>
-        
-        string loginMethodName;
-        /// <summary>
-        /// 登陆方式名：例如短信验证，手机一键登录，qq，微信等，
-        /// 注：多个登陆方式可能对应一个LoginChannel（ 例如手机短信，手机一键登录）
-        /// </summary>
-        public string LoginMethodName{ get => loginMethodName; set => loginMethodName = value; }
-        
-        string loginServerName;
-        /// <summary>
-        /// 登陆方服务器
-        /// </summary>
-        public string LoginServerName { get => loginServerName; set => loginServerName = value; }
        
+        
         AgeLevel ageLevel;
         public AgeLevel AgeRange { get => ageLevel; set => ageLevel = value;  }
 
+        
         private UserExpenseData userExpense;
         public UserExpenseData IAP { get => userExpense;  set =>userExpense = value; }
 
+        
         private UserOnlineData userOnlineData;
         public UserOnlineData Online  { get => userOnlineData; set =>userOnlineData = value; }
 
+        
         private int age;
         public int Age { get => age; set => age = value; }
-
+        
+        private bool isNewUser;
+        public bool IsNewUser { get => isNewUser; set => isNewUser = value; }
 
         public UserAccount() { }
-
-        public UserAccount(SerializationInfo info, StreamingContext context)
-        {
-            accessToken = info.GetString("access");
-            refreshToken = info.GetString("refresh");
-            uid = info.GetString("uid");
-            nickName = info.GetString("nick");
-            // expireTime = info.GetInt64("expire");
-            unionId = info.GetString("unionId");
-            phoneNumber = info.GetString("ph");
-            password = info.GetString("pa");
-
-            realName = info.GetString("n");
-            idcard = info.GetString("i");
-            channel = info.GetString("c");
-            ageLevel = (AgeLevel)info.GetInt16("age");
-
-            string online = info.GetString("online");
-            if (online != null) userOnlineData = JsonUtility.FromJson<UserOnlineData>(online);
-
-            string expense = info.GetString("expense");
-            if (expense != null) userExpense = JsonUtility.FromJson<UserExpenseData>(expense);
-
-            string gacha = info.GetString("gacha");
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("access", accessToken);
-            if (refreshToken != null) info.AddValue("refresh", refreshToken);
-            if (uid != null) info.AddValue("uid", uid);
-            // info.AddValue("expire", expireTime);
-            info.AddValue("unionId", unionId);
-
-            if (phoneNumber != null) info.AddValue("ph", phoneNumber);
-            if (password != null) info.AddValue("pa", password);
-
-            if (nickName != null) info.AddValue("nick", nickName);
-
-            if (realName != null) info.AddValue("n", realName);
-            if (idcard != null) info.AddValue("i", idcard);
-            info.AddValue("c", (string)channel);
-            info.AddValue("age", (int)ageLevel);
-
-            if (userOnlineData != null) info.AddValue("online", JsonUtility.ToJson(userOnlineData, true));
-            if (userExpense != null) info.AddValue("expense", JsonUtility.ToJson(userExpense, true));
-        }
 
         public void AddIap(double money)
         {
@@ -193,11 +123,6 @@ namespace SDKFramework.Account.DataSrc
             Under16 = 2,    // 8 - 16岁以下
             Under18 = 3,    // 16 - 18岁
             Adult = 4       // 成年
-        }
-
-        public void SaveLoginTime()
-        {
-            LoginTime = DateTime.Now.ToFileTimeUtc();
         }
 
         public override string ToString()

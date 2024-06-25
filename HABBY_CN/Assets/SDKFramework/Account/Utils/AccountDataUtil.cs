@@ -6,65 +6,51 @@ namespace SDKFramework.Account.Utils
 {
     public class AccountDataUtil
     {
-        public static UserAccount ParseLoginAccountInfo(LoginResponse response)
+        public static void ParseAndSaveAccount(LoginResponse response,string channel)
         {
-            AccountLog.Info($" ParseLoginAccountInfo token={response.token}, age={response.data.age}");
+            var data = response.data;
+            AccountLog.Info($"ParseLoginAccountInfo token={data.token}, age={data.age}");
 
-            UserAccount account = new UserAccount()
+            var account = new UserAccount
             {
-                AccessToken = response.data.token,
-
-                AgeRange = response.data.validateIdentity == 1
-                    ? (UserAccount.AgeLevel)response.data.addictLevel
+                IsAgreePrivacy = true,
+                LoginChannel = channel,
+                Age = data.age,
+                AccessToken = data.token,
+                AgeRange = data.validateIdentity == 1 
+                    ? (UserAccount.AgeLevel)data.addictLevel 
                     : UserAccount.AgeLevel.Unknown,
-
-                NickName = string.IsNullOrEmpty(response.data.nickname) ? "" : response.data.nickname,
-
-                Age = response.data.age
+                NickName = data.nickname ?? "",
+                PhoneNumber = data.phone ?? "",
+                UnionId = data.unionId ?? "",
+                UID = data.userId ?? "",
+                IsNewUser = data.isNewUser,
             };
 
-            AccountLog.Info(
-                $"--- AgeRange: {account.AgeRange.ToString()} ,age={response.data.age} validateIdentity= {response.data.validateIdentity}");
+            AccountLog.Info($"--- AgeRange: {account.AgeRange} ,age={data.age} validateIdentity= {data.validateIdentity}");
 
-            if (!string.IsNullOrEmpty(response.data.serverTime))
+            if (!string.IsNullOrEmpty(data.serverTime))
             {
-                TimerHelper.CorrectSysTime(response.data.serverTime);
+                TimerHelper.CorrectSysTime(data.serverTime);
             }
 
+            AccountLog.Info($"--- unionId: {data.unionId}");
+            AccountLog.Info($"--- totalPaymentAmount: {data.totalPaymentAmount} ,monthlyPaymentAmount={data.monthlyPaymentAmount} ,todayPaymentAmoun={data.todayPaymentAmount}");
 
-            AccountLog.Info($"--- unionId: {response.data.unionId}");
-
-            if (!string.IsNullOrEmpty(response.data.phone))
+            if (data.isNewUser)
             {
-                account.PhoneNumber = response.data.phone;
-            }
-
-
-            if (!string.IsNullOrEmpty(response.data.unionId))
-            {
-                account.UnionId = response.data.unionId;
+                AccountLog.Info("IsNewUser");
+                HabbyFramework.Analytics.TGA_first_login_suc();
             }
             else
             {
-                account.UnionId = "";
+                AccountLog.Info("IsNotNewUser");
             }
 
-            if (!string.IsNullOrEmpty(response.data.userId))
-            {
-                account.UID = response.data.userId;
-            }
-            else
-            {
-                account.UID = "";
-            }
+            account.ResetOnline(data.totalOnlineTime, data.todayOnlineTime);
+            account.ResetExpense(data.totalPaymentAmount, data.monthlyPaymentAmount, data.todayPaymentAmount);
 
-
-            account.ResetOnline(response.data.totalOnlineTime, response.data.todayOnlineTime);
-            account.ResetExpense(response.data.totalPaymentAmount, response.data.monthlyPaymentAmount,
-                response.data.todayPaymentAmount);
-            AccountLog.Info(
-                $"--- totalPaymentAmount: {response.data.totalPaymentAmount} ,monthlyPaymentAmount={response.data.monthlyPaymentAmount} ,todayPaymentAmoun={response.data.todayPaymentAmount}");
-            return account;
+            HabbyFramework.Account.Save(account);
         }
     }
 }

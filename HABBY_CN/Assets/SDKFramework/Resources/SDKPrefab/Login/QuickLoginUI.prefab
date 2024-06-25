@@ -1872,6 +1872,7 @@ MonoBehaviour:
   btnClose: {fileID: 4217059893392239645}
   currentAccountItem: {fileID: 5506016517936995836}
   btnAddAccount: {fileID: 4217059893393108826}
+  dropDown: {fileID: 9150477493079780152}
 --- !u!1 &4217059893993160932
 GameObject:
   m_ObjectHideFlags: 0

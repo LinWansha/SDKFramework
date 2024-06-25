@@ -2,6 +2,7 @@ using System;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Account.Utils;
+using SDKFramework.Message;
 
 namespace SDKFramework.Account
 {
@@ -68,7 +69,7 @@ namespace SDKFramework.Account
                     AccountLog.Warn($"手机验证码错误");
                     break;
             }
-
+            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 1,msg = "failed"});
             if (HabbyFramework.Account.HasAccount)
             {
                 AccountLog.Info($"重新授权 {Channel}");

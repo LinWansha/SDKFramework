@@ -2,6 +2,7 @@ using System;
 using SDKFramework.Account.Net;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.AntiAddiction;
+using SDKFramework.Message;
 using static SDKFramework.Account.DataSrc.UserAccount;
 
 namespace SDKFramework.Account
@@ -11,6 +12,7 @@ namespace SDKFramework.Account
         protected internal override void OnModuleInit()
         {
             base.OnModuleInit();
+            AccountLog.Info("AccountModule Init");
             Reload();
         }
 
@@ -130,11 +132,11 @@ namespace SDKFramework.Account
             if (CurrentAccount == null)return;
 
             IsLogin = false;
-            IsLoginStateDirty = true;
 #if USE_ANTIADDICTION
             timeManager.StopTimeCounter(CurrentAccount);
 #endif
             (actionCode == 0 ? OnUserLogout : OnShowLoginScene)?.Invoke();
+            HabbyFramework.Message.Post(new SDKEvent.AccountLogout());
         }
         
         public void CheckUser()
@@ -166,6 +168,8 @@ namespace SDKFramework.Account
                 if (0==response.code)
                 {
                     AccountLog.Info("注销账号成功");
+                    Logout(1);
+                    ClearCurrent();
                     callback(true);
                 }
                 else

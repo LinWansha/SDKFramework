@@ -1,5 +1,6 @@
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
+using SDKFramework.Message;
 using SDKFramework.Utils;
 
 namespace SDKFramework.Account.Utils
@@ -51,6 +52,7 @@ namespace SDKFramework.Account.Utils
             account.ResetExpense(data.totalPaymentAmount, data.monthlyPaymentAmount, data.todayPaymentAmount);
 
             HabbyFramework.Account.Save(account);
+            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 0,msg = "success",uid = account.UID,isNew = response.data.isNewUser});
         }
     }
 }

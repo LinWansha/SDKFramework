@@ -31,5 +31,17 @@ namespace SDKFramework.Message
     {
         public struct ShowNoAgreePrivacyNotice { }
         
+        public struct SDKLoginFinish
+        {
+            public int code;
+            public string msg;
+            public string uid;
+            public bool isNew;
+        }
+        
+        public struct AccountLogout
+        {
+
+        }
     }
 }

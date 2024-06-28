@@ -7,7 +7,9 @@ public class ScrollViewExt : MonoBehaviour
     [SerializeField] GridLayoutGroup gridLayoutGroup;
     [SerializeField] GameObject accountItem;
     [SerializeField] GameObject persistentItem;
-        
+
+    internal int ChildrenCount;
+    
     private float staticHeight;
         
     private void Awake()
@@ -33,7 +35,7 @@ public class ScrollViewExt : MonoBehaviour
     public void RemoveItem(GameObject item)
     {
         // 删除指定的子项
-        if (gridLayoutGroup.transform.childCount<=2)
+        if (gridLayoutGroup.transform.childCount<=1)
             return;
         if (item != null && item != persistentItem)
         {
@@ -44,12 +46,12 @@ public class ScrollViewExt : MonoBehaviour
 
     private void AdjustContentHeight()
     {
-        int itemCount = gridLayoutGroup.transform.childCount; // 实时计算子项数量
+        ChildrenCount = gridLayoutGroup.transform.childCount;
         // Log.Error($"itemCount:{itemCount}");
-        float dynamicHeight = itemCount > 0 ?
-            itemCount * gridLayoutGroup.cellSize.y +
-            (itemCount - 1) * gridLayoutGroup.spacing.y :
-            0; // 没有子项时高度为0
+        float dynamicHeight = ChildrenCount > 0
+            ? ChildrenCount * gridLayoutGroup.cellSize.y +
+              (ChildrenCount - 1) * gridLayoutGroup.spacing.y
+            : 0; // 没有子项时高度为0
         // Log.Error($"dynamicHeight:{dynamicHeight}");
 
         scrollRect.sizeDelta = new Vector2(scrollRect.sizeDelta.x,

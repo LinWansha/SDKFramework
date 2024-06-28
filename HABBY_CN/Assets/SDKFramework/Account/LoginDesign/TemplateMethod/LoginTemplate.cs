@@ -3,6 +3,7 @@ using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Account.Utils;
 using SDKFramework.Message;
+using SDKFramework.Utils;
 
 namespace SDKFramework.Account
 {
@@ -34,15 +35,15 @@ namespace SDKFramework.Account
                     handler.failed();
                 }
             };
-            if (!HabbyFramework.Account.HasAccount)
-            {
+            // if (!HabbyFramework.Account.HasAccount)
+            // {
                 ChannelLogin(loginResponseHandler);
-            }
-            else
-            {
-                AccountLog.Info("LoginWithToken");
-                HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,Channel, HabbyFramework.Account.CurrentAccount.AccessToken);
-            }
+            // }
+            // else
+            // {
+            //     AccountLog.Info("LoginWithToken");
+            //     HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,Channel, HabbyFramework.Account.CurrentAccount.AccessToken);
+            // }
         }
         
         public abstract void ChannelLogin(Action<LoginResponse> onResponse);
@@ -55,6 +56,15 @@ namespace SDKFramework.Account
             HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
             
             AccountDataUtil.ParseAndSaveAccount(response,Channel);
+
+            if (Global.IsEditor)
+            {
+                HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish()
+                {
+                    code = 0, msg = "success", uid = HabbyFramework.Account.CurrentAccount.UID,
+                    isNew = HabbyFramework.Account.CurrentAccount.IsNewUser
+                });
+            }
         }
 
         private void OnLoginFailed(LoginResponse response)
@@ -63,18 +73,14 @@ namespace SDKFramework.Account
             switch (response.code)
             {
                 case Response.CODE_APP_TOKEN_EXPIRE:
-                    AccountLog.Warn($"{Channel} 授权过期");
+                    HabbyTextHelper.Instance.ShowTip($"{Channel}  授权过期,请重新授权");
                     break;
                 case Response.CAPTCHA_INVALID:
-                    AccountLog.Warn($"手机验证码错误");
+                    HabbyTextHelper.Instance.ShowTip("手机验证码错误");
                     break;
             }
             HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 1,msg = "failed"});
-            if (HabbyFramework.Account.HasAccount)
-            {
-                AccountLog.Info($"重新授权 {Channel}");
-                ChannelLogin(loginResponseHandler);
-            }
+
         }
 
         public void ValidateIdentity(RespHandler handler)

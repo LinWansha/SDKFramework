@@ -24,12 +24,14 @@ namespace SDKFramework.Message
             }
         }
         
-       
+        public struct ResetPrivacyToggle { }
+        
+        public struct ShowNoAgreePrivacyNotice { }
+
     }
 
     public class SDKEvent
     {
-        public struct ShowNoAgreePrivacyNotice { }
         
         public struct SDKLoginFinish
         {

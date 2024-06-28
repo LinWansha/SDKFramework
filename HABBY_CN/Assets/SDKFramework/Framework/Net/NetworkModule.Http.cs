@@ -127,7 +127,7 @@ namespace SDKFramework.Network
                     request.uploadHandler = new UploadHandlerRaw(bodyRaw);
                     request.downloadHandler = new DownloadHandlerBuffer();
                     request.SetRequestHeader("Content-Type", "application/octet-stream");
-                    request.SetRequestHeader("habbysecret", "jghju8tiu4jskheyx"); //todo:上线前删掉这一行
+                    request.SetRequestHeader("habbysecret", "jghju8tiu4jskheyx");
 
                     Log.Info($"Request url={url}");
                     yield return request.SendWebRequest();
@@ -153,18 +153,10 @@ namespace SDKFramework.Network
         
         private void onRetrieveData<TResponse>(UnityWebRequest webRequest, Action<TResponse> callback)
         {
-            try
-            {
-                string result = NetEnc.decContent(webRequest.downloadHandler.data);
-                Log.Info($"response data = {result}");
-                TResponse response = JsonConvert.DeserializeObject<TResponse>(result);
-                if (callback != null) callback(response);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                throw;
-            }
+            string result = NetEnc.decContent(webRequest.downloadHandler.data);
+            Log.Info($"response data = {result}");
+            TResponse response = JsonConvert.DeserializeObject<TResponse>(result);
+            if (callback != null) callback(response);
         }
 
         public void ClearHttpQueue()

@@ -26,11 +26,12 @@ namespace SDKFramework.Account.AntiAddiction
         /// <returns></returns>
         public static bool CanPurchase(UserAccount account, double money)
         {
-            if (account == null) {
+            if (account == null)
+            {
                 HabbyFramework.Account.FireExpenseOverRange();
                 return false;
             }
-            // account.AgeRange = AgeLevel.Under8;
+            AccountLog.Info($"PurchaseChecker.CanPurchase: AgeLevel: {account.AgeRange}");
             switch (account.AgeRange)
             {
                 case AgeLevel.Unknown:
@@ -40,24 +41,33 @@ namespace SDKFramework.Account.AntiAddiction
                     HabbyFramework.Account.FireExpenseOverRange();
                     return false;
                 case AgeLevel.Under16:
-                    if (money > OnceAmountLimit_U16) {
+                    if (money > OnceAmountLimit_U16)
+                    {
                         HabbyFramework.Account.FireExpenseOverRange();
                         return false;
-                    } else if (account.IAP != null && account.IAP.Monthly + money > MonthlyAmountLimit_U16) {
+                    }
+                    else if (account.IAP != null && account.IAP.Monthly + money > MonthlyAmountLimit_U16)
+                    {
                         HabbyFramework.Account.FireMonthlyExpenseOverRange();
                         return false;
                     }
+
                     break;
                 case AgeLevel.Under18:
-                    if (money > OnceAmountLimit_U18) {
+                    if (money > OnceAmountLimit_U18)
+                    {
                         HabbyFramework.Account.FireExpenseOverRange();
                         return false;
-                    } else {
-                        if (account.IAP != null && account.IAP.Monthly + money > MonthlyAmountLimit_U18) {
+                    }
+                    else
+                    {
+                        if (account.IAP != null && account.IAP.Monthly + money > MonthlyAmountLimit_U18)
+                        {
                             HabbyFramework.Account.FireMonthlyExpenseOverRange();
                             return false;
                         }
                     }
+
                     break;
             }
 

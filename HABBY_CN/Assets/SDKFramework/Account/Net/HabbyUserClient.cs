@@ -263,6 +263,18 @@ namespace SDKFramework.Account.Net
             HabbyFramework.Network.Post(request, response, PATH_LOGIN);
         }
         
+        public void LoginEditorChannel(Action<LoginResponse> response, string channelName, string socialId = null)
+        {
+            LoginRequest request = new LoginRequest
+            {
+                clientData = CurrentClientInfo(),
+                timestamp = DateTime.Now.Ticks,
+                accountType = channelName,
+                socialId = socialId
+            };
+            HabbyFramework.Network.Post(request, response, PATH_LOGIN);
+        }
+        
         public void UnRegisterAccount(string token,string channelName,string oauthCode,Action<UnregistAccountResponse> response)
         {
             UnregistAccountRequest request = new UnregistAccountRequest() {
@@ -366,7 +378,7 @@ namespace SDKFramework.Account.Net
 
         public string TGADistinctId;
 
-        private string DeviceId
+        public string DeviceId
         {
             get
             {

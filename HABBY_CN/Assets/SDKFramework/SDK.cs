@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using SDKFramework.Analytics;
 using SDKFramework.Config;
 using UnityEngine;
 
@@ -8,13 +9,22 @@ namespace SDKFramework
     {
         static Global()
         {
+            
+#if UNITY_EDITOR || ENABLE_DEBUG
+            IsDebug = true;
+#endif
+            
+#if UNITY_EDITOR
+            IsEditor = true;
+#endif
+            
+            Platform = Application.platform;
+            
             App = ParseConfig<AppConfig>("AppConfig");
 
             var webConfig = ParseConfig<WebConfig>("WebConfig");
             WebView = webConfig.WebView;
             AccountServerURL = webConfig.AccountServerURL;
-
-            Platform = Application.platform;
         }
 
         private static T ParseConfig<T>(string configName) where T : struct
@@ -27,11 +37,17 @@ namespace SDKFramework
     
         public static readonly RuntimePlatform Platform;
 
+        public static readonly bool IsEditor;
+        
+        public static readonly bool IsDebug;
+
         public static readonly WebConfig.WebViewData WebView;
 
         public static readonly WebConfig.AccountServerData AccountServerURL;
         
         public static string Channel => HabbyFramework.Account.CurrentAccount?.LoginChannel;
+
+        public static CloudData CloudData => HabbyFramework.Analytics.CloudData;
     }
     
     public class SDK : MonoBehaviour

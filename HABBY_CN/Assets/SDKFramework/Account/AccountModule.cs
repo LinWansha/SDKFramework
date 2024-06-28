@@ -1,13 +1,27 @@
 using System;
+using System.Collections.Generic;
 using SDKFramework.Account.AntiAddiction;
 using SDKFramework.Account.DataSrc;
+using SDKFramework.Message;
 
 
 namespace SDKFramework.Account
 {
     public partial class AccountModule
     {
+        public Dictionary<string, LoginChannel> LoginMethodMap = new Dictionary<string, LoginChannel>()
+        {
+            {UserAccount.ChannelQQ,LoginChannel.QQ},
+            {UserAccount.ChannelPhone,LoginChannel.Phone},
+            {UserAccount.ChannelWeiXin,LoginChannel.WX},
+            {UserAccount.ChannelAppleId,LoginChannel.Apple},
+            {UserAccount.ChannelEditor,LoginChannel.Editor},
+        };
         public bool IsLogin { get; private set; }
+
+        public string LoginSessionId { get; private set; }
+
+        private void RefreshLoginSessionId() => Guid.NewGuid().ToString();
         
         public bool IsLoginStateDirty { get; private set; }
         
@@ -93,10 +107,10 @@ namespace SDKFramework.Account
 
         private void onUserLogin()
         {
+            AccountLog.Info($"onUserLogin登录成功");
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
-            
-            AccountLog.Info($"onUserLogin登录成功");
+            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 0,msg = "success",uid = CurrentAccount.UID,isNew = CurrentAccount.IsNewUser});
         }
 
         private void ShowLoginScene()
@@ -112,12 +126,8 @@ namespace SDKFramework.Account
             ClearCurrent();
         }
 
-        public void Save(UserAccount account = null)
+        public void Save()
         {
-            if (account != null)
-            {
-                CurrentAccount = account;
-            }
 
             AccountHistory.SaveAccount(CurrentAccount);
             FileSaveLoad.SaveAccount(CurrentAccount);
@@ -127,11 +137,18 @@ namespace SDKFramework.Account
 #endif
         }
         
-        private void ClearCurrent()
+        public void SetCurrentAccount(UserAccount account)
+        {
+            if (account != null)
+                CurrentAccount = account;
+        }
+        
+        public void ClearCurrent()
         {
             if (!HasAccount) return;
             FileSaveLoad.SaveAccount(null);
-            CurrentAccount = null;
+            AccountHistory.Delete(CurrentAccount);
+            CurrentAccount = new UserAccount();
         }
     }
 }

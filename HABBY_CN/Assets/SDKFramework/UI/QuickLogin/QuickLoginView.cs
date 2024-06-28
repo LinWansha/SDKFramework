@@ -22,6 +22,8 @@ public class QuickLoginView : UIView
     public AccountItemUI currentAccountItem;
 
     public Button btnAddAccount;
+    public Button btnToDelete;
+    public Button btnDone;
     public ScrollViewExt dropDown;
 
 
@@ -43,11 +45,18 @@ public class QuickLoginView : UIView
             accountItem.SwitchBtnDelete();
         }
     }
-    public void ToggleScrollView()
+    public void ToggleScrollView(bool reset=false)
     {
+        if (reset)
+        {
+            scrollView.SetActive(false);
+            dirSigns.transform.Rotate(new Vector3(0, 0, 180));
+            return;
+        }
         bool isActive = scrollView.activeSelf;
 
         scrollView.SetActive(!isActive);
+        btnLoginGame.interactable = isActive;
 
         float rotationAngle = isActive ? -180f : 180f;
         dirSigns.transform.Rotate(new Vector3(0, 0, rotationAngle));

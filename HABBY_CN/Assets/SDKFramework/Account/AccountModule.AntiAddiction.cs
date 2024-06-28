@@ -29,8 +29,13 @@ namespace SDKFramework.Account
 #if USE_ANTIADDICTION
         
         public bool CanPurchase(double amount) => PurchaseChecker.CanPurchase(CurrentAccount, amount);
-        
-        public void RefreshMonthlyExpense(double amount) => CurrentAccount?.RefreshMonthlyExpense(amount);
+
+        public void RefreshIAP(double total,double monthly)
+        {
+            CurrentAccount?.RefreshTotalExpense(total);
+            CurrentAccount?.RefreshMonthlyExpense(monthly);
+            HabbyFramework.Analytics.RefreshCommonProperties();
+        }
 
         public void Purchase(int amount)
         {

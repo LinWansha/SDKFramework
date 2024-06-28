@@ -51,8 +51,7 @@ namespace SDKFramework.Account.Utils
             account.ResetOnline(data.totalOnlineTime, data.todayOnlineTime);
             account.ResetExpense(data.totalPaymentAmount, data.monthlyPaymentAmount, data.todayPaymentAmount);
 
-            HabbyFramework.Account.Save(account);
-            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 0,msg = "success",uid = account.UID,isNew = response.data.isNewUser});
+            HabbyFramework.Account.SetCurrentAccount(account);
         }
     }
 }

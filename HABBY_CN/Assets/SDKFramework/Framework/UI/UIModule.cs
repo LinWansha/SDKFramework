@@ -221,11 +221,31 @@ namespace SDKFramework.UI
             if (mediator == null)
                 return null;
 
-            GameObject uiObject = (uiObjectPool.LoadGameObject(uiConfig.Asset, (obj) =>
+            // GameObject uiObject = (uiObjectPool.LoadGameObject(uiConfig.Asset, (obj) =>
+            // {
+            //     UIView newView = obj.GetComponent<UIView>();
+            //     mediator.InitMediator(newView);
+            // })).gameObject;
+            
+            // 改为每次重新加载创建新实例
+            GameObject uiPrefab = HabbyFramework.Asset.LoadAssets<GameObject>(uiConfig.Asset);
+            if (uiPrefab == null)
             {
-                UIView newView = obj.GetComponent<UIView>();
-                mediator.InitMediator(newView);
-            })).gameObject;
+                Debug.LogError($"Failed to load UI Prefab for ID: {id}");
+                return null;
+            }
+
+            GameObject uiObject = GameObject.Instantiate(uiPrefab);
+            UIView newView = uiObject.GetComponent<UIView>();
+    
+            if (newView == null)
+            {
+                Debug.LogError($"No UIView component found on the loaded prefab: {uiConfig.Asset}");
+                GameObject.Destroy(uiObject);
+                return null;
+            }
+
+            mediator.InitMediator(newView);
             return OnUIObjectLoaded(mediator, uiConfig, uiObject, arg);
         }
 
@@ -314,16 +334,30 @@ namespace SDKFramework.UI
 
         public void CloseUI(UIMediator mediator)
         {
+            // if (mediator != null)
+            // {
+            //     // 回收View
+            //     uiObjectPool.UnloadGameObject(mediator.ViewObject);
+            //     mediator.ViewObject.transform.SetParentAndResetAll(closeUIRoot);
+            //
+            //     // 回收Mediator
+            //     mediator.Hide();
+            //     RecycleMediator(mediator);
+            //
+            //     usingMediators.Remove(mediator);
+            // }
+            
             if (mediator != null)
             {
-                // 回收View
-                uiObjectPool.UnloadGameObject(mediator.ViewObject);
-                mediator.ViewObject.transform.SetParentAndResetAll(closeUIRoot);
+                // 销毁ViewObject
+                GameObject viewObject = mediator.ViewObject;
+                if (viewObject != null)
+                {
+                    GameObject.Destroy(viewObject);
+                }
 
-                // 回收Mediator
+                // 隐藏Mediator及其他操作
                 mediator.Hide();
-                RecycleMediator(mediator);
-
                 usingMediators.Remove(mediator);
             }
         }

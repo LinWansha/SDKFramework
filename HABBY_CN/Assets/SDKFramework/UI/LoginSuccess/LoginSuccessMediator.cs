@@ -28,12 +28,12 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
         UserAccount account = HabbyFramework.Account.CurrentAccount;
 
         SetChannel(account.LoginChannel);
-        View.nameText.text = account.UID;
+        View.nameText.text = account.NickName;
 
         var topPixel = Screen.currentResolution.height - (Screen.safeArea.y + Screen.safeArea.height);
         Rect safe = Screen.safeArea;
         float height = Screen.height - safe.height;
-        float frigeHeigh = 0;
+        float frigeHeigh = 60;
 
 
         var targetPositionY = _startPos.y - View.root.rect.height - frigeHeigh;

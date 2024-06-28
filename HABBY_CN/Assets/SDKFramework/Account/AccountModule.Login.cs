@@ -13,6 +13,7 @@ namespace SDKFramework.Account
         {
             base.OnModuleInit();
             AccountLog.Info("AccountModule Init");
+            RefreshLoginSessionId();
             Reload();
         }
 
@@ -79,7 +80,7 @@ namespace SDKFramework.Account
                 {
                     HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.verify_success);
                     account.AgeRange = (UserAccount.AgeLevel)response.data.addictLevel;
-                    OnValidateIdentityResult?.Invoke(false,0);
+                    OnValidateIdentityResult?.Invoke(true,0);
                     return;
                 }
                 
@@ -113,8 +114,7 @@ namespace SDKFramework.Account
             
             if (account == null) return;
             CurrentAccount = account;
-            FileSaveLoad.SaveAccount(account);
-            AccountHistory.SaveAccount(account);
+            Save();
             
 #if USE_ANTIADDICTION
             account.IAP?.Refresh();
@@ -129,9 +129,11 @@ namespace SDKFramework.Account
         public void Logout(int actionCode = 0)
         {
             AccountLog.Info($"Logout,ActionCode={actionCode}, account={CurrentAccount}");
+            
             if (CurrentAccount == null)return;
-
             IsLogin = false;
+            IsLoginStateDirty = true;
+            RefreshLoginSessionId();
 #if USE_ANTIADDICTION
             timeManager.StopTimeCounter(CurrentAccount);
 #endif
@@ -154,7 +156,7 @@ namespace SDKFramework.Account
             }
         }
 
-        public void UnRegister(Action<bool> callback)
+        public void UnRegister(Action<int,UnregistAccountResponse,string> callback)
         {
             var account = CurrentAccount;
             string oauthCode = "";
@@ -168,15 +170,13 @@ namespace SDKFramework.Account
                 if (0==response.code)
                 {
                     AccountLog.Info("注销账号成功");
-                    Logout(1);
                     ClearCurrent();
-                    callback(true);
                 }
                 else
                 {
                     AccountLog.Info("注销账号失败");
-                    callback(false);
                 }
+                callback(response.code,response,"");
             });
         }
     }

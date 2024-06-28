@@ -9,15 +9,19 @@ public class LatencyTimeMediator : UIMediator<LatencyTimeView>
     protected override void OnShow(object arg)
     {
         base.OnShow(arg);
-
         Log.Info("LatencyTimeMediator");
 
         if (arg==null)
             View.label.text = "加载中...";
         else
             View.label.text = arg as string;
+        
+        if (!HabbyFramework.Analytics.CloudData.flowerMaskOpen)
+        {
+            Close();
+        }
             
-        AsyncScheduler.Instance.DelayedInvoke(Close, 2);
+        AsyncScheduler.Instance.DelayedInvoke(Close, 1);
     }
 
     protected override void OnUpdate(float deltaTime)

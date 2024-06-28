@@ -1,36 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using SDKFramework.Account.DataSrc;
+using Sdkhubv2.Runtime.tools;
 using UnityEngine;
 
-namespace SDKFramework
-{
-    public enum LoginStepCN 
-    {
-        SDKLogin = 0,
-        
-        //  already_hadaccount
-        click_startgame_bt, // 点击开始游戏【加一个参数 privacy_state= YES/NO 标记用户点击开始游戏按钮的时候是否勾选了隐私协议】
-        login_button_show,      // 登录按钮页面展示（看到登录按钮webview）
-        click_login_bt,         // 点击登录按钮
-        get_data_success,       // 服务器登录成功 (首次SDK登录服务器成功这个位置同时打事件first_login_suc)
-        login_success,          // 游戏登录成功（看到游戏主UI）
-        click_otherchannel,     // 点击其他账号登录
-        login_choose_show,      // 登录界面展示(n选1，或者手机号一键登录)
-        agree_privacy,          // 勾选隐私协议（主动勾选打点，主动取消勾选不打点）
-        choose_channel,         // 选择登录方式（n选1，或者点击本机号码登录，注意，用户点了登录开始走登录流程了打点，反复横跳于手机和三方登录方式时不打点。）
-        click_webclose,         // 点击关闭按钮
-
-        //  unknown_user
-        logo_loading_success,   // 加载登录页成功（看到开始游戏按钮
-        verify_show,            // 实名认证界面展示
-        verify_submit,          // 用户点击认证
-        verify_success,         // 实名成功
-        age_pass,               // 无未成年限制（18岁以上和18岁以内但在特定时间登录打点）
-        game_loading_success,   // 游戏加载完成（实名后游戏加载）
-    }
-}
 namespace SDKFramework.Analytics
 {
     public interface TGAImpl
@@ -48,23 +21,81 @@ namespace SDKFramework.Analytics
     {
 
         private bool TGAInitialized = false;
+
+        #region const key
+
+        public const string KEY_OAID = "oaid";
+        public const string KEY_IAP_TOTAL_CNY = "total_iap_cny";
+
+        #endregion
+
+#region oaid
+        private string OAID
+        {
+            get;
+            set;
+        }
+        private void RefreshOaid()
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(OAID))
+                {
+                    var propertyBuilder = new TGPropertyBuilder();
+                    if (!string.IsNullOrEmpty(OaidUtil.Oaid))
+                    {
+                        OAID = OaidUtil.Oaid;
+                        propertyBuilder.Add(KEY_OAID, OAID);
+                    }
+                    else
+                    {
+                        propertyBuilder.Add(KEY_OAID, "unknow");
+                    }
+                    TGA.SetSuperProperties(propertyBuilder.ToProperty());
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
+        }
+#endregion
         
-        private void InitializeTGA()
+        public void InitializeTGA(TGAImpl @tga)
         {
             if (TGAInitialized)return;
             TGAInitialized = true;
-            
-            TGA.UserSet(BuildCommonProperties());
-            TGA.SetSuperProperties(BuildCommonProperties());
-            Dictionary<string, object> BuildCommonProperties()
+            TGA = tga;
+            RefreshCommonProperties();
+        }
+
+        public void RefreshCommonProperties()   //TODO:确认各公共属性刷新时机
+        {
+            try
             {
-                return _propertyBuilder
-                    .Add("oaid", "unknow")          //国内用户唯一的设备ID
-                    .Add("ageLevel", "unknow")      //年龄段
-                    .Add("login_type", "unknow")    //weixin/qq/phone/appleid/
-                    .Add("tio_id", "unknow")        //热云id
-                    .Add("total_iap_cny", 00000)
-                    .ToProperty();
+                if (!TGAInitialized)return;
+                RefreshOaid();
+                TGA.UserSet(BuildCommonProperties());
+                TGA.SetSuperProperties(BuildCommonProperties());
+           
+                Dictionary<string, object> BuildCommonProperties()
+                {
+                    Log.Info("[Analytics] total_iap_cny: " + HabbyFramework.Account.CurrentAccount.IAP.Total * 100);
+                    return _propertyBuilder
+                        // .Add("oaid", OAID)      //oaid
+                        .Add("ageLevel", HabbyFramework.Account.CurrentAccount.AgeRange.ToString())      //年龄段
+                        .Add("login_type", Global.Channel)    //weixin/qq/phone/appleid/
+                        .Add("tio_id", "unknow")        //热云id
+                        .Add("total_iap_cny", HabbyFramework.Account.CurrentAccount.IAP.Total * 100)
+                        .ToProperty();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 
@@ -85,7 +116,8 @@ namespace SDKFramework.Analytics
         public void TGA_first_login_suc()
         {
             if (!TGAInitialized)return;
-            _propertyBuilder.Add("account_type", 1);    //TODO :获取是否为新设备
+            int account_type = HabbyFramework.Account.AccountHistory.HasAccountHistory ? 2 : 1;
+            _propertyBuilder.Add("account_type", account_type);    //TODO :获取是否为新设备
             TGA.Track("first_login_suc",_propertyBuilder.ToProperty());
         }
         
@@ -225,10 +257,9 @@ namespace SDKFramework.Analytics
         public void TGA_cn_login(LoginStepCN step)
         {
             if (!TGAInitialized) return;
-            UserAccount CurrentAccount = HabbyFramework.Account.CurrentAccount;
-            var account_state = string.IsNullOrEmpty(CurrentAccount.LoginChannel)
-                ? "unknown_user"
-                : "already_hadaccount";
+            RefreshCommonProperties();
+            var CurrentAccount = HabbyFramework.Account.CurrentAccount;
+            var account_state = CurrentAccount.IsNewUser ? "unknown_user" : "already_hadaccount";
 
             if (step == LoginStepCN.click_startgame_bt)
             {
@@ -236,7 +267,7 @@ namespace SDKFramework.Analytics
                     .Add("privacy_state", CurrentAccount.IsAgreePrivacy == true ? "YES" : "NO");
             }
 
-            string phone_type = Global.Channel switch
+            var phone_type = Global.Channel switch
             {
                 UserAccount.ChannelPhone => "phone_normal",
                 UserAccount.ChannelPhoneQuick => "phone_quick",
@@ -244,12 +275,40 @@ namespace SDKFramework.Analytics
             };
 
             _propertyBuilder
-                .Add("account_state", account_state) // unknown_user 未检测到账号 already_hadaccount 检测到账号
-                .Add("step", step.ToString()) // 登录步骤
-                .Add("login_type", Global.Channel) // step=点击登录方式：appleid/wechat/qq/phone
-                .Add("phone_type", phone_type) // phone_quick/phone_normal
-                .Add("login_session_id", ((int)step).ToString()); //login_session_id/每次登录过程记录一个唯一一个id
+                .Add("account_state", account_state)        // unknown_user 未检测到账号 already_hadaccount 检测到账号
+                .Add("step", step.ToString())               // 登录步骤
+                .Add("login_type", Global.Channel)          // step=点击登录方式：appleid/wechat/qq/phone
+                .Add("phone_type", phone_type)              // phone_quick/phone_normal
+                .Add("login_session_id", HabbyFramework.Account.LoginSessionId); //login_session_id/每次登录过程记录一个唯一一个id
             TGA.Track("cn_login", _propertyBuilder.ToProperty());
         }
+    }
+}
+
+namespace SDKFramework
+{
+    public enum LoginStepCN 
+    {
+        SDKLogin = 0,
+        
+        //  already_hadaccount
+        click_startgame_bt, // 点击开始游戏【加一个参数 privacy_state= YES/NO 标记用户点击开始游戏按钮的时候是否勾选了隐私协议】
+        login_button_show,      // 登录按钮页面展示（看到登录按钮webview）
+        click_login_bt,         // 点击登录按钮
+        get_data_success,       // 服务器登录成功 (首次SDK登录服务器成功这个位置同时打事件first_login_suc)
+        login_success,          // 游戏登录成功（看到游戏主UI）
+        click_otherchannel,     // 点击其他账号登录
+        login_choose_show,      // 登录界面展示(n选1，或者手机号一键登录)
+        agree_privacy,          // 勾选隐私协议（主动勾选打点，主动取消勾选不打点）
+        choose_channel,         // 选择登录方式（n选1，或者点击本机号码登录，注意，用户点了登录开始走登录流程了打点，反复横跳于手机和三方登录方式时不打点。）
+        click_webclose,         // 点击关闭按钮
+
+        //  unknown_user
+        logo_loading_success,   // 加载登录页成功（看到开始游戏按钮
+        verify_show,            // 实名认证界面展示
+        verify_submit,          // 用户点击认证
+        verify_success,         // 实名成功
+        age_pass,               // 无未成年限制（18岁以上和18岁以内但在特定时间登录打点）
+        game_loading_success,   // 游戏加载完成（实名后游戏加载）
     }
 }

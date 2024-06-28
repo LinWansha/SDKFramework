@@ -9,15 +9,14 @@ namespace SDKFramework.Analytics
     {
         private TGAImpl TGA;
         private MMPImpl MMP;
-        private GravityImpl Gravity;
         
         private static TGPropertyBuilder _propertyBuilder = new TGPropertyBuilder();
 
         public void Initialization()
         {
-            InitializeTGA();
+            /*InitializeTGA();
             InitializeMMP();
-            InitializeGravity();
+            InitializeGravity();*/
         }
 
         protected internal override void OnModuleInit()

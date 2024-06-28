@@ -24,6 +24,7 @@ namespace SDKFramework.Account
                 { LoginChannel.WX, new WxLoginStrategy() },
                 { LoginChannel.Phone, new PhoneLoginStrategy() },
                 { LoginChannel.Apple, new AppleLoginStrategy() },
+                { LoginChannel.Editor, new EditorLoginStrategy() },
             };
         }
 
@@ -35,12 +36,14 @@ namespace SDKFramework.Account
             if (!loginStrategy.CheckPrivacyStatus())
             {
                 AccountLog.Info($"User has not agreed to privacy policy, cannot login with {channel}");
-                HabbyFramework.Message.Post(new SDKEvent.ShowNoAgreePrivacyNotice());
+                HabbyFramework.Message.Post(new MsgType.ShowNoAgreePrivacyNotice());
                 return;
             }
-
+            
+            HabbyFramework.UI.OpenUISingle(UIViewID.LatencyTimeUI);
+            
             bool loginSuccess = await ExecuteAsync(loginStrategy.Login);
-            if (!loginSuccess) return;
+            if (!loginSuccess || Global.IsEditor) return;
 
             bool validateSuccess = await ExecuteAsync(loginStrategy.ValidateIdentity);
             if (!validateSuccess) return;
@@ -72,6 +75,7 @@ namespace SDKFramework.Account
         QQ,
         WX,
         Phone,
-        Apple
+        Apple,
+        Editor,
     }
 }

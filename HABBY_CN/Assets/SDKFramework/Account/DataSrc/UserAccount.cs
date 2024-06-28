@@ -19,6 +19,7 @@ namespace SDKFramework.Account.DataSrc
         public const string ChannelPhone = "phone";
         public const string ChannelAccount = "account";
         public const string ChannelNACA = "ncac";
+        public const string ChannelEditor = "editor";
         
         public const string ChannelTraditional = "traditional";
         #endregion
@@ -65,7 +66,21 @@ namespace SDKFramework.Account.DataSrc
 
         
         private UserExpenseData userExpense;
-        public UserExpenseData IAP { get => userExpense;  set =>userExpense = value; }
+
+        public UserExpenseData IAP
+        {
+            get
+            {
+                if (userExpense == null)
+                {
+                    ResetExpense(0, 0, 0);
+                    AccountLog.Info("IAP数据尚未刷新");
+                }
+
+                return userExpense;
+            }
+            set => userExpense = value;
+        }
 
         
         private UserOnlineData userOnlineData;
@@ -82,18 +97,18 @@ namespace SDKFramework.Account.DataSrc
 
         public void AddIap(double money)
         {
-            if (userExpense == null) userExpense = new UserExpenseData();
+            userExpense ??= new UserExpenseData();
             userExpense.Add(money);
         }
         public void AddOnline(int seconds)
         {
-            if (userOnlineData == null) userOnlineData = new UserOnlineData();
+            userOnlineData ??= new UserOnlineData();
             userOnlineData.Add(seconds);
         }
 
         public void ResetExpense(long total, long monthly, long today)
         {
-            if (userExpense == null) userExpense = new UserExpenseData();
+            userExpense ??= new UserExpenseData();
             userExpense.Refresh();
             userExpense.totalExpense.value = total;
             userExpense.monthlyExpense.value = monthly;
@@ -102,7 +117,7 @@ namespace SDKFramework.Account.DataSrc
 
         public void ResetOnline(int totalSeconds, int todaySeconds)
         {
-            if (userOnlineData == null) userOnlineData = new UserOnlineData();
+            userOnlineData ??= new UserOnlineData();
             userOnlineData.Refresh();
 
             userOnlineData.Total = totalSeconds;
@@ -111,9 +126,16 @@ namespace SDKFramework.Account.DataSrc
 
         public void RefreshMonthlyExpense(double value)
         { 
-            if (userExpense == null) userExpense = new UserExpenseData();
+            userExpense ??= new UserExpenseData();
             userExpense.Refresh();
             userExpense.monthlyExpense.value = value;
+        }
+        
+        public void RefreshTotalExpense(double value)
+        { 
+            userExpense ??= new UserExpenseData();
+            userExpense.Refresh();
+            userExpense.totalExpense.value = value;
         }
         
         public enum AgeLevel : int

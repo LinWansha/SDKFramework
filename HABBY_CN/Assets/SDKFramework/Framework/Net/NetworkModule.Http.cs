@@ -70,7 +70,7 @@ namespace SDKFramework.Network
             string url = $"{URL_USER_SERVER}{path}";
             byte[] bodyRaw = NetEnc.encContent(requestStr);
 
-            using (UnityWebRequest request = UnityWebRequest.Post(url, ""))
+            using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, ""))
             {
 
                 request.timeout = 30;

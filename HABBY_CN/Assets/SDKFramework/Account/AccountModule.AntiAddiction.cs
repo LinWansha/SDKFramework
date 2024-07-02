@@ -4,7 +4,7 @@ using static SDKFramework.Account.DataSrc.UserAccount;
 
 namespace SDKFramework.Account
 {
-    public partial class AccountModule : BaseModule
+    public partial class AccountModule 
     {
         private bool CanLogin(UserAccount account)
         {

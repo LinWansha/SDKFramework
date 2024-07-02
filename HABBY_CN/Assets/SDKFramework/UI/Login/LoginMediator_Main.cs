@@ -12,7 +12,6 @@ public partial class LoginMediator : UIMediator<LoginView>
 {
     private readonly DecisionMaker loginRunner = HabbyFramework.Account.loginRunner;
 
-    private CloudData CloudData => HabbyFramework.Analytics.CloudData;
     protected override void OnInit()
     {
         base.OnInit();
@@ -46,30 +45,39 @@ public partial class LoginMediator : UIMediator<LoginView>
             HabbyFramework.Account.SetPrivacyStatus(agree);
         });
 
-        View.btnBack3.onClick.AddListener(() => { m_PhoneNum = ""; });
+        View.btnBack3.onClick.AddListener(() =>
+        {
+            m_PhoneNum = "";
+            View.phoneNumInput.text = "";
+        });
 
-        if (!CloudData.IsWxRootOpen || !WeChatAPIUtil.IsInstalled)
+        if (!Global.CloudData.IsWxRootOpen || !WeChatAPIUtil.IsInstalled)
         {
             View.btnWxLogin.gameObject.SetActive(false);
             View.btnWxLogin2.gameObject.SetActive(false);
         }
 
-        if (!CloudData.IsQQRootOpen || !QQAPIUtil.IsInstalled)
+        if (!Global.CloudData.IsQQRootOpen || !QQAPIUtil.IsInstalled)
         {
             View.btnQQLogin.gameObject.SetActive(false);
             View.btnQQLogin2.gameObject.SetActive(false);
         }
 
-        if (!CloudData.IsQQGroupOpen || !QQAPIUtil.IsInstalled)
+        if (!Global.CloudData.IsQQGroupOpen || !QQAPIUtil.IsInstalled)
         {
             View.btnCallQQGroup.gameObject.SetActive(false);
+        }
+
+        if (Global.CloudData.IsPrivacyAgree && HabbyFramework.Account.CurrentAccount.IsAgreePrivacy)
+        {
+            View.privacyToggle.isOn = true;
         }
     }
 
     private void OnCallQQGroup()
     {
         AccountLog.Info("jump to qq group");
-        QQAPIUtil.AddQQGroup(CloudData.QQGroupKey);
+        QQAPIUtil.AddQQGroup(Global.CloudData.QQGroupKey);
     }
 
     private void OnShowPersonInfoWebView()
@@ -95,11 +103,12 @@ public partial class LoginMediator : UIMediator<LoginView>
         }
         HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.login_choose_show);
         HabbyFramework.Message.Subscribe<MsgType.ShowNoAgreePrivacyNotice>(ShowNotice);
-        HabbyFramework.Message.Subscribe<MsgType.ResetPrivacyToggle>(OnResetPrivacyToggle);
+        HabbyFramework.Message.Subscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
     }
-    private void OnResetPrivacyToggle(MsgType.ResetPrivacyToggle arg)
+    private void OnRefreshPrivacyToggle(MsgType.RefreshPrivacyToggle arg)
     {
-        View.privacyToggle.isOn = false;
+        if (!Global.CloudData.IsPrivacyAgree)return;
+        View.privacyToggle.isOn = arg.isOn;
     }
     
     private void ShowNotice(MsgType.ShowNoAgreePrivacyNotice arg)
@@ -118,7 +127,7 @@ public partial class LoginMediator : UIMediator<LoginView>
         HabbyFramework.UI.CloseUI(UIViewID.QuickLoginUI);
         
         HabbyFramework.Message.Unsubscribe<MsgType.ShowNoAgreePrivacyNotice>(ShowNotice);
-        HabbyFramework.Message.Unsubscribe<MsgType.ResetPrivacyToggle>(OnResetPrivacyToggle);
+        HabbyFramework.Message.Unsubscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
         base.OnHide();
     }
 }

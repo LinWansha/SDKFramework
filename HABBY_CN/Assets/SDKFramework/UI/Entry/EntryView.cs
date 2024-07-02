@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class EntryView :  UIView
 {
     public Text versionName;
-    public GameObject licenseObj;
+    // public GameObject licenseObj;
     public GameObject privacyLine;
     public Button ageTip;
 

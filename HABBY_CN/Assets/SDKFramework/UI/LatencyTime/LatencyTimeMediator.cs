@@ -1,3 +1,4 @@
+using SDKFramework;
 using SDKFramework.UI;
 using SDKFramework.Utils;
 using UnityEngine;
@@ -16,9 +17,10 @@ public class LatencyTimeMediator : UIMediator<LatencyTimeView>
         else
             View.label.text = arg as string;
         
-        if (!HabbyFramework.Analytics.CloudData.flowerMaskOpen)
+        if (!Global.CloudData.IsMaskOpen)
         {
             Close();
+            return;
         }
             
         AsyncScheduler.Instance.DelayedInvoke(Close, 1);

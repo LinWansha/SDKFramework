@@ -28,7 +28,6 @@ public partial class LoginMediator : UIMediator<LoginView>
         }
         
         View.btnNext.interactable = IsValidPhoneNumber(modifiedStr);
-        if (m_PhoneNum != "") return;
         m_PhoneNum = View.btnNext.interactable ? phoneNum : "";
     }
 }

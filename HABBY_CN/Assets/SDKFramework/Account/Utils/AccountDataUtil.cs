@@ -7,7 +7,7 @@ namespace SDKFramework.Account.Utils
 {
     public class AccountDataUtil
     {
-        public static void ParseAndSaveAccount(LoginResponse response,string channel)
+        public static void ParseUserAccount(LoginResponse response,string channel)
         {
             var data = response.data;
             AccountLog.Info($"ParseLoginAccountInfo token={data.token}, age={data.age}");
@@ -27,7 +27,10 @@ namespace SDKFramework.Account.Utils
                 UID = data.userId ?? "",
                 IsNewUser = data.isNewUser,
             };
-
+            if (Global.IsEditor)
+            {
+                account.AgeRange = UserAccount.AgeLevel.Adult;
+            }
             AccountLog.Info($"--- AgeRange: {account.AgeRange} ,age={data.age} validateIdentity= {data.validateIdentity}");
 
             if (!string.IsNullOrEmpty(data.serverTime))

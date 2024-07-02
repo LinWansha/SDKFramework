@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using SDKFramework.Message;
 
 namespace SDKFramework.Analytics
 {
@@ -10,7 +11,7 @@ namespace SDKFramework.Analytics
     }
     public class CloudData
     {
-        public bool flowerMaskOpen = true;
+        public bool IsMaskOpen = true;
         
         public bool IsQQRootOpen = true;
         
@@ -18,11 +19,17 @@ namespace SDKFramework.Analytics
         
         public bool IsQQGroupOpen = true;
         
+        public bool IsPrivacyAgree = false;
+
         public string QQGroupKey = "default";
 
         #region official pay
         public bool IsWxPayEnable = true;
         public bool IsAliPayEnable = true;
+        #endregion
+
+        #region reyun and ranger
+        public bool IsDebugEnable = false;
         #endregion
 
     }
@@ -57,6 +64,15 @@ namespace SDKFramework.Analytics
                     try
                     {
                         _cloudData = JsonConvert.DeserializeObject<CloudData>(responseStr);
+                        Log.Info($"" +
+                         $"\n IsMaskOpen:{_cloudData.IsMaskOpen}" +
+                         $"\n IsQQRootOpen:{_cloudData.IsQQRootOpen}" +
+                         $"\n IsWxRootOpen:{_cloudData.IsWxRootOpen}" +
+                         $"\n IsPrivacyAgree:{_cloudData.IsPrivacyAgree}" +
+                         $"\n IsQQGroupOpen:{_cloudData.IsQQGroupOpen}" +
+                         $"\n QQGroupKey:{_cloudData.QQGroupKey}");
+                        
+                        HabbyFramework.Message.Post(new MsgType.RefreshPrivacyToggle(){isOn = _cloudData.IsPrivacyAgree});
                     }
                     catch (Exception e)
                     {
@@ -68,10 +84,6 @@ namespace SDKFramework.Analytics
                         _cloudData = new CloudData();
                     }
                     
-                    Log.Info("FlowerMaskOpen" + _cloudData.flowerMaskOpen);
-                    Log.Info("IsQQRootOpen" + _cloudData.IsQQRootOpen);
-                    Log.Info("IsWxRootOpen" + _cloudData.IsWxRootOpen);
-                    Log.Info("IsQQGroupOpen" + _cloudData.IsQQGroupOpen);
                 }
                 else
                     Log.Warn($"云控拉取失败 code: {code} ,msg: {msg}");

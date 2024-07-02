@@ -1757,8 +1757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollRect: {fileID: 4217059893384578790}
   gridLayoutGroup: {fileID: 4217059892730715009}
-  accountItem: {fileID: 674460365441695772, guid: 66703ee35270ddf4298fcfe5f5a4f816,
-    type: 3}
+  accountItem: {fileID: 674460365441695772, guid: 66703ee35270ddf4298fcfe5f5a4f816, type: 3}
   persistentItem: {fileID: 4217059892411252467}
 --- !u!114 &5506016517936995836
 MonoBehaviour:

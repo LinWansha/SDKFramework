@@ -123,7 +123,7 @@ public class QuickLoginMediator : UIMediator<QuickLoginView>
                     {
                         Close();
                         HabbyFramework.Account.ClearCurrent();
-                        HabbyFramework.Message.Post(new MsgType.ResetPrivacyToggle());
+                        HabbyFramework.Message.Post(new MsgType.RefreshPrivacyToggle());
                     }
                 });
 

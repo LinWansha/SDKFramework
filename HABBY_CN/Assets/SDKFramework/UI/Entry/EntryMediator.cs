@@ -8,10 +8,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using SDKFramework.Utils;
 using SDKFramework.Utils.WebView;
+using Sdkhubv2.Runtime.tools;
 
 public class EntryMediator : UIMediator<EntryView>
 {
-    private AccountModule AccountModule = HabbyFramework.Account;
+    private AccountModule AccountModule => HabbyFramework.Account;
     
     protected override void OnInit()
     {
@@ -26,7 +27,7 @@ public class EntryMediator : UIMediator<EntryView>
             else
             {
                 View.privacyToggle.isOn = false;//todo: 从本地持久化数据拿取
-                View.licenseObj.SetActive(true);
+                // View.licenseObj.SetActive(true);
                 View.btnPrivacy.onClick.AddListener(() =>
                 {
                     WebViewBridge.Instance.Show(Global.WebView.gamePrivacyUrl);
@@ -54,19 +55,21 @@ public class EntryMediator : UIMediator<EntryView>
 
         View.btnEnter.onClick.AddListener(EnterGameOrLogin);
         View.ageTip.onClick.AddListener(ShowAgeTip);
-        HabbyFramework.Message.Subscribe<MsgType.ResetPrivacyToggle>(OnResetPrivacyToggle);
+        HabbyFramework.Message.Subscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
     }
 
-    private void OnResetPrivacyToggle(MsgType.ResetPrivacyToggle arg)
+    private void OnRefreshPrivacyToggle(MsgType.RefreshPrivacyToggle arg)
     {
-        View.privacyToggle.isOn = false;
+        if (!Global.CloudData.IsPrivacyAgree)return;
+        View.privacyToggle.isOn = arg.isOn;
     }
 
     private void ShowAgeTip()
     {
         HabbyFramework.UI.OpenUI(UIViewID.AgeTipUI);
     }
-    private void EnterGameOrLogin()
+
+    private void EnterGameOrLogin() //TODO: Review this
     {
         HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.click_startgame_bt);
         if (View.privacyToggle.isOn == false)
@@ -77,20 +80,30 @@ public class EntryMediator : UIMediator<EntryView>
 
         if (Global.IsEditor)
         {
-            AccountModule.loginRunner.Execute(HabbyFramework.Account.LoginMethodMap["editor"]);
+            AccountModule.loginRunner.Execute(LoginChannel.Editor);
             return;
         }
 
-        if ((AccountModule.IsLoginStateDirty && AccountModule.HasAccount) ||
-            AccountModule.CurrentAccount.AgeRange != UserAccount.AgeLevel.Adult &&
-            AccountModule.CurrentAccount.AgeRange != UserAccount.AgeLevel.Unknown)
+        var currentAccount = AccountModule.CurrentAccount;
+        if ((!currentAccount.IsLogin && AccountModule.HasAccount) ||
+            currentAccount.AgeRange != UserAccount.AgeLevel.Adult &&
+            currentAccount.AgeRange != UserAccount.AgeLevel.Unknown)
         {
             HabbyFramework.UI.OpenUI(UIViewID.QuickLoginUI);
             return;
         }
-        
+
         if (!AccountModule.HasAccount)
-            HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+        {
+            if (ShanYanUtil.IsShanYanValid())
+            {
+                AccountModule.loginRunner.Execute(LoginChannel.PhoneQuick);
+            }
+            else
+            {
+                HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+            }
+        }
         else
             // AccountModule.loginRunner.Execute(HabbyFramework.Account.LoginMethodMap[Global.Channel]);
             HabbyUserClient.Instance.LoginWithToken((response) =>
@@ -109,14 +122,14 @@ public class EntryMediator : UIMediator<EntryView>
                     case Response.CAPTCHA_INVALID:
                         break;
                 }
-            },Global.Channel, HabbyFramework.Account.CurrentAccount.AccessToken);
+            }, Global.Channel, currentAccount.AccessToken);
     }
 
     protected override void OnHide()
     {
         View.btnEnter.onClick.RemoveListener(EnterGameOrLogin);
         View.ageTip.onClick.RemoveListener(ShowAgeTip);
-        HabbyFramework.Message.Unsubscribe<MsgType.ResetPrivacyToggle>(OnResetPrivacyToggle);
+        HabbyFramework.Message.Unsubscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
         base.OnHide();
     }
 

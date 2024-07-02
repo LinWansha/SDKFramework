@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using SDKFramework.Analytics;
 using SDKFramework.Config;
+using SDKFramework.Utils.WebView;
 using UnityEngine;
 
 namespace SDKFramework
@@ -14,7 +15,7 @@ namespace SDKFramework
             IsDebug = true;
 #endif
             
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !ENABLE_REMOTE_DEBUG_SDK
             IsEditor = true;
 #endif
             
@@ -68,6 +69,7 @@ namespace SDKFramework
         {
             // ReSharper disable once Unity.NoNullPropagation
             SDK Kernel = TheChosenOne?.AddComponent<SDK>();
+            WebViewBridge.Instance.Init(null);
             return Kernel;
         }
 

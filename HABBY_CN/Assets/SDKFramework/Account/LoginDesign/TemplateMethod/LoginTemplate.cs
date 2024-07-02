@@ -55,7 +55,7 @@ namespace SDKFramework.Account
             HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.get_data_success);
             HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
             
-            AccountDataUtil.ParseAndSaveAccount(response,Channel);
+            AccountDataUtil.ParseUserAccount(response,Channel);
 
             if (Global.IsEditor)
             {

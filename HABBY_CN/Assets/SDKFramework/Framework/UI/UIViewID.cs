@@ -28,4 +28,6 @@ public enum UIViewID
 
     QuickLoginUI = 13,
 
+    FreeSmsUseUpUI = 14,
+
 }

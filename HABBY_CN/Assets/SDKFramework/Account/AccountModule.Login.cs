@@ -115,7 +115,7 @@ namespace SDKFramework.Account
             if (account == null) return;
             CurrentAccount = account;
             Save();
-            
+            RefreshLoginSessionId();
 #if USE_ANTIADDICTION
             account.IAP?.Refresh();
             account.Online?.Refresh();
@@ -123,6 +123,7 @@ namespace SDKFramework.Account
             _ = (CurrentAccount.AgeRange != AgeLevel.Adult) ? gameObject.AddComponent<GAPPListener>() : null;
 #endif
             IsLogin = true;
+            CurrentAccount.IsLogin = true;
             OnUserLogin?.Invoke();
         }
 
@@ -132,7 +133,7 @@ namespace SDKFramework.Account
             
             if (CurrentAccount == null)return;
             IsLogin = false;
-            IsLoginStateDirty = true;
+            CurrentAccount.IsLogin = false;
             RefreshLoginSessionId();
 #if USE_ANTIADDICTION
             timeManager.StopTimeCounter(CurrentAccount);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using SDKFramework;
 using SDKFramework.UI;
@@ -79,7 +78,7 @@ public class LoginView : UIView
             privacyObj.SetActive(false);
             btnAppleLogin.gameObject.SetActive(false);
             btnAppleLogin2.gameObject.SetActive(false);
-            btnAppleLogin.GetComponentInParent<HorizontalLayoutGroup>().padding.left = 100;
+            // btnAppleLogin.GetComponentInParent<HorizontalLayoutGroup>().padding.left = 100;
         }
     }
 
@@ -89,7 +88,7 @@ public class LoginView : UIView
     /// <param name="id">1:main || 2:phone || 3:phone verify</param>
     public override void ActivateWindow(int id)
     {
-        if (id >= 1 && id <= 3)
+        if (id is >= 1 and <= 3)
         {
             for (int i = 0; i < windows.Count; i++)
             {
@@ -100,10 +99,8 @@ public class LoginView : UIView
         {
             Log.Warn($"Invalid window ID: {id}. No window will be activated.");
         }
-
+        
         StopAllCoroutines();
-        phoneNumInput.text = "";
-        // if (id==2)
     }
 
     public void OnCloseAllWindow()

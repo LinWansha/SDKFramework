@@ -23,8 +23,11 @@ namespace SDKFramework.Message
                 AccountItemUis = accountItemUis;
             }
         }
-        
-        public struct ResetPrivacyToggle { }
+
+        public struct RefreshPrivacyToggle
+        {
+            public bool isOn;
+        }
         
         public struct ShowNoAgreePrivacyNotice { }
 

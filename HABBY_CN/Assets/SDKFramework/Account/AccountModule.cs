@@ -7,7 +7,7 @@ using SDKFramework.Message;
 
 namespace SDKFramework.Account
 {
-    public partial class AccountModule
+    public partial class AccountModule: BaseModule
     {
         public Dictionary<string, LoginChannel> LoginMethodMap = new Dictionary<string, LoginChannel>()
         {
@@ -16,14 +16,13 @@ namespace SDKFramework.Account
             {UserAccount.ChannelWeiXin,LoginChannel.WX},
             {UserAccount.ChannelAppleId,LoginChannel.Apple},
             {UserAccount.ChannelEditor,LoginChannel.Editor},
+            {UserAccount.ChannelPhoneQuick,LoginChannel.PhoneQuick},
         };
         public bool IsLogin { get; private set; }
 
         public string LoginSessionId { get; private set; }
 
-        private void RefreshLoginSessionId() => Guid.NewGuid().ToString();
-        
-        public bool IsLoginStateDirty { get; private set; }
+        private void RefreshLoginSessionId() => LoginSessionId = Guid.NewGuid().ToString();
         
         internal DecisionMaker loginRunner = new DecisionMaker();
 
@@ -92,6 +91,8 @@ namespace SDKFramework.Account
             AccountModule.OnUserLogin -= onUserLogin;
             AccountModule.OnUserLogout -= onUserLogout;
             AccountModule.OnShowLoginScene -= ShowLoginScene;
+            if (CurrentAccount.IsLogin)
+                Save();
         }
 
         private void onUserLogout()

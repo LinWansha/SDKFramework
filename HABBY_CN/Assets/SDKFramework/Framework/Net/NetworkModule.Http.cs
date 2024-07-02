@@ -86,7 +86,7 @@ namespace SDKFramework.Network
                 {
                     string errMsg = request.error;
                     Log.Warn($"NetWork Error !!! index={index}, url={url}, msg={errMsg}");
-                    HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI,"请检查网络...");
+                    HabbyFramework.UI.OpenUISingle(UIViewID.LatencyTimeUI,"请检查网络...");
                     if (path=="user/login")
                     {
                         HabbyFramework.Analytics.TGA_log_in_fail($"Network Error{errMsg}");
@@ -136,7 +136,6 @@ namespace SDKFramework.Network
                         request.result == UnityWebRequest.Result.DataProcessingError || !request.isDone)
                     {
                         string errMsg = request.error;
-                        HabbyFramework.UI.OpenUI(UIViewID.LatencyTimeUI,"请检查网络...");
                         Log.Error($"NetWork Error !!! url={url}, msg={errMsg}");
                     }
                     else

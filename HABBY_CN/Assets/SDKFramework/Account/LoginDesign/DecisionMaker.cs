@@ -24,6 +24,7 @@ namespace SDKFramework.Account
                 { LoginChannel.WX, new WxLoginStrategy() },
                 { LoginChannel.Phone, new PhoneLoginStrategy() },
                 { LoginChannel.Apple, new AppleLoginStrategy() },
+                { LoginChannel.PhoneQuick, new PhoneQuickLoginStrategy() },
                 { LoginChannel.Editor, new EditorLoginStrategy() },
             };
         }
@@ -76,6 +77,7 @@ namespace SDKFramework.Account
         WX,
         Phone,
         Apple,
+        PhoneQuick,
         Editor,
     }
 }

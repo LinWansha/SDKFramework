@@ -76,5 +76,11 @@
     "Description": "QuickLogin",
     "Asset": "SDKPrefab/Login/QuickLoginUI",
     "Mode": 0
+  },
+  {
+    "ID": 14,
+    "Description": "FreeSmsUseUp",
+    "Asset": "SDKPrefab/Login/FreeSmsUseUpUI",
+    "Mode": 0
   }
 ]

@@ -823,7 +823,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: ENABLE_DEBUG;USE_ANTIADDICTION;ENABLE_REMOTE_DEBUG_SDK
+    Android: ENABLE_DEBUG;USE_ANTIADDICTION
     Standalone: 
     iPhone: ENABLE_DEBUG
   additionalCompilerArguments: {}

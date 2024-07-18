@@ -3,6 +3,7 @@ using SDKFramework.Account.Net;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.AntiAddiction;
 using SDKFramework.Message;
+using Sdkhubv2.Runtime.tools;
 using static SDKFramework.Account.DataSrc.UserAccount;
 
 namespace SDKFramework.Account
@@ -23,6 +24,8 @@ namespace SDKFramework.Account
             CurrentAccount = FileSaveLoad.LoadAccount();
             AccountLog.Info(message:
                 $" Reload data UID={CurrentAccount.UID}" +
+                $" LoginChannel={CurrentAccount.LoginChannel}" +
+                $" LoginSessionId={LoginSessionId}" +
                 $" AgeRange={CurrentAccount.AgeRange}" +
                 $" TotalIAP={CurrentAccount.IAP?.Total}" +
                 $" TodayOnline={CurrentAccount.Online?.Today}"+
@@ -104,11 +107,11 @@ namespace SDKFramework.Account
             else
                 HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.age_pass);
 #endif
-            Login(account);
+            LoginDone(account);
             callback(true);
         }
         
-        private void Login(UserAccount account)
+        private void LoginDone(UserAccount account)
         {
             AccountLog.Info($"Login,account={account?.AccessToken}, age={account?.AgeRange}");
             
@@ -125,6 +128,48 @@ namespace SDKFramework.Account
             IsLogin = true;
             CurrentAccount.IsLogin = true;
             OnUserLogin?.Invoke();
+        }
+
+        public void Login(Action<int, string> onResult,Action<int, string> onError)
+        {
+            HabbyFramework.Message.Subscribe<SDKEvent.SDKLoginFinish>(OnLoginFinish);
+
+            void OnLoginFinish(SDKEvent.SDKLoginFinish arg)
+            {
+                onResult(arg.code, arg.msg);
+            }
+
+            try
+            {
+                var currentAccount = CurrentAccount;
+                if ((!currentAccount.IsLogin && HasAccount) ||
+                    currentAccount.AgeRange != UserAccount.AgeLevel.Adult &&
+                    currentAccount.AgeRange != UserAccount.AgeLevel.Unknown)
+                {
+                    HabbyFramework.UI.OpenUI(UIViewID.QuickLoginUI);
+                    return;
+                }
+
+                if (!HasAccount)
+                {
+                    if (ShanYanUtil.IsShanYanValid())
+                    {
+                        loginRunner.Execute(LoginChannel.PhoneQuick);
+                    }
+                    else
+                    {
+                        HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+                    }
+                }
+                else
+                    loginRunner.Execute(LoginChannel.History);
+            }
+            catch (Exception e)
+            {
+                onError.Invoke(-1001, e.Message);
+                throw;
+            }
+            
         }
 
         public void Logout(int actionCode = 0)

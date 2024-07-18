@@ -93,6 +93,7 @@ public class LoginSuccessMediator : UIMediator<LoginSuccessView>
                 View.weixin.SetActive(true);
                 break;
             case UserAccount.ChannelPhone:
+            case UserAccount.ChannelPhoneQuick:
                 View.phone.SetActive(true);
                 break;
             case UserAccount.ChannelAppleId:

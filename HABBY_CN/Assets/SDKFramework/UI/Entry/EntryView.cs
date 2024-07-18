@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [UIView(typeof(EntryMediator), UIViewID.EntryUI)]
 public class EntryView :  UIView
 {
-    public Text versionName;
+    public UIText versionName;
     // public GameObject licenseObj;
     public GameObject privacyLine;
     public Button ageTip;
@@ -13,6 +13,7 @@ public class EntryView :  UIView
     public Button btnEnter;
     public Button btnPrivacy;
     public Button btnPersonalInfo;
+    public Button btnQueryICP;
 
     public Toggle privacyToggle;
 }

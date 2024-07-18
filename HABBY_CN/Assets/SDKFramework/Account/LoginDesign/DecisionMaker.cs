@@ -3,10 +3,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SDKFramework.Message;
 using SDKFramework.Utils;
-using UnityEngine;
 
 namespace SDKFramework.Account
 {
+    /// <summary>
+    /// Official login channel
+    /// </summary>
+    public enum LoginChannel : byte
+    {
+        QQ,
+        WX,
+        Phone,
+        Apple,
+        PhoneQuick,
+        History,
+        Editor,
+    }
+    
     /// <summary>
     /// Decision maker, choose specific login strategies
     /// </summary>
@@ -18,13 +31,14 @@ namespace SDKFramework.Account
 
         public DecisionMaker()
         {
-            Strategy_MAP = new Dictionary<LoginChannel, LoginTemplate>(4)
+            Strategy_MAP = new Dictionary<LoginChannel, LoginTemplate>()
             {
                 { LoginChannel.QQ, new QQLoginStrategy() },
                 { LoginChannel.WX, new WxLoginStrategy() },
                 { LoginChannel.Phone, new PhoneLoginStrategy() },
                 { LoginChannel.Apple, new AppleLoginStrategy() },
                 { LoginChannel.PhoneQuick, new PhoneQuickLoginStrategy() },
+                { LoginChannel.History, new HistoryLoginStrategy() },
                 { LoginChannel.Editor, new EditorLoginStrategy() },
             };
         }
@@ -66,18 +80,5 @@ namespace SDKFramework.Account
         }
         
     }
-
     
-    /// <summary>
-    /// Official login channel
-    /// </summary>
-    public enum LoginChannel : byte
-    {
-        QQ,
-        WX,
-        Phone,
-        Apple,
-        PhoneQuick,
-        Editor,
-    }
 }

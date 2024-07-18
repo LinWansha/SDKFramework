@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +16,7 @@ public class AccountItemUI : MonoBehaviour
     
     Sprite GetChannelIcon(string channelName)
     {
+        channelName = channelName == "phonequick" ? "phone" : channelName;
         switch (channelName)
         {
             case "qq":
@@ -25,7 +25,7 @@ public class AccountItemUI : MonoBehaviour
             case "appleid":
                 return HabbyFramework.Asset.LoadAssets<Sprite>("Textures/" + channelName);
             default:
-                Log.Error("Channel Name Error");
+                Log.Error($"Channel Name Error :{channelName}");
                 return null; 
         }
     }

@@ -1,13 +1,13 @@
 using SDKFramework;
 using SDKFramework.Account;
 using SDKFramework.Account.DataSrc;
-using SDKFramework.Account.Net;
 using SDKFramework.Message;
 using SDKFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using SDKFramework.Utils;
 using SDKFramework.Utils.WebView;
+using Sdkhubv2.Runtime;
 using Sdkhubv2.Runtime.tools;
 
 public class EntryMediator : UIMediator<EntryView>
@@ -18,30 +18,28 @@ public class EntryMediator : UIMediator<EntryView>
     {
         base.OnInit();
         View.versionName.text = $"版本号：{Application.version}";
-        if (Global.App.hasLicense)
+        if (Global.Platform==RuntimePlatform.IPhonePlayer)
         {
-            if (Global.Platform==RuntimePlatform.IPhonePlayer)
+            View.privacyLine.SetActive(false);
+        }
+        else
+        {
+            View.privacyToggle.isOn = false;//todo: 从本地持久化数据拿取
+            View.btnPrivacy.onClick.AddListener(() =>
             {
-                View.privacyLine.SetActive(false);
-            }
-            else
+                WebViewBridge.Instance.Show(Global.WebView.gamePrivacyUrl);
+            });
+            View.btnPersonalInfo.onClick.AddListener(() =>
             {
-                View.privacyToggle.isOn = false;//todo: 从本地持久化数据拿取
-                // View.licenseObj.SetActive(true);
-                View.btnPrivacy.onClick.AddListener(() =>
-                {
-                    WebViewBridge.Instance.Show(Global.WebView.gamePrivacyUrl);
-                });
-                View.btnPersonalInfo.onClick.AddListener(() =>
-                {
-                    WebViewBridge.Instance.Show(Global.WebView.personInfoListUrl);
-                });
-            }
+                WebViewBridge.Instance.Show(Global.WebView.personInfoListUrl);
+            });
         }
         View.privacyToggle.onValueChanged.AddListener((@agree) =>
         {
             HabbyFramework.Account.SetPrivacyStatus(agree);
         });
+        View.btnQueryICP.GetComponentInChildren<UIText>().text = $"备案号可查询链接：{Global.WebView.icpQueryUrl}";
+        View.btnQueryICP.onClick.AddListener(() => { Application.OpenURL(Global.WebView.icpQueryUrl); });
     }
 
     protected override void OnShow(object arg)
@@ -60,7 +58,6 @@ public class EntryMediator : UIMediator<EntryView>
 
     private void OnRefreshPrivacyToggle(MsgType.RefreshPrivacyToggle arg)
     {
-        if (!Global.CloudData.IsPrivacyAgree)return;
         View.privacyToggle.isOn = arg.isOn;
     }
 
@@ -84,47 +81,47 @@ public class EntryMediator : UIMediator<EntryView>
             return;
         }
 
-        var currentAccount = AccountModule.CurrentAccount;
-        if ((!currentAccount.IsLogin && AccountModule.HasAccount) ||
-            currentAccount.AgeRange != UserAccount.AgeLevel.Adult &&
-            currentAccount.AgeRange != UserAccount.AgeLevel.Unknown)
-        {
-            HabbyFramework.UI.OpenUI(UIViewID.QuickLoginUI);
+        if (BlockingIntoGameMechanics())
             return;
-        }
-
-        if (!AccountModule.HasAccount)
+        
+        HabbySDKHubManager.Instance.Channel.Login("click start game", (code, msg) =>
         {
-            if (ShanYanUtil.IsShanYanValid())
-            {
-                AccountModule.loginRunner.Execute(LoginChannel.PhoneQuick);
-            }
-            else
-            {
-                HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
-            }
-        }
-        else
-            // AccountModule.loginRunner.Execute(HabbyFramework.Account.LoginMethodMap[Global.Channel]);
-            HabbyUserClient.Instance.LoginWithToken((response) =>
-            {
-                switch (response.code)
-                {
-                    case Response.CODE_SUCCESS:
-                        HabbyFramework.Account.RealNameLogin((success) =>
-                        {
-                            AccountLog.Info(success ? "RealNameLogin Success" : "RealNameLogin Failed");
-                        });
-                        break;
-                    case Response.CODE_APP_TOKEN_EXPIRE:
-                        HabbyTextHelper.Instance.ShowTip($"{Global.Channel}  授权过期,请重新授权");
-                        break;
-                    case Response.CAPTCHA_INVALID:
-                        break;
-                }
-            }, Global.Channel, currentAccount.AccessToken);
+            AccountLog.Info($"Login onResult  code :{code},msg  :{msg}");
+        }, (errorCode, errorMsg) =>
+        {
+            AccountLog.Error($"Login onError msg :{errorMsg}");
+        });
+        
+        // var currentAccount = AccountModule.CurrentAccount;
+        // if ((!currentAccount.IsLogin && AccountModule.HasAccount) ||
+        //     currentAccount.AgeRange != UserAccount.AgeLevel.Adult &&
+        //     currentAccount.AgeRange != UserAccount.AgeLevel.Unknown)
+        // {
+        //     HabbyFramework.UI.OpenUI(UIViewID.QuickLoginUI);
+        //     return;
+        // }
+        //
+        // if (!AccountModule.HasAccount)
+        // {
+        //     if (ShanYanUtil.IsShanYanValid())
+        //     {
+        //         AccountModule.loginRunner.Execute(LoginChannel.PhoneQuick);
+        //     }
+        //     else
+        //     {
+        //         HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
+        //     }
+        // }
+        // else
+        //     AccountModule.loginRunner.Execute(LoginChannel.History);
     }
-
+    private bool BlockingIntoGameMechanics()
+    {
+        if (!Global.CloudData.IsForbidLogin) return false;
+        AccountLog.Info($"Blocking user enter game => {Global.CloudData.ForbidLoginNotice}");
+        HabbyFramework.UI.OpenUI(UIViewID.CommonTipUI, CommonNoticeType.ForbidLogin);
+        return true;
+    }
     protected override void OnHide()
     {
         View.btnEnter.onClick.RemoveListener(EnterGameOrLogin);

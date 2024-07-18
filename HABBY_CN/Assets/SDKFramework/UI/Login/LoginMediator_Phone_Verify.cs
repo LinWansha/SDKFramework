@@ -22,7 +22,7 @@ public partial class LoginMediator : UIMediator<LoginView>
                     break;
                 case SendUserSmsCodeResponse.CAPTCHA_EXCEEDED_TIMES:        // 超次数
                     AccountLog.Info("验证码发送次数过多，请稍后再试");
-                    HabbyFramework.UI.OpenUISingle(UIViewID.FreeSmsUseUpUI);
+                    HabbyFramework.UI.OpenUISingle(UIViewID.FreeSmsUseUpUI, response.data.uplinkSMS);
                     break;
                 default:
                     HabbyTextHelper.Instance.ShowTip("发送验证码 失败"+response.code);

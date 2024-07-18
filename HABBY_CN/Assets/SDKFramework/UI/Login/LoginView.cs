@@ -55,11 +55,11 @@ public class LoginView : UIView
 
     #region window_phone_verifiy
 
-    public Text showNumText;
+    public UIText showNumText;
 
     public GameObject waitObj;
 
-    public Text resendText;
+    public UIText resendText;
 
     public Button btnSend;
 

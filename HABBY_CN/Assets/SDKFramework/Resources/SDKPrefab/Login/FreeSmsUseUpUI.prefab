@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 2838393957137920185}
   - component: {fileID: 24567357041551983}
   - component: {fileID: 786236051257883545}
+  - component: {fileID: 1006584703569767927}
   m_Layer: 5
   m_Name: content
   m_TagString: Untagged
@@ -158,6 +159,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.4
   m_Text: "\u514D\u8D39\u9A8C\u8BC1\u7801\u77ED\u4FE1\u5DF2\u7528\u5B8C,\n\u8BF7\u7F16\u8F91\u77ED\u4FE16666\u53D1\u9001\u5230\n10692999339547\uFF0C\n\u5373\u53EF\u83B7\u5F97\u9A8C\u8BC1\u7801\u3002"
+--- !u!114 &1006584703569767927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490811222928648123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec565253f6a43f2bcfaf300fd236b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1452266981391564010
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,6 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a9549724494404682f77a09a37cdf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  content: {fileID: 1006584703569767927}
   btnSend: {fileID: 3438952137327559860}
   btnCancel: {fileID: 4340607591274418226}
 --- !u!1 &8499687152023168685

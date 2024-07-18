@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using SDKFramework.Utils;
 
 namespace SDKFramework.Analytics
 {
@@ -8,15 +6,12 @@ namespace SDKFramework.Analytics
     public partial class AnalyticsModule:BaseModule
     {
         private TGAImpl TGA;
-        private MMPImpl MMP;
         
         private static TGPropertyBuilder _propertyBuilder = new TGPropertyBuilder();
 
         public void Initialization()
         {
-            /*InitializeTGA();
-            InitializeMMP();
-            InitializeGravity();*/
+            /*InitializeTGA();*/
         }
 
         protected internal override void OnModuleInit()

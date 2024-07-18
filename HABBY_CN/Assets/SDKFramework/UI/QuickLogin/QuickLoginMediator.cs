@@ -10,8 +10,7 @@ using UnityEngine.UI;
 
 public class QuickLoginMediator : UIMediator<QuickLoginView>
 {
-
-    private AccountModule AccountModule;
+    private AccountModule AccountModule => HabbyFramework.Account;
 
     protected override void OnInit()
     {
@@ -23,23 +22,7 @@ public class QuickLoginMediator : UIMediator<QuickLoginView>
         {
             HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.click_login_bt);
             // AccountModule.loginRunner.Execute(AccountModule.LoginMethodMap[Global.Channel]);
-            HabbyUserClient.Instance.LoginWithToken((response) =>
-            {
-                switch (response.code)
-                {
-                    case Response.CODE_SUCCESS:
-                        HabbyFramework.Account.RealNameLogin((success) =>
-                        {
-                            AccountLog.Info(success ? "RealNameLogin Success" : "RealNameLogin Failed");
-                        });
-                        break;
-                    case Response.CODE_APP_TOKEN_EXPIRE:
-                        HabbyTextHelper.Instance.ShowTip($"{Global.Channel}  授权过期,请重新授权");
-                        break;
-                    case Response.CAPTCHA_INVALID:
-                        break;
-                }
-            },Global.Channel,AccountModule.CurrentAccount.AccessToken);
+            AccountModule.loginRunner.Execute(LoginChannel.History);
         });
         
         View.btnToLoginUI.onClick.AddListener(() =>
@@ -55,7 +38,6 @@ public class QuickLoginMediator : UIMediator<QuickLoginView>
         base.OnShow(arg);
         
         HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.login_button_show);
-        AccountModule = HabbyFramework.Account;
         ResetUIState();
         PopulateList();
     }

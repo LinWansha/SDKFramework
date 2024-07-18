@@ -15,7 +15,7 @@ namespace SDKFramework.UI
         public Transform closeUIRoot;
         //public Camera UICamera;
         public Image imgMask;
-        public Text textTip;
+        public UIText textTip;
 
         private static Dictionary<UIViewID, Type> MEDIATOR_MAPPING;
         private static Dictionary<UIViewID, Type> ASSET_MAPPING;

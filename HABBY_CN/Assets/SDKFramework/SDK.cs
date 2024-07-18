@@ -64,13 +64,13 @@ namespace SDKFramework
                 Log.Error("[You need to add SDK prefabrication to the Hierarchy before integration SDK]");
             }
         }
-
-        public static SDK New()
+        
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        public static void New()
         {
             // ReSharper disable once Unity.NoNullPropagation
             SDK Kernel = TheChosenOne?.AddComponent<SDK>();
-            WebViewBridge.Instance.Init(null);
-            return Kernel;
+            WebViewBridge.Instance.Init();
         }
 
         public void Run()

@@ -10,7 +10,7 @@ public class LoginSuccessView : UIView
     public GameObject phone;
     public GameObject apple;
     
-    public Text nameText;
+    public UIText nameText;
 
     public RectTransform root;
 

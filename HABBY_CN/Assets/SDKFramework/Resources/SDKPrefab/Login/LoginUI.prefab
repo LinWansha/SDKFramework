@@ -542,6 +542,7 @@ GameObject:
   - component: {fileID: 4518220594122108384}
   - component: {fileID: 889906357140028754}
   - component: {fileID: 5561425523715697892}
+  - component: {fileID: 6861103047684501840}
   m_Layer: 5
   m_Name: resendText
   m_TagString: Untagged
@@ -610,6 +611,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "58\u79D2\u540E\u53EF\u91CD\u53D1"
+--- !u!114 &6861103047684501840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761373347897530805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec565253f6a43f2bcfaf300fd236b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2093895464384053622
 GameObject:
   m_ObjectHideFlags: 0
@@ -3401,8 +3414,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.421902, y: 5}
-  m_SizeDelta: {x: 351.0191, y: 34.6744}
+  m_AnchoredPosition: {x: 275, y: 5.3371}
+  m_SizeDelta: {x: 246.5962, y: 34.6744}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8619918242544408178
 CanvasRenderer:
@@ -3497,6 +3510,7 @@ GameObject:
   - component: {fileID: 5911947254891275743}
   - component: {fileID: 2068433121589080113}
   - component: {fileID: 315053986683542439}
+  - component: {fileID: 3824351056258568919}
   m_Layer: 5
   m_Name: showNumText
   m_TagString: Untagged
@@ -3565,6 +3579,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u8BF7\u8F93\u5165\u624B\u673A\u9A8C\u8BC1\u7801"
+--- !u!114 &3824351056258568919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7785971240187490994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec565253f6a43f2bcfaf300fd236b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7939162146061054560
 GameObject:
   m_ObjectHideFlags: 0
@@ -3971,17 +3997,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8555981871552669573}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1265882400215608657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 287.1, y: -0.000041962}
-  m_SizeDelta: {x: 244.81, y: 34.6744}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2251089041695628771
 CanvasRenderer:
@@ -4598,9 +4624,9 @@ MonoBehaviour:
   btnQQLogin2: {fileID: 7427616570211903207}
   btnClose2: {fileID: 7902575250540708475}
   btnBack2: {fileID: 7072140579458306241}
-  showNumText: {fileID: 315053986683542439}
+  showNumText: {fileID: 3824351056258568919}
   waitObj: {fileID: 6912339351334107592}
-  resendText: {fileID: 5561425523715697892}
+  resendText: {fileID: 6861103047684501840}
   btnSend: {fileID: 718047181665777695}
   verifyCodeInput: {fileID: 4153196861525834340}
   btnClose3: {fileID: 8146671384995294352}

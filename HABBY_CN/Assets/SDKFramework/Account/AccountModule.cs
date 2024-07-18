@@ -9,15 +9,6 @@ namespace SDKFramework.Account
 {
     public partial class AccountModule: BaseModule
     {
-        public Dictionary<string, LoginChannel> LoginMethodMap = new Dictionary<string, LoginChannel>()
-        {
-            {UserAccount.ChannelQQ,LoginChannel.QQ},
-            {UserAccount.ChannelPhone,LoginChannel.Phone},
-            {UserAccount.ChannelWeiXin,LoginChannel.WX},
-            {UserAccount.ChannelAppleId,LoginChannel.Apple},
-            {UserAccount.ChannelEditor,LoginChannel.Editor},
-            {UserAccount.ChannelPhoneQuick,LoginChannel.PhoneQuick},
-        };
         public bool IsLogin { get; private set; }
 
         public string LoginSessionId { get; private set; }
@@ -111,7 +102,7 @@ namespace SDKFramework.Account
             AccountLog.Info($"onUserLogin登录成功");
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
-            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 0,msg = "success",uid = CurrentAccount.UID,isNew = CurrentAccount.IsNewUser});
+            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 0,msg = "success"});
         }
 
         private void ShowLoginScene()

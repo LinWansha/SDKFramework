@@ -53,8 +53,10 @@ namespace SDKFramework.Account.Utils
 
             account.ResetOnline(data.totalOnlineTime, data.todayOnlineTime);
             account.ResetExpense(data.totalPaymentAmount, data.monthlyPaymentAmount, data.todayPaymentAmount);
-
+            
             HabbyFramework.Account.SetCurrentAccount(account);
+            if (channel == UserAccount.ChannelEditor)
+                HabbyFramework.Account.Save();
         }
     }
 }

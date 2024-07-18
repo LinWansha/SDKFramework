@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SDKFramework.Utils;
 using SDKFramework.Account.DataSrc;
+using Sdkhubv2.Runtime;
 using UnityEngine;
 
 namespace SDKFramework.Account.Net
@@ -192,6 +193,7 @@ namespace SDKFramework.Account.Net
         /// </summary>
         public void LoginWithToken(Action<LoginResponse> response, string channelName, string token = null)
         {
+            channelName = channelName == "phonequick" ? "phone" : channelName;
             LoginRequest request = new LoginRequest
             {
                 clientData = CurrentClientInfo(),
@@ -350,9 +352,9 @@ namespace SDKFramework.Account.Net
                 appLocalVersion = Application.version,
 
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
-                    os = 1,
-                    teamId = "",
-                    bundleId = "",
+                os = 1,
+                teamId = "",
+                bundleId = "",
 #else
                 os = 2
 #endif
@@ -399,7 +401,7 @@ namespace SDKFramework.Account.Net
             }
         }
 
-        public int ChannelId; //todo: fill this by native
+        public int ChannelId => HabbySDKHubManager.Instance.Channel.GetChannelId();
 
         private int SubChannelId
         {

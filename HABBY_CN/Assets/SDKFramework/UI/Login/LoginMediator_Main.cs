@@ -107,7 +107,6 @@ public partial class LoginMediator : UIMediator<LoginView>
     }
     private void OnRefreshPrivacyToggle(MsgType.RefreshPrivacyToggle arg)
     {
-        if (!Global.CloudData.IsPrivacyAgree)return;
         View.privacyToggle.isOn = arg.isOn;
     }
     

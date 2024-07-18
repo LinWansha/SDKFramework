@@ -4,7 +4,7 @@ using UnityEngine.UI;
 [UIView(typeof(AgeTipMediator), UIViewID.AgeTipUI)]
 public class AgeTipView : UIView
 {
-    public Text Tittle;
+    public UIText Tittle;
     public Button btnSure;
-    public Text ContentText;
+    public UIText ContentText;
 }

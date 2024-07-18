@@ -12,16 +12,20 @@ namespace SDKFramework.Analytics
     public class CloudData
     {
         public bool IsMaskOpen = true;
-        
+
         public bool IsQQRootOpen = true;
-        
+
         public bool IsWxRootOpen = false;
-        
+
         public bool IsQQGroupOpen = true;
-        
+
         public bool IsPrivacyAgree = false;
 
         public string QQGroupKey = "default";
+
+        public bool IsForbidLogin = false;
+
+        public string ForbidLoginNotice = "default";
 
         #region official pay
         public bool IsWxPayEnable = true;
@@ -64,12 +68,14 @@ namespace SDKFramework.Analytics
                     try
                     {
                         _cloudData = JsonConvert.DeserializeObject<CloudData>(responseStr);
-                        Log.Info($"" +
+                        Log.Info($"[AnalyticsModule] HabbyCloudData     " +
                          $"\n IsMaskOpen:{_cloudData.IsMaskOpen}" +
                          $"\n IsQQRootOpen:{_cloudData.IsQQRootOpen}" +
                          $"\n IsWxRootOpen:{_cloudData.IsWxRootOpen}" +
                          $"\n IsPrivacyAgree:{_cloudData.IsPrivacyAgree}" +
                          $"\n IsQQGroupOpen:{_cloudData.IsQQGroupOpen}" +
+                         $"\n IsForbidLogin:{_cloudData.IsForbidLogin}" +
+                         $"\n ForbidLoginNotice:{_cloudData.ForbidLoginNotice}" +
                          $"\n QQGroupKey:{_cloudData.QQGroupKey}");
                         
                         HabbyFramework.Message.Post(new MsgType.RefreshPrivacyToggle(){isOn = _cloudData.IsPrivacyAgree});

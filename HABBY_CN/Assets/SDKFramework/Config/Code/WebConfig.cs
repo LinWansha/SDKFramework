@@ -45,6 +45,11 @@ namespace SDKFramework.Config
             /// 个人信息清单
             /// </summary>
             public string personInfoListUrl;
+            
+            /// <summary>
+            /// 备案号可查询链接
+            /// </summary>
+            public string icpQueryUrl;
         }
         
     }

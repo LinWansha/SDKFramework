@@ -17,6 +17,7 @@ namespace SDKFramework.Editor
         private string _childrenPrivacyUrl = "";
         private string _thirdPartySharingUrl = "";
         private string _personInfoListUrl = "";
+        private string _icpQueryUrl = "";
 
         // 配置文件路径
         private readonly string FilePath = $"{AssetModule.ConfigPath}WebConfig.json";
@@ -59,6 +60,7 @@ namespace SDKFramework.Editor
             _childrenPrivacyUrl = EditorGUILayout.TextField("Children Privacy URL:", _childrenPrivacyUrl);
             _thirdPartySharingUrl = EditorGUILayout.TextField("Third Party Sharing URL:", _thirdPartySharingUrl);
             _personInfoListUrl = EditorGUILayout.TextField("Person Info List URL:", _personInfoListUrl);
+            _icpQueryUrl = EditorGUILayout.TextField("ICP Query URL:", _icpQueryUrl);
 
             EditorGUILayout.Space();
 
@@ -84,6 +86,7 @@ namespace SDKFramework.Editor
                 _childrenPrivacyUrl = configData.WebView.childrenPrivacyUrl;
                 _thirdPartySharingUrl = configData.WebView.thirdPartySharingUrl;
                 _personInfoListUrl = configData.WebView.personInfoListUrl;
+                _icpQueryUrl = configData.WebView.icpQueryUrl;
                 
             }
             else
@@ -108,7 +111,8 @@ namespace SDKFramework.Editor
                     gamePrivacyUrl = _gamePrivacyUrl,
                     childrenPrivacyUrl = _childrenPrivacyUrl,
                     thirdPartySharingUrl = _thirdPartySharingUrl,
-                    personInfoListUrl = _personInfoListUrl
+                    personInfoListUrl = _personInfoListUrl,
+                    icpQueryUrl = _icpQueryUrl
                 }
             };
 

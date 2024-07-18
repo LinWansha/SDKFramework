@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Newtonsoft.Json;
 using SDKFramework.Account.Net;
 using UnityEngine;
@@ -109,7 +110,7 @@ namespace SDKFramework.Network
             }
             
         }
-
+        [Conditional("ENABLE_DEBUG")]
         public void RequestDelete< K>(Action<K> callback, string url) where K : Response
         {
             StartCoroutine(_delete(url, callback));

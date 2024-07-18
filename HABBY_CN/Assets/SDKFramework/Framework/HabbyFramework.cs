@@ -133,7 +133,7 @@ public class HabbyFramework : MonoBehaviour
         /// <summary>
         /// 优先级
         /// </summary>
-        public int Priority { get; private set; }
+        private int Priority { get; set; }
 
         /// <summary>
         /// 模块

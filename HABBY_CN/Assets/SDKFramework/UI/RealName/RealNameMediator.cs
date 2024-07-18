@@ -8,9 +8,6 @@ using SDKFramework.Utils;
 
 public class RealNameMediator : UIMediator<RealNameView>
 {
-    public const string WrongName = "您输入的姓名有误,请重新输入";
-    public const string WrongId = "您输入的身份证号码有误,请重新输入";
-
     private string Name, IdCard;
     private UserAccount m_Account;
 
@@ -58,13 +55,13 @@ public class RealNameMediator : UIMediator<RealNameView>
         HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.verify_submit);
         if (!LocalIdentityUtil.IsChineseName(Name))
         {
-            setNotice(WrongName);
+            setNotice(LoginErrorConst.IDENTITY_WRONG_NAME);
             return;
         }
 
         if (!LocalIdentityUtil.IsValidIDCard(IdCard))
         {
-            setNotice(WrongId);
+            setNotice(LoginErrorConst.IDENTITY_WRONG_ID);
             return;
         }
 
@@ -106,7 +103,7 @@ public class RealNameMediator : UIMediator<RealNameView>
             return true;
         }
 
-        HabbyTextHelper.Instance.ShowTip("输入的姓名和身份证号不能为空");
+        HabbyTextHelper.Instance.ShowTip(LoginErrorConst.IDENTITY_INPUT_ISNULL);
         return false;
     }
 
@@ -115,47 +112,47 @@ public class RealNameMediator : UIMediator<RealNameView>
         if (isSuccess)
         {
             Close();
-            Log.Info($"实名认证成功 || channel: {m_Account.LoginChannel} token: {m_Account.AccessToken}");
+            Log.Info($"Identity successful || channel: {m_Account.LoginChannel} token: {m_Account.AccessToken}");
         }
         else
         {
             Log.Warn($"----- UserIdentifyPopup rps error:code={code}");
-            HabbyTextHelper.Instance.ShowTip("实名认证失败!错误代码：" + code);
+            HabbyTextHelper.Instance.ShowTip(string.Format(LoginErrorConst.IDENTITY_FAILURE,code));
             switch (code)
             {
                 case IdentityResponse.PARAM_ERROR:
-                    setNotice("输入参数错误");
+                    setNotice(LoginErrorConst.PARAM_ERROR);
                     break;
                 case IdentityResponse.USER_NOT_FOUND:
-                    setNotice("找不到此用户");
+                    setNotice(LoginErrorConst.USER_NOT_FOUND);
                     break;
                 case IdentityResponse.ID_CARD_EXIST:
-                    setNotice("此身份证已经绑定过其他账号");
+                    setNotice(LoginErrorConst.ID_CARD_EXIST);
                     break;
                 case IdentityResponse.TOKEN_EXPIRE:
-                    setNotice("登陆已过期,请从新登陆");
+                    setNotice(string.Format(LoginErrorConst.OAUTH_EXPIRE,Global.Channel));
                     break;
                 case IdentityResponse.SERVER_FATAL_ERROR:
-                    setNotice("GM 服务器故障");
+                    setNotice(LoginErrorConst.SERVER_FATAL_ERROR);
                     break;
                 case IdentityResponse.SERVER_BUSY:
-                    setNotice("服务器繁忙");
+                    setNotice(LoginErrorConst.SERVER_BUSY);
                     break;
                 case IdentityResponse.GAME_SERVER_ERROR:
-                    setNotice("游戏服务器故障");
+                    setNotice(LoginErrorConst.GAME_SERVER_ERROR);
                     break;
                 case IdentityResponse.ID_CARD_CHECK_PENDING:
-                    setNotice("认证中！稍后再试");
+                    setNotice(LoginErrorConst.ID_CARD_CHECK_PENDING);
                     break;
                 case IdentityResponse.ID_CARD_OVER_COUNT:
-                    setNotice("认证次数超限");
+                    setNotice(LoginErrorConst.ID_CARD_OVER_COUNT);
                     break;
                 case IdentityResponse.ID_CARD_CHECK_FAILED:
                 case IdentityResponse.ERROR:
-                    setNotice("认证失败");
+                    setNotice(LoginErrorConst.IDENTITY);
                     break;
                 default:
-                    setNotice("未知错误 错误码");
+                    setNotice(LoginErrorConst.UN_KNOW);
                     break;
             }
         }

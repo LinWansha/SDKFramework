@@ -8,7 +8,7 @@ public class RealNameView : UIView
     public InputField nameInput;
     public InputField idInput;
 
-    public Text notice;
+    public UIText notice;
     public Button btConfirm;
         
     

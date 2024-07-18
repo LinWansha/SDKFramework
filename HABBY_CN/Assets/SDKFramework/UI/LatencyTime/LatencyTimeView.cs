@@ -5,6 +5,6 @@ using UnityEngine.UI;
 [UIView(typeof(LatencyTimeMediator), UIViewID.LatencyTimeUI)]
 public class LatencyTimeView : UIView
 {
-    public Text label;
+    public UIText label;
     public Transform flower;
 }

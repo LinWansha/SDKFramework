@@ -21,47 +21,6 @@ namespace SDKFramework.Analytics
     {
 
         private bool TGAInitialized = false;
-
-        #region const key
-
-        public const string KEY_OAID = "oaid";
-        public const string KEY_IAP_TOTAL_CNY = "total_iap_cny";
-
-        #endregion
-
-#region oaid
-        private string OAID
-        {
-            get;
-            set;
-        }
-        private void RefreshOaid()
-        {
-            try
-            {
-                if(string.IsNullOrEmpty(OAID))
-                {
-                    var propertyBuilder = new TGPropertyBuilder();
-                    if (!string.IsNullOrEmpty(OaidUtil.Oaid))
-                    {
-                        OAID = OaidUtil.Oaid;
-                        propertyBuilder.Add(KEY_OAID, OAID);
-                    }
-                    else
-                    {
-                        propertyBuilder.Add(KEY_OAID, "unknow");
-                    }
-                    TGA.SetSuperProperties(propertyBuilder.ToProperty());
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-           
-        }
-#endregion
         
         public void InitializeTGA(TGAImpl @tga)
         {
@@ -76,7 +35,6 @@ namespace SDKFramework.Analytics
             try
             {
                 if (!TGAInitialized)return;
-                RefreshOaid();
                 TGA.UserSet(BuildCommonProperties());
                 TGA.SetSuperProperties(BuildCommonProperties());
            
@@ -84,18 +42,17 @@ namespace SDKFramework.Analytics
                 {
                     Log.Info("[Analytics] total_iap_cny: " + HabbyFramework.Account.CurrentAccount.IAP.Total * 100);
                     return _propertyBuilder
-                        // .Add("oaid", OAID)      //oaid
+                        .Add("oaid", OaidUtil.Oaid ?? "unknow")      //oaid
                         .Add("ageLevel", HabbyFramework.Account.CurrentAccount.AgeRange.ToString())      //年龄段
                         .Add("login_type", Global.Channel)    //weixin/qq/phone/appleid/
-                        .Add("tio_id", "unknow")        //热云id
-                        .Add("total_iap_cny", HabbyFramework.Account.CurrentAccount.IAP.Total * 100)
+                        // .Add("tio_id", "unknow")        //热云id
+                        .Add("total_iap_cny", HabbyFramework.Account.CurrentAccount.IAP.Total % 100)
                         .ToProperty();
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                Log.Error(e);
             }
         }
 
@@ -257,6 +214,8 @@ namespace SDKFramework.Analytics
         public void TGA_cn_login(LoginStepCN step)
         {
             if (!TGAInitialized) return;
+            Log.Info($"login_step: {step}");
+
             RefreshCommonProperties();
             var CurrentAccount = HabbyFramework.Account.CurrentAccount;
             var account_state = CurrentAccount.IsNewUser ? "unknown_user" : "already_hadaccount";
@@ -276,10 +235,10 @@ namespace SDKFramework.Analytics
 
             _propertyBuilder
                 .Add("account_state", account_state)        // unknown_user 未检测到账号 already_hadaccount 检测到账号
-                .Add("step", step.ToString())               // 登录步骤
+                .Add("login_step", step.ToString())               // 登录步骤
                 .Add("login_type", Global.Channel)          // step=点击登录方式：appleid/wechat/qq/phone
                 .Add("phone_type", phone_type)              // phone_quick/phone_normal
-                .Add("login_session_id", HabbyFramework.Account.LoginSessionId); //login_session_id/每次登录过程记录一个唯一一个id
+                .Add("login_sessionID", HabbyFramework.Account.LoginSessionId); //login_session_id/每次登录过程记录一个唯一一个id
             TGA.Track("cn_login", _propertyBuilder.ToProperty());
         }
     }

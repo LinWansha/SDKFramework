@@ -1,0 +1,17 @@
+{
+    "name": "Sdkhubv2.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9069ac25d95ca17448a247f3bb1c769f",
+        "GUID:41c8d92133c69a84d95e1fb1c1722803"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

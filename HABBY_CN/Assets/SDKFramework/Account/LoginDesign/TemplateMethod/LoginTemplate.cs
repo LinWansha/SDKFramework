@@ -1,5 +1,4 @@
 using System;
-using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Account.Utils;
 using SDKFramework.Message;
@@ -19,6 +18,7 @@ namespace SDKFramework.Account
         }
         
         private Action<LoginResponse> loginResponseHandler;
+
         internal void Login(RespHandler handler)
         {
             AccountLog.Info($"{Channel} Login Start");
@@ -35,22 +35,15 @@ namespace SDKFramework.Account
                     handler.failed();
                 }
             };
-            // if (!HabbyFramework.Account.HasAccount)
-            // {
-                ChannelLogin(loginResponseHandler);
-            // }
-            // else
-            // {
-            //     AccountLog.Info("LoginWithToken");
-            //     HabbyUserClient.Instance.LoginWithToken(loginResponseHandler,Channel, HabbyFramework.Account.CurrentAccount.AccessToken);
-            // }
+
+            ChannelLogin(loginResponseHandler);
         }
         
         public abstract void ChannelLogin(Action<LoginResponse> onResponse);
 
         private void OnLoginSuccess(LoginResponse response)
         {
-            AccountLog.Info($"{Channel} 登录成功");
+            AccountLog.Info($"{Channel} login successful");
             
             HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.get_data_success);
             HabbyFramework.UI.CloseUI(UIViewID.LoginUI);
@@ -61,25 +54,36 @@ namespace SDKFramework.Account
             {
                 HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish()
                 {
-                    code = 0, msg = "success", uid = HabbyFramework.Account.CurrentAccount.UID,
-                    isNew = HabbyFramework.Account.CurrentAccount.IsNewUser
+                    code = response.code, msg = $"{Channel} login success", 
                 });
             }
         }
 
         private void OnLoginFailed(LoginResponse response)
         {
-            AccountLog.Info($"{Channel} 登录失败, errorCode: {response.code}");
+            AccountLog.Info($"{Channel} login failure, errorCode: {response.code}");
             switch (response.code)
             {
                 case Response.CODE_APP_TOKEN_EXPIRE:
-                    HabbyTextHelper.Instance.ShowTip($"{Channel}  授权过期,请重新授权");
+                    HabbyTextHelper.Instance.ShowTip(string.Format(LoginErrorConst.OAUTH_EXPIRE,Channel));
+                    HabbyFramework.UI.OpenUISingle(UIViewID.LoginUI);
                     break;
                 case Response.CAPTCHA_INVALID:
-                    HabbyTextHelper.Instance.ShowTip("手机验证码错误");
+                    HabbyTextHelper.Instance.ShowTip(LoginErrorConst.SMS_VERIFY_CODE_ERROR);
+                    break;
+                case Response.CODE_USER_NOT_FOUND:
+                    HabbyTextHelper.Instance.ShowTip(LoginErrorConst.USER_NOT_FOUND);
+                    HabbyFramework.UI.OpenUISingle(UIViewID.LoginUI);
+                    break;
+                default:
+                    HabbyTextHelper.Instance.ShowTip(string.Format(LoginErrorConst.LOGIN_FAILURE,Channel,response.code));
                     break;
             }
-            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 1,msg = "failed"});
+            HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish()
+            {
+                code = response.code,
+                msg = $"{Channel} login failed, errorCode: {response.code}",
+            });
 
         }
 

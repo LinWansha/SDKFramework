@@ -17,7 +17,7 @@ namespace SDKFramework.Utils.WebView
 
         private WebViewBridge() { }
         
-        public void Init(IWebView webView)
+        public void Init(IWebView webView=null)
         {
             if (Initialized)return;
             Log.Warn("WebView Initialized ！！！");

@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using SDKFramework;
 using SDKFramework.UI;
 
 public partial class LoginMediator : UIMediator<LoginView>
@@ -9,6 +10,8 @@ public partial class LoginMediator : UIMediator<LoginView>
     {
         bool IsValidPhoneNumber(string phoneNumber)
         {
+            HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.code_input);
+
             string pattern = @"^1[3456789]\d{9}$";
             return Regex.IsMatch(phoneNumber, pattern);
         }
@@ -28,6 +31,6 @@ public partial class LoginMediator : UIMediator<LoginView>
         }
         
         View.btnNext.interactable = IsValidPhoneNumber(modifiedStr);
-        m_PhoneNum = View.btnNext.interactable ? phoneNum : "";
+        m_PhoneNum = View.btnNext.interactable ? modifiedStr : "";
     }
 }

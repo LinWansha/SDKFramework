@@ -17,6 +17,7 @@ namespace SDKFramework.Account
                 (code, msg) =>
                 {
                     AccountLog.Info("#onRemoteQqLogin result code:" + code + " msg:" + msg);
+                    HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.ask_3rd_auth,code,$"qq oauth result code:{code},msg:{msg}");
                     OAuthResult oauthData = JsonConvert.DeserializeObject<OAuthResult>(msg);
                     HabbyUserClient.Instance.LoginQQChannel(onResponse, oauthData.accessToken);
                 }, (code, msg) =>

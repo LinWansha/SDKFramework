@@ -69,7 +69,7 @@ namespace SDKFramework.Account
             }
             OnValidateIdentityResult?.Invoke(true,0);
             callback(true, 0);
-            HabbyFramework.Analytics.TGA_first_active();
+            // HabbyFramework.Analytics.TGA_first_active(); 2024.7.24 first_active不应该在这里调用（这里是登陆后不需要实名触发）
         }
 
         public void ValidateIdentity()
@@ -86,7 +86,7 @@ namespace SDKFramework.Account
                     OnValidateIdentityResult?.Invoke(true,0);
                     return;
                 }
-                
+                HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.verify_fail);
                 OnValidateIdentityResult?.Invoke(false,response.code);
             });
         }
@@ -138,20 +138,38 @@ namespace SDKFramework.Account
             {
                 onResult(arg.code, arg.msg);
             }
-
+           
             try
             {
+                #if ENABLE_DEBUG || DEBUG_MODEL
+                AccountLog.Info("#AccountModule isLogin:" + CurrentAccount.IsLogin + " HasAccount:" + HasAccount + " AgeRange:" + CurrentAccount.AgeRange.ToString() );
+                #endif
                 var currentAccount = CurrentAccount;
                 if ((!currentAccount.IsLogin && HasAccount) ||
                     currentAccount.AgeRange != UserAccount.AgeLevel.Adult &&
                     currentAccount.AgeRange != UserAccount.AgeLevel.Unknown)
                 {
+                    try
+                    {
+                        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.login_choose_show);
+                    }
+                    catch (Exception e)
+                    {
+                    }
                     HabbyFramework.UI.OpenUI(UIViewID.QuickLoginUI);
                     return;
                 }
 
                 if (!HasAccount)
                 {
+                    try
+                    {
+                        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.login_choose_show);
+                    }
+                    catch (Exception e)
+                    {
+                    }
+
                     if (ShanYanUtil.IsShanYanValid())
                     {
                         loginRunner.Execute(LoginChannel.PhoneQuick);
@@ -166,7 +184,7 @@ namespace SDKFramework.Account
             }
             catch (Exception e)
             {
-                onError.Invoke(-1001, e.Message);
+                onError.Invoke(ErrorCode.LOGIN_EXCEPTION, e.Message);
                 throw;
             }
             
@@ -183,6 +201,7 @@ namespace SDKFramework.Account
 #if USE_ANTIADDICTION
             timeManager.StopTimeCounter(CurrentAccount);
 #endif
+            OnShowLoginScene?.Invoke();
             (actionCode == 0 ? OnUserLogout : OnShowLoginScene)?.Invoke();
             HabbyFramework.Message.Post(new SDKEvent.AccountLogout());
         }
@@ -206,23 +225,29 @@ namespace SDKFramework.Account
         {
             var account = CurrentAccount;
             string oauthCode = "";
+            string loginType = account.LoginChannel;
+            if (ChannelPhoneQuick == loginType)
+            {
+                loginType = ChannelPhone;
+            }
             if (account.LoginChannel == ChannelAppleId)
             {
-                //TODO: 删除ios授权前 先从新申请授权（为了拿到授权code）
-                oauthCode = "删除ios授权前 先从新申请授权（为了拿到授权code）";
+                
             }
-            HabbyUserClient.Instance.UnRegisterAccount(account.AccessToken,account.LoginChannel,oauthCode, (response) =>
+            
+            HabbyUserClient.Instance.UnRegisterAccount(account.AccessToken,loginType,oauthCode, (response) =>
             {
-                if (0==response.code)
+                if (0 == response.code)
                 {
-                    AccountLog.Info("注销账号成功");
+                    AccountLog.Info("unregister user successful");
                     ClearCurrent();
                 }
                 else
                 {
-                    AccountLog.Info("注销账号失败");
+                    AccountLog.Info("unregister user failure");
                 }
-                callback(response.code,response,"");
+
+                callback(response.code, response, "");
             });
         }
     }

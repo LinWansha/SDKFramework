@@ -18,8 +18,8 @@ namespace SDKFramework.Account
         internal DecisionMaker loginRunner = new DecisionMaker();
 
         private readonly AntiAddictionTimeChecker timeManager = new AntiAddictionTimeChecker();
-        
-        public bool HasAccount => CurrentAccount != null && CurrentAccount.LoginChannel!=null;
+
+        private bool HasAccount => CurrentAccount is { LoginChannel: not null };
         
         public UserAccount CurrentAccount { get; private set; }
         
@@ -103,6 +103,7 @@ namespace SDKFramework.Account
             HabbyFramework.UI.CloseUI(UIViewID.EntryUI);
             HabbyFramework.UI.OpenUI(UIViewID.LoginSuccessUI);
             HabbyFramework.Message.Post(new SDKEvent.SDKLoginFinish() { code = 0,msg = "success"});
+            Save();
         }
 
         private void ShowLoginScene()

@@ -13,6 +13,7 @@ namespace SDKFramework.Account
         {
             WeChatAPIUtil.RequestLoginAuthToken((code, data) =>
             {
+                HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.ask_3rd_auth,code,$"weixin oauth result code:{code},msg:{data}");
                 AccountLog.Info("#onRemoteQqLogin result code:" + code + " msg:" + data);
                 if (code==0)
                 {

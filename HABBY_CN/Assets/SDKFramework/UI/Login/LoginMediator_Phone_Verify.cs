@@ -1,4 +1,5 @@
 using System.Collections;
+using SDKFramework;
 using SDKFramework.Account;
 using SDKFramework.Account.Net;
 using SDKFramework.Message;
@@ -10,22 +11,32 @@ public partial class LoginMediator : UIMediator<LoginView>
 {
     private void SendSMSVerificationCode()
     {
+        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.click_sendcode);
+        
+        HabbyFramework.UI.OpenUISingle(UIViewID.LatencyTimeUI);
+        
         HabbyFramework.Message.Post(new PhoneInfo() { phoneNumber = m_PhoneNum });
         HabbyUserClient.Instance.RequestSmsCode(m_PhoneNum,(response =>
         {
             switch (response.code)
             {
                 case 0:
-                    AccountLog.Info("发送验证码 成功");
+                    HabbyTextHelper.Instance.ShowTip(ErrorMessage.SMS_CODE_SEND_SUCCESS);
+                    
+                    HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.code_send);
                     View.ActivateWindow(3);
                     RefreshVerifyCodeUI();
                     break;
-                case SendUserSmsCodeResponse.CAPTCHA_EXCEEDED_TIMES:        // 超次数
-                    AccountLog.Info("验证码发送次数过多，请稍后再试");
+                case SendUserSmsCodeResponse.CAPTCHA_EXCEEDED_TIMES:
+                    HabbyTextHelper.Instance.ShowTip(ErrorMessage.SMS_CODE_SEND_LIMIT);
+
+                    HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.code_limit);
                     HabbyFramework.UI.OpenUISingle(UIViewID.FreeSmsUseUpUI, response.data.uplinkSMS);
                     break;
                 default:
-                    HabbyTextHelper.Instance.ShowTip("发送验证码 失败"+response.code);
+                    HabbyTextHelper.Instance.ShowTip(ErrorMessage.SMS_CODE_SEND_FAIL);
+
+                    HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.code_fail);
                     break;
             }
 

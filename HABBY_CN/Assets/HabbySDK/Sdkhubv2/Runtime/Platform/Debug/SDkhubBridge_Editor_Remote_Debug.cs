@@ -34,9 +34,9 @@ namespace Sdkhubv2.Runtime.Platform
             }
 
             string json = File.ReadAllText(ConfigPath);
-            Debug.Log("#json:"+json);
+            HabbyLog.Log("#json:"+json);
             DebugConfig config = JsonConvert.DeserializeObject<DebugConfig>(json);
-            Debug.Log("#json server url:"+config.serverUrl);
+            HabbyLog.Log("#json server url:"+config.serverUrl);
             return config.serverUrl;
         }
 

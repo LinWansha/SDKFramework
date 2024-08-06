@@ -14,17 +14,31 @@ public class EntryMediator : UIMediator<EntryView>
 {
     private AccountModule AccountModule => HabbyFramework.Account;
     
+    /// <summary>
+    ///  用户协议
+    /// </summary>
+    public static readonly string KEY_USER_AGREE_USER_AGREEMENT = "USER_AGREE_USER";
+    
     protected override void OnInit()
     {
         base.OnInit();
         View.versionName.text = $"版本号：{Application.version}";
+        //如果用户已经同意过隐私协议，且云控自动勾选,那么自动勾选
+        if (HabbyFramework.Analytics.CloudData.IsPrivacyAgree && PlayerPrefs.GetInt(KEY_USER_AGREE_USER_AGREEMENT) > 0)
+        {
+            View.privacyToggle.isOn = true;
+        }
+        else
+        {
+            View.privacyToggle.isOn = false;
+        }
+        
         if (Global.Platform==RuntimePlatform.IPhonePlayer)
         {
             View.privacyLine.SetActive(false);
         }
         else
         {
-            View.privacyToggle.isOn = false;//todo: 从本地持久化数据拿取
             View.btnPrivacy.onClick.AddListener(() =>
             {
                 WebViewBridge.Instance.Show(Global.WebView.gamePrivacyUrl);
@@ -36,6 +50,7 @@ public class EntryMediator : UIMediator<EntryView>
         }
         View.privacyToggle.onValueChanged.AddListener((@agree) =>
         {
+            PlayerPrefs.SetInt(KEY_USER_AGREE_USER_AGREEMENT, agree?1:0);
             HabbyFramework.Account.SetPrivacyStatus(agree);
         });
         View.btnQueryICP.GetComponentInChildren<UIText>().text = $"备案号可查询链接：{Global.WebView.icpQueryUrl}";
@@ -53,7 +68,7 @@ public class EntryMediator : UIMediator<EntryView>
 
         View.btnEnter.onClick.AddListener(EnterGameOrLogin);
         View.ageTip.onClick.AddListener(ShowAgeTip);
-        HabbyFramework.Message.Subscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
+        // HabbyFramework.Message.Subscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
     }
 
     private void OnRefreshPrivacyToggle(MsgType.RefreshPrivacyToggle arg)
@@ -91,29 +106,6 @@ public class EntryMediator : UIMediator<EntryView>
         {
             AccountLog.Error($"Login onError msg :{errorMsg}");
         });
-        
-        // var currentAccount = AccountModule.CurrentAccount;
-        // if ((!currentAccount.IsLogin && AccountModule.HasAccount) ||
-        //     currentAccount.AgeRange != UserAccount.AgeLevel.Adult &&
-        //     currentAccount.AgeRange != UserAccount.AgeLevel.Unknown)
-        // {
-        //     HabbyFramework.UI.OpenUI(UIViewID.QuickLoginUI);
-        //     return;
-        // }
-        //
-        // if (!AccountModule.HasAccount)
-        // {
-        //     if (ShanYanUtil.IsShanYanValid())
-        //     {
-        //         AccountModule.loginRunner.Execute(LoginChannel.PhoneQuick);
-        //     }
-        //     else
-        //     {
-        //         HabbyFramework.UI.OpenUI(UIViewID.LoginUI);
-        //     }
-        // }
-        // else
-        //     AccountModule.loginRunner.Execute(LoginChannel.History);
     }
     private bool BlockingIntoGameMechanics()
     {
@@ -124,8 +116,10 @@ public class EntryMediator : UIMediator<EntryView>
     }
     protected override void OnHide()
     {
-        View.btnEnter.onClick.RemoveListener(EnterGameOrLogin);
-        View.ageTip.onClick.RemoveListener(ShowAgeTip);
+        View.privacyToggle.onValueChanged.RemoveAllListeners();
+        View.btnEnter.onClick.RemoveAllListeners();
+        View.ageTip.onClick.RemoveAllListeners();
+        View.btnQueryICP.onClick.RemoveAllListeners();
         HabbyFramework.Message.Unsubscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
         base.OnHide();
     }

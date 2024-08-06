@@ -5,6 +5,7 @@ using SDKFramework.Account.Net;
 using SDKFramework.Account.Utils;
 using SDKFramework.UI;
 using SDKFramework.Utils;
+ 
 
 public class RealNameMediator : UIMediator<RealNameView>
 {
@@ -53,21 +54,39 @@ public class RealNameMediator : UIMediator<RealNameView>
     {
         if (!InputFully()) return;
         HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.verify_submit);
-        if (!LocalIdentityUtil.IsChineseName(Name))
+
+        if (string.IsNullOrEmpty(Name))
         {
-            setNotice(LoginErrorConst.IDENTITY_WRONG_NAME);
+            setNotice(ErrorMessage.IDENTITY_WRONG_NAME);
+            HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.verify_submit,ErrorCode.IDENTIFY_NAME_EMPTY,"name empty");
             return;
         }
-
-        if (!LocalIdentityUtil.IsValidIDCard(IdCard))
+        
+        if (Global.CloudData.IfCheckName && !LocalIdentityUtil.IsChineseName(Name))
         {
-            setNotice(LoginErrorConst.IDENTITY_WRONG_ID);
+            setNotice(ErrorMessage.IDENTITY_WRONG_NAME);
+            HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.verify_submit,ErrorCode.IDENTIFY_NAME_NOT_CHINESE,"not chinese name");
+            return;
+        }
+      
+        if (string.IsNullOrEmpty(IdCard))
+        {
+            setNotice(ErrorMessage.IDENTITY_WRONG_ID);
+            HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.verify_submit,ErrorCode.IDENTIFY_ID_EMPTY,"id empty");
+            return;
+        }
+        
+        if (Global.CloudData.IfCheckId && !LocalIdentityUtil.IsValidIDCard(IdCard))
+        {
+            setNotice(ErrorMessage.IDENTITY_WRONG_ID);
+            HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.verify_submit,ErrorCode.IDENTIFY_ID_ERROR,"id card is not valid");
             return;
         }
 
         if (m_Account == null)
         {
             HabbyFramework.Account.CheckUser();
+            HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.verify_submit,ErrorCode.IDENTIFY_ACCOUNT_IS_NULL,"account is null");
             return;
         }
 
@@ -84,9 +103,11 @@ public class RealNameMediator : UIMediator<RealNameView>
         BirthdayAgeSex entity = LocalIdentityUtil.GetBirthdayAgeSex(m_Account.IdCard);
         m_Account.AgeRange = LocalIdentityUtil.ParseAgeLevel(entity.Age);
         m_Account.Age = entity.Age;
-        
-        HabbyFramework.Account.ValidateIdentity();
-        // HabbyFramework.Account.LocalValidateIdentity();
+
+        if (!Global.CloudData.IfUseLocalRealName)
+            HabbyFramework.Account.ValidateIdentity();
+        else
+            HabbyFramework.Account.LocalValidateIdentity();
     }
 
     private void OnEditEnd(string arg0)
@@ -103,7 +124,7 @@ public class RealNameMediator : UIMediator<RealNameView>
             return true;
         }
 
-        HabbyTextHelper.Instance.ShowTip(LoginErrorConst.IDENTITY_INPUT_ISNULL);
+        HabbyTextHelper.Instance.ShowTip(ErrorMessage.IDENTITY_INPUT_ISNULL);
         return false;
     }
 
@@ -112,47 +133,50 @@ public class RealNameMediator : UIMediator<RealNameView>
         if (isSuccess)
         {
             Close();
+            HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.verify_submit,0,"success");
             Log.Info($"Identity successful || channel: {m_Account.LoginChannel} token: {m_Account.AccessToken}");
         }
         else
         {
             Log.Warn($"----- UserIdentifyPopup rps error:code={code}");
-            HabbyTextHelper.Instance.ShowTip(string.Format(LoginErrorConst.IDENTITY_FAILURE,code));
+            HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.verify_submit,code,"rps error:" + code);
+            
+            HabbyTextHelper.Instance.ShowTip(ErrorMessage.IDENTITY_FAILURE);
             switch (code)
             {
                 case IdentityResponse.PARAM_ERROR:
-                    setNotice(LoginErrorConst.PARAM_ERROR);
+                    setNotice(ErrorMessage.PARAM_ERROR);
                     break;
                 case IdentityResponse.USER_NOT_FOUND:
-                    setNotice(LoginErrorConst.USER_NOT_FOUND);
+                    setNotice(ErrorMessage.USER_NOT_FOUND);
                     break;
                 case IdentityResponse.ID_CARD_EXIST:
-                    setNotice(LoginErrorConst.ID_CARD_EXIST);
+                    setNotice(ErrorMessage.ID_CARD_EXIST);
                     break;
                 case IdentityResponse.TOKEN_EXPIRE:
-                    setNotice(string.Format(LoginErrorConst.OAUTH_EXPIRE,Global.Channel));
+                    setNotice(string.Format(ErrorMessage.OAUTH_EXPIRE,Global.Channel));
                     break;
                 case IdentityResponse.SERVER_FATAL_ERROR:
-                    setNotice(LoginErrorConst.SERVER_FATAL_ERROR);
+                    setNotice(ErrorMessage.SERVER_FATAL_ERROR);
                     break;
                 case IdentityResponse.SERVER_BUSY:
-                    setNotice(LoginErrorConst.SERVER_BUSY);
+                    setNotice(ErrorMessage.SERVER_BUSY);
                     break;
                 case IdentityResponse.GAME_SERVER_ERROR:
-                    setNotice(LoginErrorConst.GAME_SERVER_ERROR);
+                    setNotice(ErrorMessage.GAME_SERVER_ERROR);
                     break;
                 case IdentityResponse.ID_CARD_CHECK_PENDING:
-                    setNotice(LoginErrorConst.ID_CARD_CHECK_PENDING);
+                    setNotice(ErrorMessage.ID_CARD_CHECK_PENDING);
                     break;
                 case IdentityResponse.ID_CARD_OVER_COUNT:
-                    setNotice(LoginErrorConst.ID_CARD_OVER_COUNT);
+                    setNotice(ErrorMessage.ID_CARD_OVER_COUNT);
                     break;
                 case IdentityResponse.ID_CARD_CHECK_FAILED:
                 case IdentityResponse.ERROR:
-                    setNotice(LoginErrorConst.IDENTITY);
+                    setNotice(ErrorMessage.IDENTITY);
                     break;
                 default:
-                    setNotice(LoginErrorConst.UN_KNOW);
+                    setNotice(ErrorMessage.UN_KNOW);
                     break;
             }
         }

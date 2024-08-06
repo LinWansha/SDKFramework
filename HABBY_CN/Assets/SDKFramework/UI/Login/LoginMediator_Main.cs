@@ -101,7 +101,7 @@ public partial class LoginMediator : UIMediator<LoginView>
         {
             View.ActivateWindow((int)arg);
         }
-        HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.login_choose_show);
+        // HabbyFramework.Analytics.TGA_cn_login(LoginStepCN.login_choose_show); //2024.7.26 移动到module中的login中
         HabbyFramework.Message.Subscribe<MsgType.ShowNoAgreePrivacyNotice>(ShowNotice);
         HabbyFramework.Message.Subscribe<MsgType.RefreshPrivacyToggle>(OnRefreshPrivacyToggle);
     }

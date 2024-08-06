@@ -1,3 +1,7 @@
+using Newtonsoft.Json;
+using SDKFramework.Account;
+using UnityEngine;
+
 namespace SDKFramework.Network
 {
     class AccountConfig
@@ -22,17 +26,30 @@ namespace SDKFramework.Network
             base.OnModuleInit();
 
 
-            // var json = Resources.Load<TextAsset>("ServerConfig");
-            // var serverConfig = JsonConvert.DeserializeObject<ServerConfig>(json.text);
-            // var accountJson = Resources.Load<TextAsset>($"{serverConfig.profile}/HabbyAccountConfig");
-            // var data = JsonConvert.DeserializeObject<AccountConfig>(accountJson.text);
-            //
-            // URL_USER_SERVER = $"{data.Url}/api/v1/";
+            var json = Resources.Load<TextAsset>("ServerConfig");
+            var serverConfig = new ServerConfig()
+            {
+#if UNITY_EDITOR
+                profile = "develop",
+                overridable = "false",
+#else
+                profile = "prod",
+                overridable = "false",
+#endif
+            };
+            if (json != null)
+            {
+                serverConfig = JsonConvert.DeserializeObject<ServerConfig>(json.text);
+            }
+            var accountJson = Resources.Load<TextAsset>($"{serverConfig.profile}/HabbyAccountConfig");
+            var data = JsonConvert.DeserializeObject<AccountConfig>(accountJson.text);
+
+            URL_USER_SERVER = $"{data.Url}/api/v1/";
             
-            if (Global.IsDebug)
-                URL_USER_SERVER = $"{Global.AccountServerURL.test}/api/v1/";
-            else
-                URL_USER_SERVER = $"{Global.AccountServerURL.prod}/api/v1/";
+            // if (Global.IsDebug)
+            //     URL_USER_SERVER = $"{Global.AccountServerURL.test}/api/v1/";
+            // else
+            //     URL_USER_SERVER = $"{Global.AccountServerURL.prod}/api/v1/";
         }
     }
 }

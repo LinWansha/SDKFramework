@@ -16,6 +16,7 @@ namespace SDKFramework.Account
             ShanYanUtil.RequestShanYanAuthToken((code, data) =>
             {
                 AccountLog.Warn($"RequestShanYanAuthToken onResult ==  code:{code},msg:{data}");
+                HabbyFramework.Analytics.TGA_cn_login_result(LoginStepCN.ask_3rd_auth,code,$"shanyan oauth result code:{code},msg:{data}");
                 switch (code)
                 {
                     case 0:

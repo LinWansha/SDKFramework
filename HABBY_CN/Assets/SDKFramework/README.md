@@ -15,14 +15,23 @@
 ## 功能
 
 - 版署  `国内申请版号用到的 实名认证，防沉迷..`
-- 登录  `暂未实现`
+- 登录  `初步实现官网登录`
 - 支付  `暂未实现`
 - 广告  `暂未实现`
 - 聚合渠道SDK  `最终愿景`
 
+
+###
 ## 快速开始
+- 导入sdkframework.unitypackage
 
+- 打开编辑器菜单 SDKFramework/Configuration Application 按下图配置
 
+![ConfigurationApp](https://raw.githubusercontent.com/LinWansha/SDKFramework/main/DocImg/ConfigurationApp.png)
+
+- 在场景中放入 SDK.prefab 预制体 (path：Assets/SDKFramework/SDK.prefab)
+
+- enjoy
 
 ## XMind & 目录结构
 
@@ -56,6 +65,8 @@ SDKFramework/
 
 ├── Utils/      通用工具类，扩展方法...
 ```
+
+![FrameworkXmind](https://raw.githubusercontent.com/LinWansha/SDKFramework/PQ_Online/DocImg/logic_xmind.png)
 
 
 <!--我们将不再为项目组单独接入版署SDK，如有使用上的弊端和修改建议随时联系 孟瑞卿 wx：mrq617470300 -->

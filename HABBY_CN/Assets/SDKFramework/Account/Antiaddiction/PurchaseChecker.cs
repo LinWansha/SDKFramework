@@ -31,7 +31,7 @@ namespace SDKFramework.Account.AntiAddiction
                 HabbyFramework.Account.FireExpenseOverRange();
                 return false;
             }
-            AccountLog.Info($"PurchaseChecker.CanPurchase: AgeLevel: {account.AgeRange}");
+            AccountLog.Info($"PurchaseChecker.CanPurchase== total:{account.IAP.Monthly} , monthly: {money} ,AgeLevel: {account.AgeRange}");
             switch (account.AgeRange)
             {
                 case AgeLevel.Unknown:

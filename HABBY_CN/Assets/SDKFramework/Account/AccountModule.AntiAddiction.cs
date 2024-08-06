@@ -32,6 +32,7 @@ namespace SDKFramework.Account
 
         public void RefreshIAP(double total,double monthly)
         {
+            AccountLog.Info($"RefreshIAP== total:{total} , monthly: {monthly}");
             CurrentAccount?.RefreshTotalExpense(total);
             CurrentAccount?.RefreshMonthlyExpense(monthly);
             HabbyFramework.Analytics.RefreshCommonProperties();

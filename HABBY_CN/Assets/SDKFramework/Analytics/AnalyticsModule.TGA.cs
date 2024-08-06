@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SDKFramework.Account;
 using SDKFramework.Account.DataSrc;
 using Sdkhubv2.Runtime.tools;
 using UnityEngine;
@@ -40,13 +41,14 @@ namespace SDKFramework.Analytics
            
                 Dictionary<string, object> BuildCommonProperties()
                 {
-                    Log.Info("[Analytics] total_iap_cny: " + HabbyFramework.Account.CurrentAccount.IAP.Total * 100);
+                    var total_iap_cny = HabbyFramework.Account.CurrentAccount.IAP.Total / 100;
+                    Log.Info("[Analytics] total_iap_cny: " + total_iap_cny);
                     return _propertyBuilder
                         .Add("oaid", OaidUtil.Oaid ?? "unknow")      //oaid
                         .Add("ageLevel", HabbyFramework.Account.CurrentAccount.AgeRange.ToString())      //年龄段
                         .Add("login_type", Global.Channel)    //weixin/qq/phone/appleid/
                         // .Add("tio_id", "unknow")        //热云id
-                        .Add("total_iap_cny", HabbyFramework.Account.CurrentAccount.IAP.Total % 100)
+                        // .Add("total_iap_cny", total_iap_cny)
                         .ToProperty();
                 }
             }
@@ -207,6 +209,11 @@ namespace SDKFramework.Analytics
             TGA.Track("ad_PQ",_propertyBuilder.ToProperty());
         }
 
+        public void TGA_iap_validatino_success(Dictionary<string, object> info)
+        {
+            if (!TGAInitialized)return;
+            TGA.Track("iap_validate_success",info);
+        }
 
         /// <summary>
         /// 国内登录过程关键漏斗，触发时机参考step参数
@@ -218,7 +225,33 @@ namespace SDKFramework.Analytics
 
             RefreshCommonProperties();
             var CurrentAccount = HabbyFramework.Account.CurrentAccount;
-            var account_state = CurrentAccount.IsNewUser ? "unknown_user" : "already_hadaccount";
+            
+            var account_state = "already_hadaccount";
+           
+            try
+            {
+                if(CurrentAccount == null ||  CurrentAccount.IsNewUser ||  string.IsNullOrEmpty(CurrentAccount.LoginChannel) ||
+                    string.IsNullOrEmpty(CurrentAccount.AccessToken))
+                {
+                    account_state = "unknown_user";
+                }
+            }
+            catch (Exception e)
+            {
+                account_state = "unknown_user";
+            }
+            var historyCount = 0;
+            try
+            {
+                if(HabbyFramework.Account.AccountHistory.HasAccountHistory)
+                {
+                    historyCount = HabbyFramework.Account.AccountHistory.channelList.Count;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             if (step == LoginStepCN.click_startgame_bt)
             {
@@ -232,21 +265,45 @@ namespace SDKFramework.Analytics
                 UserAccount.ChannelPhoneQuick => "phone_quick",
                 _ => ""
             };
+            
+            AccountLog.Info($"### tga step:{step.ToString()} account_state:{account_state},historyCount:{historyCount}");
 
             _propertyBuilder
                 .Add("account_state", account_state)        // unknown_user 未检测到账号 already_hadaccount 检测到账号
-                .Add("login_step", step.ToString())               // 登录步骤
+                .Add("account_num", historyCount)          // 本地账号数量
+                .Add("login_step", step.toString())               // 登录步骤
                 .Add("login_type", Global.Channel)          // step=点击登录方式：appleid/wechat/qq/phone
                 .Add("phone_type", phone_type)              // phone_quick/phone_normal
                 .Add("login_sessionID", HabbyFramework.Account.LoginSessionId); //login_session_id/每次登录过程记录一个唯一一个id
             TGA.Track("cn_login", _propertyBuilder.ToProperty());
+        }
+
+        public void TGA_cn_login_result(LoginStepCN step,int errorCode,String errorMsg = null)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(errorMsg))
+                {
+                    _propertyBuilder.Add("login_error_msg", errorMsg);
+                }
+
+                _propertyBuilder
+                    .Add("login_step", step.toString()) // 登录步骤
+                    .Add("login_type", Global.Channel) // step=点击登录方式：appleid/wechat/qq/phone
+                    .Add("login_error_code", errorCode);
+                // TGA.Track("cn_login_result", _propertyBuilder.ToProperty());
+            }
+            catch (Exception e)
+            {
+                Log.Error("[Analytics]: " + e);
+            }
         }
     }
 }
 
 namespace SDKFramework
 {
-    public enum LoginStepCN 
+    public enum LoginStepCN : byte
     {
         SDKLogin = 0,
         
@@ -269,5 +326,31 @@ namespace SDKFramework
         verify_success,         // 实名成功
         age_pass,               // 无未成年限制（18岁以上和18岁以内但在特定时间登录打点）
         game_loading_success,   // 游戏加载完成（实名后游戏加载）
+        
+        verify_fail,            // 实名失败
+        choose_channel_fail,    // 点击登录方式失败
+        click_sendcode,         // 点击发送验证码
+        code_limit,             // 提示短信验证码超次数
+        code_send,              // 验证码成功发送
+        code_input,             // 输入验证码
+        code_success,           // 验证码校验成功
+        code_fail,              // 验证码校验失败
+        ask_3rd_auth,           // 请求三方授权
+        ask_3rd_auth_success,   // 授权成功
+        ask_3rd_auth_fail,      // 授权失败
+        
+    }
+    
+    public static class EnumExtensions
+    {
+        public static string toString(this LoginStepCN value)
+        {
+            return value switch
+            {
+                LoginStepCN.ask_3rd_auth_success => "3rd_auth_success",
+                LoginStepCN.ask_3rd_auth_fail => "3rd_auth_fail",
+                _ => value.ToString()
+            };
+        }
     }
 }

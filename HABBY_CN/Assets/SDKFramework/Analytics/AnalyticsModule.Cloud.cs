@@ -26,7 +26,11 @@ namespace SDKFramework.Analytics
         public bool IsForbidLogin = false;
 
         public string ForbidLoginNotice = "default";
-
+        
+        public bool IfCheckName = true;
+        public bool IfCheckId = true;
+        public bool IfUseLocalRealName = false;
+        
         #region official pay
         public bool IsWxPayEnable = true;
         public bool IsAliPayEnable = true;
@@ -53,10 +57,9 @@ namespace SDKFramework.Analytics
             if (CloudInitialized) return;
             CloudInitialized = true;
             _cloudImpl = cloud;
-            PullCloudData();
         }
 
-        public void PullCloudData()
+        public void PullCloudData(Action<string,int> onRsp = null)
         {
             if (!CloudInitialized) return;
             _cloudImpl.GetCloudConfig(((responseStr, msg, code) =>
@@ -93,6 +96,16 @@ namespace SDKFramework.Analytics
                 }
                 else
                     Log.Warn($"云控拉取失败 code: {code} ,msg: {msg}");
+
+                try
+                {
+                    onRsp?.Invoke(msg,code);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+               
             }));
         }
     }

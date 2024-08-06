@@ -2,7 +2,6 @@ using System;
 using SDKFramework.Account.DataSrc;
 using SDKFramework.Account.Net;
 using SDKFramework.Message;
-using SDKFramework.UI;
 
 namespace SDKFramework.Account
 {

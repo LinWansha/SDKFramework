@@ -7,10 +7,10 @@ namespace SDKFramework.Editor.Tools
 {
     public partial class BuildUnityProject
     {
-        private static string[] Scenes = { "Assets/SDKFramework/Example/SDKExample.unity" }; // 替换为您实际的场景
+        private static string[] Scenes = { "Assets/SDKFramework/Example/SDKExample.unity" };
         private static string EXPORT_FOLDER = "D:\\UnityWork\\SDKFramework\\HABBY_CN\\AndroidProject";
         private static string macros;
-        private static BuildTargetGroup buildTargetGroup = BuildTargetGroup.Android; // 请根据需要替换为其他目标平台
+        private static BuildTargetGroup buildTargetGroup = BuildTargetGroup.Android;
 
         static BuildUnityProject()
         {
@@ -21,7 +21,6 @@ namespace SDKFramework.Editor.Tools
         [MenuItem("SDKFramework/Jenkins Trigger")]
         public static void PerformAndroidBuild()
         {
-            // 获取命令行参数
             string[] args = Environment.GetCommandLineArgs();
             bool enableDebug = false;
             bool isDevBuild = false;
@@ -84,14 +83,10 @@ namespace SDKFramework.Editor.Tools
             buildPlayerOptions.target = BuildTarget.Android;
             buildPlayerOptions.options = targerOptions;
             
-
-            // 根据提供的 options 构建项目，并获取构建报告
+            
             BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
-
-            // 获取构建结果
+            
             BuildResult result = report.summary.result;
-
-            // 根据构建结果进行操作
 
             if (result != BuildResult.Succeeded)
             {

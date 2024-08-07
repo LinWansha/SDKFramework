@@ -12,8 +12,7 @@ public class SDKExample : MonoBehaviour
     {
         HabbySDKHubManager.Instance.Init();    
         
-        // HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
-        // AnalyticsModule.Instance.Initialization();
+        HabbyFramework.UI.OpenUI(UIViewID.EntryUI);
         // HabbyFramework.Analytics.InitializeCloud();
         
         HabbyUserClient.Instance.ClearSMSLimit(response =>

@@ -157,7 +157,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 1044279
+    m_Bits: 4294967295
 --- !u!1 &6885594059078360562
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,8 +302,7 @@ MonoBehaviour:
   m_text: "\u52A0\u8F7D\u4E2D\xB7\xB7\xB7"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
-  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd,
-    type: 2}
+  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

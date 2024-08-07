@@ -202,8 +202,7 @@ MonoBehaviour:
   m_text: "\u62B5\u5236\u4E0D\u826F\u6E38\u620F\uFF0C\u62D2\u7EDD\u76D7\u7248\u6E38\u620F\uFF0C\u6CE8\u610F\u81EA\u6211\u4FDD\u62A4\uFF0C\u8C28\u9632\u53D7\u9A97\u4E0A\u5F53\u3002\n\u9002\u5EA6\u6E38\u620F\u76CA\u8111\uFF0C\u6C89\u8FF7\u6E38\u620F\u4F24\u8EAB\uFF0C\u5408\u7406\u5B89\u6392\u65F6\u95F4\uFF0C\u4EAB\u53D7\u5065\u5EB7\u751F\u6D3B\u3002\n\u672C\u516C\u53F8\u79EF\u6781\u5C65\u884C\u300A\u7F51\u7EDC\u6E38\u620F\u884C\u4E1A\u9632\u6C89\u8FF7\u81EA\u5F8B\u516C\u7EA6\u300B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
-  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd,
-    type: 2}
+  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -337,8 +336,7 @@ MonoBehaviour:
   m_text: "\u5907\u6848\u53F7\uFF1A\u6CAAICP\u59072021024078\u53F7-19A \u51FA\u54C1\u5355\u4F4D\uFF1A\u4E0A\u6D77\u4E50\u94BB\u79D1\u6280\u6709\u9650\u516C\u53F8\n                                                                                                             "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
-  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd,
-    type: 2}
+  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -673,7 +671,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 1044279
+    m_Bits: 4294967295
 --- !u!114 &2947705047612491079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1963,8 +1961,7 @@ MonoBehaviour:
     \u51FA\u7248\u5355\u4F4D\uFF1A\u4E0A\u6D77\u5546\u56FD\u7F51\u7EDC\u79D1\u6280\u53D1\u5C55\u6709\u9650\u516C\u53F8\n\u8FD0\u8425\u5355\u4F4D\uFF1A\u4E0A\u6D77\u4E50\u94BB\u79D1\u6280\u6709\u9650\u516C\u53F8"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
-  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd,
-    type: 2}
+  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2098,8 +2095,7 @@ MonoBehaviour:
   m_text: "\u5065\u5EB7\u6E38\u620F\u5FE0\u544A"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
-  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd,
-    type: 2}
+  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2445,8 +2441,7 @@ MonoBehaviour:
   m_text: "\u5907\u6848\u53F7\u53EF\u67E5\u8BE2\u94FE\u63A5\uFF1Ahttps://beian.miit.gov.cn/#/home"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
-  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd,
-    type: 2}
+  m_sharedMaterial: {fileID: 4010256687967268439, guid: 03872a3e89aae7f45a182fad174d2cfd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
